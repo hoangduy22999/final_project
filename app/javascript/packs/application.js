@@ -18,9 +18,30 @@ import "../vendor/chart.js/Chart.min"
 import "../vendor/jquery-easing/jquery.easing.min"
 import "../vendor/bootstrap/js/bootstrap.bundle.min"
 import "../vendor/jquery/jquery.min"
+import "../stylesheets/application"
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 require("channels")
 require("jquery")
+
+globalThis.toastr = require("toastr")
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "3000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
