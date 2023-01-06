@@ -1,0 +1,26 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Full Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Status</th>
+      <th scope="col">Department</th>
+      <th scope="col">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each.with_index(1) do |user, index|%>
+      <tr>
+        <th scope="row"><%= index %></th>
+        <td><%= full_name(user) %></td>
+        <td><%= user.email %></td>
+        <td><%= full_address(user) %></td>
+        <td><%= user.status %></td>
+        <td><%= user.department.first&.name %></td>
+        <td><%= user.user_departments.first&.role %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
