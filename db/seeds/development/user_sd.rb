@@ -5,11 +5,22 @@ debug_print __FILE__
 print_log('INSERT USER')
 
 districts = District.all.pluck(:id)
+departments = Department.all.pluck(:id)
 
-user_attributes = (1..19).to_a.map do |_department|
-  {}
+user_attributes = (0..(19 - User.all.count)).to_a.map do |index|
+  User.create!({
+                 first_name: Faker::Name.first_name,
+                 last_name: Faker::Name.last_name,
+                 email: "user-0#{index}@email.com",
+                 password: 'User123456*',
+                 password_confirmation: 'User123456*',
+                 birthday: Faker::Date.birthday(min_age: 18, max_age: 65),
+                 role: rand(0..1),
+                 gender: rand(0..2),
+                 status: rand(0..1),
+                 district_id: districts.sample,
+                 address: Faker::Address.street_address,
+                 phone: Faker::PhoneNumber.subscriber_number(length: 11),
+                 avatar: Faker::LoremFlickr.image
+               })
 end
-
-db_resources = User.pluck(:id)
-missing_resources = reject_skipping_resources(user_attributes, db_resources, 'email')
-missing_resources&.count&.times { |time| User.create(missing_resources[time]) }

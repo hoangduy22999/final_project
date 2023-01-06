@@ -8,7 +8,7 @@ module SeedPreLoad
   end
 
   def print_log(message)
-    Ibrain::Logger.info("-------LOGGER: #{message}-------")
+    Rails.logger.info("-------LOGGER: #{message}-------")
   end
 
   def load_seed(filename, prefix = Rails.env)

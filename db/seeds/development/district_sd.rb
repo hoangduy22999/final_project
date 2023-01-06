@@ -4,8 +4,8 @@ debug_print __FILE__
 
 print_log('INSERT DISTRICT AND CITY')
 
-city_json = File.read('./../db/json/tinh_tp.json')
-district_json = File.read('./../db/json/quan_huyen.json')
+city_json = File.read(Rails.root.join('db/json/tinh_tp.json'))
+district_json = File.read(Rails.root.join('db/json/quan_huyen.json'))
 city_data = JSON.parse(city_json).map(&:last)
 district_data = JSON.parse(district_json).map(&:last)
 
@@ -16,4 +16,7 @@ attributes = city_data.map do |city|
   end
   city.slice!('code', 'type').merge(districts_attributes: districts)
 end
+
 db_resources = City.pluck(:name)
+missing_resources = reject_skipping_resources(attributes, db_resources, 'name')
+missing_resources&.count&.times { |time| City.create(missing_resources[time]) }

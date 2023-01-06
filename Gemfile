@@ -64,6 +64,8 @@ gem 'ridgepole'
 gem 'rubocop', '~> 1.37'
 
 gem 'carrierwave'
+gem 'date_validator'
 gem 'devise', '~> 4.8'
+gem 'faker'
 gem 'ransack'
 gem 'will_paginate'

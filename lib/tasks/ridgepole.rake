@@ -15,6 +15,11 @@ namespace :ridgepole do
     require path
   end
 
+  desc 'create model'
+  task :model, [:model] do |_t, args|
+    system "bundle exec rails g model #{args[:model]} --skip-migration"
+  end
+
   private
 
   def db_dir
