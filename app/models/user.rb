@@ -17,7 +17,7 @@ class User < ApplicationRecord
   # relationships
   belongs_to :district
   has_many :user_departments, dependent: :destroy
-  has_many :department, through: :user_departments
+  has_many :departments, through: :user_departments
 
   # nested attributes
   accepts_nested_attributes_for :user_departments, allow_destroy: true
@@ -38,4 +38,10 @@ class User < ApplicationRecord
     user: 0,
     admin: 1
   }, _prefix: true
+
+  # function
+  def age
+    now = Time.zone.now
+    ((now - (birthday&.to_time || now)) / 1.year.seconds).floor
+  end
 end

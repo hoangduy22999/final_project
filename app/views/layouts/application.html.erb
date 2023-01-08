@@ -63,3 +63,26 @@
     <%= toastr_flash %>
   </body>
 </html>
+
+
+<script>
+  var collection = document.getElementsByClassName("collapse-item");
+  var searchText = "<%= page_header %>";
+  // document.getElementById("nav-<%= controller.controller_name %>").classList.add("show");
+  for(i = 0; i < collection.length; i++) {
+    element = collection[i]
+    if(element.textContent == searchText) {
+      element.classList.add("active");
+      getParentNode(element, 2).classList.add("show");
+      break;
+    };
+  }
+
+  function getParentNode(element, level = 1) { 
+    while (level-- > 0) {
+      element = element.parentNode;
+      if (!element) return null;
+    }
+    return element;
+  }
+</script>

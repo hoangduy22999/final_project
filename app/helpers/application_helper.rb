@@ -22,4 +22,8 @@ module ApplicationHelper
     action = controller.action_name
     "#{action.eql?('index') ? 'List' : action} #{controller.controller_name}".titleize
   end
+
+  def current_department(user)
+    user.user_departments.order(start_date: :desc).first&.department&.name
+  end
 end

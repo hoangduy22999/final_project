@@ -4,7 +4,8 @@ class UserController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
-    @users = User.includes(:department, district: :city).all
+    @users = User.includes(:departments, district: :city).ransack(params[:where]).result.paginate(page: params[:page],
+                                                                                                  per_page: 30)
   end
 
   def show; end
@@ -41,10 +42,10 @@ class UserController < ApplicationController
   end
 
   def destroy
-    @controller.destroy
+    @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to user_index_path, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -52,7 +53,7 @@ class UserController < ApplicationController
   private
 
   def set_user
-    @user = User.find(id: params[:id])
+    @user = User.find(params[:id])
   end
 
   def user_params

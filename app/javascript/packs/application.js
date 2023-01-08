@@ -10,15 +10,12 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "../js/sb-admin-2"
 import "../js/sb-admin-2.min"
-// import "../js/demo/chart-area-demo"
-// import "../js/demo/chart-bar-demo"
-// import "../js/demo/chart-pie-demo"
-// import "../js/demo/datatables-demo"
 import "../vendor/chart.js/Chart.min"
 import "../vendor/jquery-easing/jquery.easing.min"
 import "../vendor/bootstrap/js/bootstrap.bundle.min"
 import "../vendor/jquery/jquery.min"
 import "../stylesheets/application"
+import "@fortawesome/fontawesome-free/css/all"
 
 Rails.start()
 Turbolinks.start()
