@@ -44,4 +44,7 @@ class User < ApplicationRecord
     now = Time.zone.now
     ((now - (birthday&.to_time || now)) / 1.year.seconds).floor
   end
+
+  # ransacker
+  ransacker :status, formatter: proc { |key| statuses[key] }
 end

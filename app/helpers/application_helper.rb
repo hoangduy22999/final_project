@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include UserHelper
+
   def toastr_flash
     flash.each_with_object([]) do |(type, message), flash_messages|
       type = 'success' if type == 'notice'
@@ -21,9 +23,5 @@ module ApplicationHelper
   def page_header
     action = controller.action_name
     "#{action.eql?('index') ? 'List' : action} #{controller.controller_name}".titleize
-  end
-
-  def current_department(user)
-    user.user_departments.order(start_date: :desc).first&.department&.name
   end
 end

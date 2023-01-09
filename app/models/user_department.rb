@@ -18,6 +18,9 @@ class UserDepartment < ApplicationRecord
     member: 2
   }, _prefix: true
 
+  # ransacker
+  ransacker :role, formatter: proc { |key| roles[key] }
+
   private
 
   def set_startdate
