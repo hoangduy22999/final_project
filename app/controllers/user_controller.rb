@@ -4,8 +4,8 @@ class UserController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
-    @users = User.includes(:departments).ransack(params[:where]).result.paginate(page: params[:page],
-                                                                                 per_page: 30)
+    @users = User.includes(:departments, district: :city).ransack(params[:where]).result
+                 .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE)
   end
 
   def show; end
@@ -57,7 +57,7 @@ class UserController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status, :district_id,
-                                 :address, :phone, :avatar)
+    params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status,
+                                 :district_id, :address, :phone, :avatar)
   end
 end
