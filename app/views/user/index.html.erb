@@ -1,59 +1,55 @@
 <!-- DataTales Example -->
-<div class="card shadow mb-4">
-    <div class="card-body">
-      <form action="user" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
-        <div class="input-group">
-          <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
-          <%= select_tag "where[status_eq]",  options_for_select(status_option, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-          <%= select_tag "where[departments_name_eq]",  options_for_select(department_option, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">
-              <i class="fas fa-search fa-sm"></i>
-            </button>
-          </div>
-        </div>
-      </form>
-      <div class="table-responsive mt-3">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Position</th>
-                    <th>Department</th>
-                    <th>Age</th>
-                    <th>Address</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-              <% @users.each.with_index(1) do |user, index| %>
-                <tr>
-                  <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
-                  <td><%= full_name(user) %></td>
-                  <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
-                  <td><%= user.user_departments.last&.role %></td>
-                  <td><%= user.departments.last&.name %></td>
-                  <td><%= user.age %></td>
-                  <td><%= full_address(user) %></td>
-                  <td><%= user.user_departments.last&.start_date&.strftime("%F") %></td>
-                  <td>$320,800</td>
-                  <td>
-                    <div class="text-center">
-                      <a href="user/<%= user.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-                      <a href="user/<%= user.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
-                        <i class="fa-solid fa-trash text-danger"></i>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-        </table>
-        <%= will_paginate @users %>
-      </div>
+<form action="user" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+  <div class="input-group">
+    <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
+    <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+    <%= select_tag "where[departments_name_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="submit">
+        <i class="fas fa-search fa-sm"></i>
+      </button>
     </div>
+  </div>
+</form>
+<div class="table-responsive mt-3">
+  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Position</th>
+              <th>Department</th>
+              <th>Age</th>
+              <th>Address</th>
+              <th>Start date</th>
+              <th>Salary</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% @users.each.with_index(1) do |user, index| %>
+          <tr>
+            <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
+            <td><%= full_name(user) %></td>
+            <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
+            <td><%= user.user_departments.last&.role %></td>
+            <td><%= user.departments.last&.name %></td>
+            <td><%= user.age %></td>
+            <td><%= full_address(user) %></td>
+            <td><%= user.user_departments.last&.start_date&.strftime("%F") %></td>
+            <td>$320,800</td>
+            <td>
+              <div class="text-center">
+                <a href="user/<%= user.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+                <a href="user/<%= user.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
+                  <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+  </table>
+  <%= will_paginate @users %>
 </div>

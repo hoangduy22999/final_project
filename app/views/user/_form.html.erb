@@ -1,75 +1,53 @@
 <form class="form-horizontal">
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">First Name</label>
-        <div class="col-sm-11">
-          <input type="text" class="form-control">
-        </div>
-      </div>
+  <div class="row d-flex align-items-center mb-4">
+    <label class="control-label col-sm-1">First Name:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control">
     </div>
 
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">Last Name</label>
-        <div class="col-sm-11">
-          <input type="text" class="form-control">
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">Phone</label>
-        <div class="col-sm-11">
-          <input type="text" class="form-control">
-        </div>
-      </div>
+    <label class="control-label col-sm-1">Last Name:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control">
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">Email</label>
-        <div class="col-sm-11">
-          <input type="text" class="form-control">
-        </div>
-      </div>
+  <div class="row d-flex align-items-center mb-4">
+    <label class="control-label col-sm-1">Phone:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control">
+    </div>
+
+    <label class="control-label col-sm-1">Email:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control">
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">City</label>
-        <div class="col-sm-11">
-          <%= select_tag("", options_for_select(city_option), class: "form-control")%>
-        </div>
-      </div>
+  <div class="row d-flex align-items-center mb-4">
+    <label class="control-label col-sm-1">Gender:</label>
+    <div class="col-sm-5">
+      <%= select_tag "", options_for_select(gender_options), class: "form-control" %>
     </div>
 
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">District</label>
-        <div class="col-sm-11">
-          <select type="select" class="form-control"></select>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="control-label col-sm-4">Address</label>
-        <div class="col-sm-11">
-          <input type="text" class="form-control">
-        </div>
-      </div>
+    <label class="control-label col-sm-1">Birthday:</label>
+    <div class="col-sm-5">
+      <input type="date" class="form-control">
     </div>
   </div>
 
-  <div class="row">
+
+  <div class="row d-flex align-items-center mb-4">
+    <label class="control-label col-sm-1">Status:</label>
+    <div class="col-sm-5">
+      <%= select_tag "", options_for_select(status_options), class: "form-control" %>
+    </div>
+
+    <label class="control-label col-sm-1">Role:</label>
+    <div class="col-sm-5">
+      <%= select_tag "", options_for_select(role_options), class: "form-control" %>
+    </div>
   </div>
+
 
   <div class="row">
     <button class="btn btn-primary waves-effect waves-light ml-4" id="btn-submit">Save</button>
