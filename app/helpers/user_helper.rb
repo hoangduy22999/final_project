@@ -22,4 +22,10 @@ module UserHelper
       object << [role.titleize, role]
     end
   end
+
+  def city_option
+    City.all.each_with_object([['All City', '']]) do |city, object|
+      object << [city.name.upcase, city.id]
+    end
+  end
 end

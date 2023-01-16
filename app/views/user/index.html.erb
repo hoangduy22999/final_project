@@ -3,7 +3,7 @@
     <div class="card-body">
       <form action="user" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
         <div class="input-group">
-          <input name="where[id_or_name_eq]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name or ID" aria-label="Search" aria-describedby="basic-addon2">
+          <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
           <%= select_tag "where[status_eq]",  options_for_select(status_option, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
           <%= select_tag "where[departments_name_eq]",  options_for_select(department_option, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
           <div class="input-group-append">
