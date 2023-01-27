@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class UserController < ApplicationController
+class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
-    @users = User.includes(:departments, district: :city).ransack(params[:where]).result
+    @users = User.includes(:department, district: :city).ransack(params[:where]).result
+                 .order(created_at: :desc)
                  .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE)
   end
 
@@ -17,12 +18,15 @@ class UserController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    password = User.random_password
+    binding.pry
+    @user = User.new(user_params.merge(password: password, password_confirmation: password))
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_url(@user), notice: 'User was successfully created.' }
+        format.html { redirect_to users_url(@user), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        flash.now[:error] = @user.errors.full_messages.first
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -58,6 +62,6 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status,
-                                 :district_id, :address, :phone, :avatar)
+                                 :district_id, :address, :phone, :avatar, user_department_attributes: [:id, :department_id, :role])
   end
 end

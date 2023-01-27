@@ -2,8 +2,8 @@
 <form action="user" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
   <div class="input-group">
     <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
-    <%= select_tag "where[status_eq]",  options_for_select(status_option, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-    <%= select_tag "where[departments_name_eq]",  options_for_select(department_option, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+    <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+    <%= select_tag "where[departments_name_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
     <div class="input-group-append">
       <button class="btn btn-primary" type="submit">
         <i class="fas fa-search fa-sm"></i>
@@ -17,8 +17,9 @@
           <tr>
               <th>Id</th>
               <th>Name</th>
-              <th>Manager</th>
-              <th>Member</th>
+              <th>Leader</th>
+              <th>Sub Leader</th>
+              <th class="w-25">Member</th>
               <th>Start date</th>
               <th>Action</th>
           </tr>
@@ -28,8 +29,14 @@
           <tr>
             <td><%= (department.id > 9 ? "0000" : "00000") + department.id.to_s %></td>
             <td><%= department.name %></td>
-            <td><%= full_name(department.manager) %></td>
-            <td><%= department.users.map { |user| full_name(user) }.join(', ') %></td>
+            <td><%= full_name(department.user_departments.role_leader&.first&.user) %></td>
+            <td><%= full_name(department.user_departments.role_subleader&.first&.user) %></td>
+            <td>
+              <% department.user_departments.includes(:user).role_member.each.with_index do |ud, index| %>
+                <%= full_name(ud.user) %></br>
+              <% end %>
+            </td>
+            </td>
             <td><%=  department.created_at&.strftime("%F") %></td>
             <td>
               <div class="text-center">

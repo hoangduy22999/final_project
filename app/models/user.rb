@@ -11,16 +11,16 @@ class User < ApplicationRecord
 
   # validates
   validates :phone, length: { in: 10..13 }
-  validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
-  validates :address, :birthday, presence: true
+  # validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
+  validates :address, :birthday, :avatar, presence: true
 
   # relationships
   belongs_to :district
-  has_many :user_departments, dependent: :destroy
-  has_many :departments, through: :user_departments
+  has_one :user_department, dependent: :destroy
+  has_one :department, through: :user_department
 
   # nested attributes
-  accepts_nested_attributes_for :user_departments, allow_destroy: true
+  accepts_nested_attributes_for :user_department, allow_destroy: true
 
   # enum
   enum status: {
@@ -50,4 +50,11 @@ class User < ApplicationRecord
   ransacker :full_name do
     Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")
   end
+
+  # class method
+  class << self
+    def random_password
+      (('A'..'Z').to_a.sample(4) + ["~", "!", "@", "#", "$", "%", "^", "&", "*", "_", "-"].sample(1) + ('0'..'9').to_a.sample(2) + ('a'..'z').to_a.sample(4)).join
+    end
+  end  
 end

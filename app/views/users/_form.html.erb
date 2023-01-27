@@ -1,0 +1,91 @@
+<%= form_with(model: user, html: { class: "form-horizontal" }) do |form| %>
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "firt_name:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :first_name, class: "form-control" %>
+    </div>
+
+    <%= form.label "last_name:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :last_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "email:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :email, class: "form-control" %>
+    </div>
+
+    <%= form.label "phone:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :phone, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "gender:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :gender, gender_options, {},  { class: "form-control" } %>
+    </div>
+
+    <%= form.label "role:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :role, user_role_options, {},  { class: "form-control" }  %>
+    </div>
+  </div>
+
+    <div class="row d-flex align-items-center mb-4">
+    <%= form.label "status:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :status, status_options, {}, { class: "form-control" } %>
+    </div>
+
+    <%= form.label "birthday:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.date_field :birthday, class: "form-control" %>
+    </div>
+  </div>
+  
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "city:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :city_id, class: "form-control" %>
+    </div>
+
+    <%= form.label "district:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :district_id, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "address:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :address, class: "form-control" %>
+    </div>
+
+    <%= form.label "avatar:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.file_field :avatar, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.fields_for :user_department_attributes, {class: "form-control"} do |ff| %>
+        <%= ff.label :department, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
+        </div>
+
+        <%= ff.label :department_role, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :role, role_options, {}, { class: "form-control" } %>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+  </div>
+<% end %>
