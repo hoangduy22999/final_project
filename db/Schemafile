@@ -18,6 +18,7 @@ create_table :users do |t|
   t.string "last_sign_in_ip", limit: 255
   t.integer 'status', null: false, default: 0
   t.bigint 'district_id', null: true
+  t.bigint 'city_id', null: true
   t.string 'address', null: false
   t.string 'phone', null: false
   t.string 'avatar', null: true

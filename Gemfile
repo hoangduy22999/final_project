@@ -71,3 +71,4 @@ gem 'font-awesome-sass', '~> 6.2.1'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'will_paginate'
 gem "select2-rails"
+gem 'jsonapi-serializer'

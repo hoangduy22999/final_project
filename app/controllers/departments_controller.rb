@@ -4,4 +4,8 @@ class DepartmentsController < ApplicationController
   def index
     @departments = Department.includes(:users, :manager, user_departments: :user).all.paginate(page: params[:page])
   end
+
+  def new
+    @department = Department.new
+  end
 end

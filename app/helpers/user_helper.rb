@@ -18,7 +18,7 @@ module UserHelper
   end
 
   def role_options
-    UserDepartment.roles.keys.each_with_object([['-- Chose Role --', '']]) do |role, object|
+    UserDepartment.roles.keys.each_with_object([['-- Choose Role --', '']]) do |role, object|
       object << [role.titleize, role]
     end
   end
@@ -36,7 +36,7 @@ module UserHelper
   end
 
   def city_options
-    City.all.each_with_object([['All City', '']]) do |city, object|
+    City.all.each_with_object([['-- Choose City --', '']]) do |city, object|
       object << [city.name.titleize, city.id]
     end
   end

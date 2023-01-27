@@ -1,0 +1,40 @@
+<%= form_with(model: department, html: { class: "form-horizontal" }) do |form| %>
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "name:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :first_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.fields_for :user_department_attributes, {class: "form-control"} do |ff| %>
+        <%= ff.label "leader:", class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :user_id, department_options, {}, { class: "form-control" } %>
+        </div>
+
+        <%= ff.label :role, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :role, [["Leader", "leader"]], {}, { class: "form-control", disabled: true } %>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.fields_for :user_department_attributes, {class: "form-control"} do |ff| %>
+        <%= ff.label "sub_leader:", class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :user_id, department_options, {}, { class: "form-control" } %>
+        </div>
+
+        <%= ff.label :role, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :role, [["Sub Leader", "subleader"]], {}, { class: "form-control", disabled: true } %>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+  </div>
+<% end %>

@@ -12,10 +12,11 @@ class User < ApplicationRecord
   # validates
   validates :phone, length: { in: 10..13 }
   # validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
-  validates :address, :birthday, :avatar, presence: true
+  validates :address, :birthday, presence: true
 
   # relationships
   belongs_to :district
+  belongs_to :city
   has_one :user_department, dependent: :destroy
   has_one :department, through: :user_department
 
@@ -51,6 +52,10 @@ class User < ApplicationRecord
     Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")
   end
 
+  def avatar_url
+    avatar.try(:url)
+  end
+  
   # class method
   class << self
     def random_password

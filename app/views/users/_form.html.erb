@@ -50,12 +50,12 @@
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "city:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.text_field :city_id, class: "form-control" %>
+      <%= form.select :city_id, city_options, {}, { class: "form-control" } %>
     </div>
 
     <%= form.label "district:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.text_field :district_id, class: "form-control" %>
+      <%= form.select :district_id, [["-- Choose District --", ""], [user.district&.name, user.district&.id]], {}, { class: "form-control" } %>
     </div>
   </div>
 
@@ -67,7 +67,16 @@
 
     <%= form.label "avatar:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.file_field :avatar, class: "form-control" %>
+      <%= form.file_field :avatar, accept:'image/*', class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <div class="col-sm-7">
+    </div>
+
+    <div class="col-sm-5">
+      <%= image_tag user.avatar_url, id: 'formAvatar', style: 'width: 200px;' if user.avatar? %>
     </div>
   </div>
 
@@ -78,7 +87,7 @@
         <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
         </div>
 
-        <%= ff.label :department_role, class: "control-label col-sm-1"  %>
+        <%= ff.label :role, class: "control-label col-sm-1"  %>
         <div class="col-sm-5">
         <%= ff.select :role, role_options, {}, { class: "form-control" } %>
         </div>
@@ -89,3 +98,33 @@
     <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
   </div>
 <% end %>
+
+<script>
+  citySelect = document.getElementById("user_city_id");
+  districtSelect = document.getElementById("user_district_id");
+  user_avatar.onchange = function (){
+    console.log(this.files)
+    const [file] = this.files
+    if (file) {
+      document.getElementById("formAvatar").src = URL.createObjectURL(file)
+    }
+  }
+  citySelect.onchange = function (){
+  fetch(`http://127.0.0.1:3000/api/v1/districts.json?city_id=${citySelect.value}`)
+  .then((response) => response.json())
+  .then((data) => {
+    var districts = data['data']
+    while (districtSelect[1]) {
+    districtSelect[1].remove()
+    }
+    for(var i = 0; i < districts.length; i++) {
+      var opt = document.createElement('option');
+      var district = districts[i]['attributes']
+      opt.value = district['id'];
+      opt.innerHTML = district['name'];
+      districtSelect.appendChild(opt);
+    }
+    console.log(data['data'][0]['attributes']['name']);
+  });
+  };
+</script>
