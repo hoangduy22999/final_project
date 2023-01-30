@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'profile', to: 'users#profile'
   resources :users
   resources :departments
+  resources :time_sheets, only: [:index]
 
   namespace :api do
     namespace :v1 do

@@ -70,6 +70,7 @@
   var collection = document.getElementsByClassName("collapse-item");
   var searchText = "<%= page_header %>";
   // document.getElementById("nav-<%= controller.controller_name %>").classList.add("show");
+  console.log(document.getElementById("nav-<%= controller.controller_name %>"))
   for(i = 0; i < collection.length; i++) {
     element = collection[i]
     if(element.textContent == searchText) {

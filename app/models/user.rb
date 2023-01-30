@@ -53,7 +53,7 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    avatar.try(:url)
+    avatar&.try(:url)
   end
   
   # class method
