@@ -10,7 +10,7 @@ time_now = Date.current
 
 department_attribute = DEPARTMENTS.map do |department|
   Department.create!({
-                      name: department,
-                      manager_id: users.sample
-                    })
+                       name: department,
+                       manager_id: users.sample
+                     })
 end

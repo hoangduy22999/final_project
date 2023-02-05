@@ -19,7 +19,6 @@ class UsersController < ApplicationController
 
   def create
     password = User.random_password
-    binding.pry
     @user = User.new(user_params.merge(password: password, password_confirmation: password))
     respond_to do |format|
       if @user.save
@@ -55,8 +54,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def profile
-  end
+  def profile; end
 
   private
 
@@ -66,6 +64,6 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status, :city_id,
-                                 :district_id, :address, :phone, :avatar, user_department_attributes: [:id, :department_id, :role])
+                                 :district_id, :address, :phone, :avatar, user_department_attributes: %i[id department_id role])
   end
 end

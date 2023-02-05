@@ -19,6 +19,7 @@ class User < ApplicationRecord
   belongs_to :city
   has_one :user_department, dependent: :destroy
   has_one :department, through: :user_department
+  has_many :time_sheets, dependent: :destroy
 
   # nested attributes
   accepts_nested_attributes_for :user_department, allow_destroy: true
@@ -55,11 +56,12 @@ class User < ApplicationRecord
   def avatar_url
     avatar&.try(:url)
   end
-  
+
   # class method
   class << self
     def random_password
-      (('A'..'Z').to_a.sample(4) + ["~", "!", "@", "#", "$", "%", "^", "&", "*", "_", "-"].sample(1) + ('0'..'9').to_a.sample(2) + ('a'..'z').to_a.sample(4)).join
+      (('A'..'Z').to_a.sample(4) + ['~', '!', '@', '#', '$', '%', '^', '&', '*', '_',
+                                    '-'].sample(1) + ('0'..'9').to_a.sample(2) + ('a'..'z').to_a.sample(4)).join
     end
-  end  
+  end
 end

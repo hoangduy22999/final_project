@@ -8,7 +8,7 @@ time_now = Time.zone.now
 skip_department_ids = UserDepartment.pluck(:department_id)
 user_index = User.last&.id || 0
 
-Department.where.not(id: skip_department_ids).pluck(:id).each.with_index(1) do |department_id, index|
+Department.where.not(id: skip_department_ids).pluck(:id).each.with_index(1) do |department_id, _index|
   user_count = UserDepartment.where(department_id: department_id).count
   (0..(10 - user_count)).to_a.map do |user|
     user_index += 1

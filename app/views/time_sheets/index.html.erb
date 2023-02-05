@@ -1,40 +1,79 @@
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col" style="width: 14.28%">Monday</th>
-      <th scope="col" style="width: 14.28%">Tuesday</th>
-      <th scope="col" style="width: 14.28%">Wednesday</th>
-      <th scope="col" style="width: 14.28%">Thursday</th>
-      <th scope="col" style="width: 14.28%">Friday</th>
-      <th scope="col" style="width: 14.28%">Saturday</th>
-      <th scope="col" style="width: 14.28%">Sunday</th>
-    </tr>
-  </thead>
-  <tbody tyle="height: 800px">
-    <tr style="height: 20%">
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-    <tr>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-    <tr>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-2">
+    <form action="time_sheets" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+      <div class="input-group">
+        <%= select_month(current_select_date) %>
+        <%= select_year(current_select_date, start_year: 2014 , end_year: Time.zone.now.year)  %>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <%= form_with(model: @time_sheets, html: { class: "form-horizontal" }) do |form| %>
+      <%= form.hidden_field :keeping_type, value: "check_in"  %>
+      <div class="row">
+        <%= form.submit "CheckIn", class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form_with(model: @time_sheets, html: { class: "form-horizontal" }) do |form| %>
+      <%= form.hidden_field :keeping_type, value: "check_out"  %>
+      <div class="row">
+        <%= form.submit "CheckOut", class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="row mt-3" style="height: 50px">
+  <div class="col border">
+    Sunday
+  </div>
+  <div class="col border">
+    Monday
+  </div>
+  <div class="col border">
+    Tuesday
+  </div>
+  <div class="col border">
+    Wednesday
+  </div>
+  <div class="col border">
+    Thursday
+  </div>
+  <div class="col border">
+    Friday
+  </div>
+  <div class="col border">
+    Saturday
+  </div>
+</div>
+
+<% (@result.count / 7).times do |row| %>
+  <div class="row"  style="height: 120px">
+    <% 7.times do |day| %>
+      <div class="col border">
+        <% this_day =  @result[row * 7 + day]%>
+        <% if this_day.class == Hash %>
+          <span><%= this_day[:day] %></span>
+        <% else %>
+          <%= this_day.first[:day] %>
+          </br>
+          <% this_day.each do |check| %>
+            <% if check[:type].eql?("check_in") %>
+              <span class="btn-success mr-1 w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+            <% else %>
+              <span class="btn-danger w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
