@@ -16,8 +16,8 @@ class TimeSheet < ApplicationRecord
   private
 
   def check_today
-    return unless TimeSheet.find_by(keeping_type: keeping_type, keeping_time: keeping_time.all_day)
+    return unless TimeSheet.find_by(user_id: user_id, keeping_type: keeping_type, keeping_time: keeping_time.all_day)
 
-    errors.add(:check, 'Has not been checked')
+    errors.add(:base, "You has been #{keeping_type.titleize} today")
   end
 end

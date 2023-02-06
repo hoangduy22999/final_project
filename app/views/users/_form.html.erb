@@ -76,7 +76,7 @@
     </div>
 
     <div class="col-sm-5" id="avatarDiv">
-      <%= image_tag user.avatar_url, id: 'formAvatar', style: 'width: 200px;' if user.avatar? %>
+      <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
     </div>
   </div>
 

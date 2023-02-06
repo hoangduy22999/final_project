@@ -5,9 +5,9 @@ debug_print __FILE__
 print_log('INSERT TIMESHEET')
 
 now = Time.zone.now
-skip_users = TimeSheet.where(keeping_time: ((now - 60.days)..now)).pluck(:user_id)
+skip_users = TimeSheet.where(keeping_time: ((now - 60.days)..now)).pluck(:user_id).uniq
 
-attributes = User.where.not(id: skip_users).pluck(:id).each do |user_id|
+User.where.not(id: skip_users).pluck(:id).each do |user_id|
   60.times do |time|
     tmp_day = now - time.days
     checkin_time = tmp_day.change(hour: 8)

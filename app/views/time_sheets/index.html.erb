@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-2">
-    <form action="time_sheets" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+    <form action="time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
         <%= select_month(current_select_date) %>
         <%= select_year(current_select_date, start_year: 2014 , end_year: Time.zone.now.year)  %>
@@ -14,7 +14,7 @@
   </div>
 
   <div>
-    <%= form_with(model: @time_sheets, html: { class: "form-horizontal" }) do |form| %>
+    <%= form_with(model: @time_sheets, html: { class: "form-horizontal mr-2" }) do |form| %>
       <%= form.hidden_field :keeping_type, value: "check_in"  %>
       <div class="row">
         <%= form.submit "CheckIn", class: "btn btn-primary waves-effect waves-light ml-4" %>
