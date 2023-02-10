@@ -47,6 +47,22 @@ class User < ApplicationRecord
     ((now - (birthday&.to_time || now)) / 1.year.seconds).floor
   end
 
+  def late_time(day)
+    check_in = time_sheets.keeping_type_check_in.find_by(keeping_time: day)
+    check_out = time_sheets.keeping_type_check_out.find_by(keeping_time: day)
+
+    return '00:00' unless check_in && check_out
+
+    check_in_time =  check_in.keeping_time.hour >= CHECK_IN_AFTERNOON_TIME ? CHECK_IN_AFTERNOON_TIME : CHECK_IN_MORNING_TIME
+    check_in_late =  ((check_in.keeping_time - check_in.keeping_time.change(hour: check_in_time)) /  60).to_i
+
+    check_out_time = check_out.keeping_time.hour >= CHECK_OUT_AFTERNOON_TIME ? CHECK_OUT_AFTERNOON_TIME : CHECK_OUT_MORNING_TIME
+    check_out_late = ((check_out.keeping_time - check_out.keeping_time.change(hour: check_out_time)) / 60).to_i
+
+    late_time = (check_in_late.positive? ? check_in_late : 0) + (check_out_late.positive? ? 0 : check_out_late)
+    Time.new.change(hour: late_time / 60, min: late_time % 60).strftime('%H:%M')
+  end
+
   # ransacker
   ransacker :status, formatter: proc { |key| statuses[key] }
   ransacker :full_name do

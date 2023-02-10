@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-2">
+    <form action="time_sheets_admin" class="form-horizontal" method="get">
+      <div class="input-group">
+        <%= select_month(current_select_date) %>
+        <%= select_year(current_select_date, start_year: 2014 , end_year: Time.zone.now.year)  %>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="table-responsive mt-3">
+  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+              <th>User</th>
+              <th>Department</th>
+              <th>Role</th>
+              <th>Date</th>
+              <th>Keeping Type</th>
+              <th>Keeping Time</th>
+              <th>Time Late</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% @time_sheets.each.with_index(1) do |time_sheet, index| %>
+          <tr>
+            <td><%= full_name(time_sheet.user) %></td>
+            <td><%= time_sheet.user.department.name %></td>
+            <td><%= time_sheet.user.user_department.role %></td>
+            <td><%= time_sheet.keeping_time&.strftime("%F") %></td>
+            <td><%= time_sheet.keeping_type %></td>
+            <td><%= time_sheet.keeping_time&.strftime("%H:%M") %></td>
+            <td><%= time_sheet.keeping_time %></td>
+          </tr>
+        <% end %>
+      </tbody>
+  </table>
+  <%= will_paginate @time_sheets %>
+</div>

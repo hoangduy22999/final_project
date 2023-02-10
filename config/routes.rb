@@ -3,8 +3,9 @@
 Rails.application.routes.draw do
   devise_for :users, skip: [:registrations]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root to: 'static_page#home'
+  root to: 'time_sheets#index'
   get 'profile', to: 'users#profile'
+  get 'time_sheets_admin', to: 'time_sheets#admin_index'
   resources :users
   resources :departments
   resources :time_sheets, only: %i[index create]

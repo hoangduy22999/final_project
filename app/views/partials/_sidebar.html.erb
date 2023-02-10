@@ -1,26 +1,16 @@
           <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
               <!-- Sidebar - Brand -->
-              <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+              <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../">
                   <div class="sidebar-brand-icon rotate-n-15">
                       <i class="fas fa-laugh-wink"></i>
                   </div>
                   <div class="sidebar-brand-text mx-3">Final Project</div>
               </a>
 
-              <!-- Divider -->
-              <hr class="sidebar-divider my-0">
-
-              <!-- Nav Item - Dashboard -->
-              <li class="nav-item active">
-                  <a class="nav-link" href="../">
-                      <i class="fas fa-fw fa-tachometer-alt"></i>
-                      <span>Dashboard</span></a>
-              </li>
-
+            <% if current_user.role_admin? %>
               <!-- Divider -->
               <hr class="sidebar-divider">
-
               <!-- Heading -->
               <div class="sidebar-heading">
                   ADMIN
@@ -56,6 +46,22 @@
                       </div>
                   </div>
               </li>
+              <!-- Nav Item - Utilities Collapse Menu -->
+              <li class="nav-item">
+                  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKeeping"
+                      aria-expanded="true" aria-controls="collapseKeeping">
+                      <i class="fa-solid fa-timeline"></i>
+                      <span>Time Keeping</span>
+                  </a>
+                  <div id="collapseKeeping" class="collapse" aria-labelledby="headingUtilities"
+                      data-parent="#accordionSidebar">
+                      <div class="bg-white py-2 collapse-inner rounded">
+                          <a class="collapse-item" href="../time_sheets_admin">List Time Keeping</a>
+                          <a class="collapse-item" href="../departments/new">New Time Keeping</a>
+                      </div>
+                  </div>
+              </li>
+              <% end %>
 
               <!-- Divider -->
               <hr class="sidebar-divider">

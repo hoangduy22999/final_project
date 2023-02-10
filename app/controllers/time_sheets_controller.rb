@@ -11,7 +11,8 @@ class TimeSheetsController < ApplicationController
     time_sheets = TimeSheet.where(keeping_time: time.all_month,
                                   user_id: params[:user_id] || current_user.id).order(:keeping_time)
     time_sheets = time_sheets.map do |ts|
-                    { day: ts.keeping_time.day, time: ts.keeping_time.strftime('%H:%M'), type: ts.keeping_type }
+                    { day: ts.keeping_time.day, time: ts.keeping_time.strftime('%H:%M'), type: ts.keeping_type,
+                      time_late: current_user.late_time(ts.keeping_time.all_day) }
                   end.group_by { |a| a[:day] }
     start_date = beginning_month.beginning_of_week
     end_date = end_month.end_of_week
@@ -27,6 +28,12 @@ class TimeSheetsController < ApplicationController
       start_date += 1.days
     end
     @time_sheets = TimeSheet.new
+  end
+
+  def admin_index
+    param_date = params[:date]
+    time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
+    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_day).paginate(page: params[:page]).per_page(10)
   end
 
   def create
