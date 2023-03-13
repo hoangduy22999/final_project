@@ -31,34 +31,41 @@
     <% end %>
   </div>
 </div>
-<div class="row mt-3" style="height: 30px">
-  <% Date::DAYNAMES.each do |day_name| %>
-    <div class="col border text-center font-weight-bold">
-      <%= day_name %>
-    </div>
-  <% end %>
-</div>
 
-<% (@result.count / 7).times do |row| %>
-  <div class="row"  style="height: 120px">
-    <% 7.times do |day| %>
-      <div class="col border">
-        <% this_day =  @result[row * 7 + day]%>
-        <% if this_day.class == Hash %>
-          <span class="font-weight-bold h6" ><%= this_day[:day] if this_day[:current_month] %></span>
-        <% else %>
-          <span class="font-weight-bold h6"><%= this_day.first[:day] %><span>
-          </br>
-          <% this_day.each do |check| %>
-            <% if check[:type].eql?("check_in") %>
-              <span class="btn-success mr-1 w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+<div class="row">
+  <div class="col-9">
+    <div class="row mt-3" style="height: 30px">
+      <% Date::DAYNAMES.each do |day_name| %>
+        <div class="col border text-center font-weight-bold">
+          <%= day_name %>
+        </div>
+      <% end %>
+    </div>
+
+    <% (@result.count / 7).times do |row| %>
+      <div class="row"  style="height: 120px">
+        <% 7.times do |day| %>
+          <div class="col border">
+            <% this_day =  @result[row * 7 + day]%>
+            <% if this_day.class == Hash %>
+              <span class="font-weight-bold h6" ><%= this_day[:day] if this_day[:current_month] %></span>
             <% else %>
-              <span class="btn-danger w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+              <span class="font-weight-bold h6"><%= this_day.first[:day] %><span>
+              </br>
+              <% this_day.each do |check| %>
+                <% if check[:type].eql?("check_in") %>
+                  <span class="btn-success mr-1 w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+                <% else %>
+                  <span class="btn-danger w-25 rounded-pill text-center" style="display: inline-block;"><%= check[:time] %></span>
+                <% end %>
+              <% end %>
+              <span class="btn-warning w-25 rounded-pill text-center" style="display: inline-block;"><%= this_day.first[:time_late] %></span>
             <% end %>
-          <% end %>
-          <span class="btn-warning w-25 rounded-pill text-center" style="display: inline-block;"><%= this_day.first[:time_late] %></span>
+          </div>
         <% end %>
       </div>
     <% end %>
   </div>
-<% end %>
+  <div class="col-3">
+  </div>
+</div>
