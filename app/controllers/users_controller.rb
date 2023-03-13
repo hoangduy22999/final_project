@@ -56,6 +56,8 @@ class UsersController < ApplicationController
 
   def profile; end
 
+  def update_profile; end
+
   private
 
   def set_user

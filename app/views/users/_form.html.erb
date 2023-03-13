@@ -28,7 +28,7 @@
     <div class="col-sm-5">
       <%= form.select :gender, gender_options, {},  { class: "form-control" } %>
     </div>
-    <% if admin_page %>
+    <% if admin_page || false %>
       <%= form.label "role:", class: "control-label col-sm-1" %>
       <div class="col-sm-5">
         <%= form.select :role, user_role_options, {},  { class: "form-control" }  %>
@@ -80,7 +80,7 @@
       <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
     </div>
   </div>
-  <% if admin_page %>
+  <% if admin_page || false %>
     <div class="row d-flex align-items-center mb-4">
       <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
           <%= ff.label :department, class: "control-label col-sm-1"  %>

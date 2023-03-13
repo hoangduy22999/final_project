@@ -11,7 +11,7 @@ class TimeSheetsController < ApplicationController
     time_sheets = TimeSheet.where(keeping_time: time.all_month,
                                   user_id: params[:user_id] || current_user.id).order(:keeping_time)
     time_sheets = time_sheets.map do |ts|
-                    { day: ts.keeping_time.day, time: ts.keeping_time.strftime('%H:%M'), type: ts.keeping_type,
+                    { day: ts.keeping_time.day, time: ts.keeping_time.localtime.strftime('%H:%M'), type: ts.keeping_type,
                       time_late: current_user.late_time(ts.keeping_time.all_day) }
                   end.group_by { |a| a[:day] }
     start_date = beginning_month.beginning_of_week
@@ -37,7 +37,7 @@ class TimeSheetsController < ApplicationController
   end
 
   def create
-    time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.new.localtime))
+    time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.now))
     if time_sheet.save
       redirect_to time_sheets_path, notice: "#{time_sheet.keeping_type} has been successfully"
     else

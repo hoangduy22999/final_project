@@ -60,7 +60,7 @@ class User < ApplicationRecord
     check_out_late = ((check_out.keeping_time - check_out.keeping_time.change(hour: check_out_time)) / 60).to_i
 
     late_time = (check_in_late.positive? ? check_in_late : 0) + (check_out_late.positive? ? 0 : check_out_late)
-    Time.new.change(hour: late_time / 60, min: late_time % 60).strftime('%H:%M')
+    Time.new.change(hour: late_time / 60, min: late_time % 60).strftime('%H:%M') || '00:00'
   end
 
   # ransacker

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root to: 'time_sheets#index'
   get 'profile', to: 'users#profile'
   get 'time_sheets_admin', to: 'time_sheets#admin_index'
+  get '*path', to: redirect('/')
   resources :users
   resources :departments
   resources :time_sheets, only: %i[index create]
