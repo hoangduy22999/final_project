@@ -18,6 +18,7 @@ import "../vendor/bootstrap/js/bootstrap.bundle.min"
 import "../vendor/jquery/jquery.min"
 import "../stylesheets/application"
 import "@fortawesome/fontawesome-free/css/all"
+import 'controllers'
 
 Rails.start()
 Turbolinks.start()

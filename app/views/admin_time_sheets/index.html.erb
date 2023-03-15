@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-2">
-    <form action="time_sheets_admin" class="form-horizontal" method="get">
+    <form action="admin_time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
-        <%= select_month(current_select_date) %>
-        <%= select_year(current_select_date, start_year: 2014 , end_year: Time.zone.now.year)  %>
+        <%= select_month(current_select_date, { use_short_month: true }, class: "mr-2 form-control") %>
+        <%= select_year(current_select_date, { start_year: 2014 , end_year: Time.zone.now.year }, {class: "form-control mr-2"})  %>
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
@@ -37,6 +37,14 @@
             <td><%= time_sheet.keeping_type %></td>
             <td><%= time_sheet.keeping_time&.strftime("%H:%M") %></td>
             <td><%= time_sheet.keeping_time %></td>
+            <td>
+              <div class="text-center">
+                <a href="time_sheets/<%= time_sheet.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+                <a href="time_sheets/<%= time_sheet.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this time sheet?" data-method="delete">
+                  <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+              </div>
+            </td>
           </tr>
         <% end %>
       </tbody>

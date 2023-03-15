@@ -30,13 +30,8 @@ class TimeSheetsController < ApplicationController
     @time_sheets = TimeSheet.new
   end
 
-  def admin_index
-    param_date = params[:date]
-    time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
-    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_day).paginate(page: params[:page]).per_page(10)
-  end
-
   def create
+    binding.pry
     time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.now))
     if time_sheet.save
       redirect_to time_sheets_path, notice: "#{time_sheet.keeping_type} has been successfully"
