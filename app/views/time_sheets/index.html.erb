@@ -2,8 +2,8 @@
   <div class="col-2">
     <form action="time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
-        <%= select_month(current_select_date) %>
-        <%= select_year(current_select_date, start_year: 2014 , end_year: Time.zone.now.year)  %>
+        <%= select_month(current_select_date, { use_short_month: true }, class: "mr-2 form-control") %>
+        <%= select_year(current_select_date, { start_year: 2014 , end_year: Time.zone.now.year }, {class: "form-control mr-2"})  %>
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
