@@ -1,12 +1,13 @@
 <%= form_with(model: time_sheet, html: { class: "form-horizontal" }) do |form| %>
+  <%= form.hidden_field :admin_action, :value => true %> 
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "Date:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.date_field :keeping_date, class: "form-control" %>
+      <%= form.date_field :keeping_date, value: (form.object.keeping_time.present? ? form.object.keeping_time.to_date : nil ), class: "form-control" %>
     </div>
     <%= form.label "Time:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.time_field :keeping_time, class: "form-control" %>
+      <%= form.time_field :keeping_time, ignore_date: true, class: "form-control" %>
     </div>
   </div>
   
@@ -17,9 +18,9 @@
     </div>
     <%= form.label "User:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-        <input name ="time_sheet[user_id]" list="brow" class="form-control">
+        <input name ="time_sheet[user]" list="brow" class="form-control" value="<%= selected_user(form.object.user_id) %>">
         <datalist id="brow">
-          <% User.status_active.each do |user|%>
+          <% User.includes(:department).status_active.each do |user|%>
             <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">
           <% end %>
         </datalist>

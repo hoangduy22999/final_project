@@ -6,7 +6,7 @@ class AdminTimeSheetsController < ApplicationController
   def index
     param_date = params[:date]
     time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
-    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_day).paginate(page: params[:page]).per_page(10)
+    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_month).paginate(page: params[:page]).per_page(10)
   end
 
   def create
@@ -16,7 +16,7 @@ class AdminTimeSheetsController < ApplicationController
     @time_sheet.destroy
 
     respond_to do |format|
-      format.html { redirect_to time_sheets_admin_path(year: params[:year], month: params[:month]), notice: "Time Sheet was successfully destroyed." }
+      format.html { redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), notice: "Time Sheet was successfully destroyed." }
       format.json { head :no_content }
     end
   end

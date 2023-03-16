@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
   def current_time
     Time.zone.now
   end
+
+  def beginning_month
+    current_time.beginning_of_month
+  end
 end

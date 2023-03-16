@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TimeSheetsController < ApplicationController
+  before_action :set_time_sheet, only: [:update]
+
   def index
     param_date = params[:date]
     time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
@@ -31,12 +33,28 @@ class TimeSheetsController < ApplicationController
   end
 
   def create
-    binding.pry
-    time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.now))
-    if time_sheet.save
-      redirect_to time_sheets_path, notice: "#{time_sheet.keeping_type} has been successfully"
+    if params["time_sheet"]["admin_action"].eql?("true")
+      time_sheet = TimeSheet.new(time_sheet_admin_params)
+      if time_sheet.save
+        redirect_to admin_time_sheets_path, notice: "#{time_sheet.keeping_type} has been create successfully"
+      else
+        redirect_to new_admin_time_sheet_path, alert: time_sheet.errors.full_messages.first
+      end
     else
-      redirect_to time_sheets_path, alert: time_sheet.errors.full_messages.first
+      time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.now))
+      if time_sheet.save
+        redirect_to time_sheets_path, notice: "#{time_sheet.keeping_type} has been create successfully"
+      else
+        redirect_to time_sheets_path, alert: time_sheet.errors.full_messages.first
+      end
+    end
+  end
+
+  def update
+    if @time_sheet.update(time_sheet_admin_params)
+      redirect_to admin_time_sheet_path(@time_sheet), notice: "#{@time_sheet.keeping_type} has been update successfully"
+    else
+      redirect_to admin_time_sheet_path(@time_sheet.reload), alert: @time_sheet.errors.full_messages.first
     end
   end
 
@@ -44,5 +62,18 @@ class TimeSheetsController < ApplicationController
 
   def time_sheet_params
     params.require(:time_sheet).permit(:keeping_type)
+  end
+
+  def time_sheet_admin_params
+    attributes = params.require(:time_sheet).permit(:keeping_date, :keeping_time, :user, :keeping_type)
+    time = ""
+    time = Time.parse(attributes[:keeping_date]).in_time_zone + Time.parse(attributes[:keeping_time]).seconds_since_midnight.seconds unless attributes[:keeping_date].blank? || attributes[:keeping_time].blank?
+    user_name = attributes[:user].split("-").first&.strip
+    user_id = User.ransack(full_name_eq: user_name).result.first&.id
+    { keeping_type: attributes[:keeping_type], user_id:  user_id, keeping_time: time}
+  end
+
+  def set_time_sheet
+    @time_sheet = TimeSheet.find_by(id: params[:id])
   end
 end
