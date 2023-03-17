@@ -22,11 +22,26 @@ class TimeSheet < ApplicationRecord
   # function
   def time_late
     if keeping_type == 'check_in'
-      check_in_time =  keeping_time.hour >= CHECK_IN_AFTERNOON_TIME ? CHECK_IN_AFTERNOON_TIME : CHECK_IN_MORNING_TIME
-      check_in_late =  ((keeping_time - keeping_time.change(hour: check_in_time)) / 60).to_i
+      binding.pry
+      return 0 if keeping_time <= keeping_time.change(hour: CHECK_IN_MORNING_TIME)
+      return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_MORNING_TIME) && keeping_time <= keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
+      if keeping_time >= keeping_time.change(hour: CHECK_IN_MORNING_TIME) && keeping_time <= keeping_time.change(hour: CHECK_OUT_MORNING_TIME)
+        return ((keeping_time - keeping_time.change(hour: CHECK_IN_MORNING_TIME)) / 60).to_i
+      end
+
+      if keeping_time >= keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
+        return ((keeping_time - keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)) / 60).to_i
+      end
     else
-      check_out_time = keeping_time.hour >= CHECK_OUT_AFTERNOON_TIME ? CHECK_OUT_AFTERNOON_TIME : CHECK_OUT_MORNING_TIME
-      check_out_late = ((keeping_time - keeping_time.change(hour: check_out_time)) / 60).to_i
+      return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME)
+      return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_MORNING_TIME) && keeping_time < keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
+      if keeping_time < keeping_time.change(hour: CHECK_OUT_MORNING_TIME)
+        return ((keeping_time.change(hour: CHECK_OUT_MORNING_TIME) - keeping_time) / 60).to_i
+      end
+
+      if keeping_time > keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
+        return ((keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)- keeping_time) / 60).to_i
+      end
     end
   end
 

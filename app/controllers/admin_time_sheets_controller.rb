@@ -6,7 +6,7 @@ class AdminTimeSheetsController < ApplicationController
   def index
     param_date = params[:date]
     time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
-    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_month).paginate(page: params[:page]).per_page(10)
+    @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_month).ransack(params[:where]).result.paginate(page: params[:page]).per_page(10)
   end
 
   def create

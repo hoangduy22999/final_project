@@ -1,9 +1,11 @@
 <div class="row">
-  <div class="col-2">
+  <div class="col-6">
     <form action="admin_time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
         <%= select_month(current_select_date, { use_short_month: true }, class: "mr-2 form-control") %>
         <%= select_year(current_select_date, { start_year: 2014 , end_year: Time.zone.now.year }, {class: "form-control mr-2"})  %>
+        <input name="where[user_full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="User name" aria-label="Search" aria-describedby="basic-addon2" 
+        value="<%= params[:where][:user_full_name_cont] if params[:where].present? %>">
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
@@ -31,12 +33,12 @@
         <% @time_sheets.each.with_index(1) do |time_sheet, index| %>
           <tr>
             <td><%= full_name(time_sheet.user) %></td>
-            <td><%= time_sheet.user.department.name %></td>
-            <td><%= time_sheet.user.user_department.role %></td>
+            <td><%= time_sheet.user.department.name&.humanize %></td>
+            <td><%= time_sheet.user.user_department.role&.humanize  %></td>
             <td><%= time_sheet.keeping_time&.strftime("%F") %></td>
-            <td><%= time_sheet.keeping_type %></td>
+            <td><%= time_sheet&.keeping_type&.humanize %></td>
             <td><%= time_sheet.keeping_time&.strftime("%H:%M") %></td>
-            <td><%= time_sheet.time_late %></td>
+            <td><%= time_late_strftime(time_sheet.time_late) %></td>
             <td>
               <div class="text-center">
                 <a href="admin_time_sheets/<%= time_sheet.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>

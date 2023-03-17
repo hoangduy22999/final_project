@@ -14,7 +14,7 @@ class TimeSheetsController < ApplicationController
                                   user_id: params[:user_id] || current_user.id).order(:keeping_time)
     time_sheets = time_sheets.map do |ts|
                     { day: ts.keeping_time.day, time: ts.keeping_time.localtime.strftime('%H:%M'), type: ts.keeping_type,
-                      time_late: current_user.late_time(ts.keeping_time.all_day) }
+                      time_late: ts.time_late }
                   end.group_by { |a| a[:day] }
     start_date = beginning_month.beginning_of_week
     end_date = end_month.end_of_week
