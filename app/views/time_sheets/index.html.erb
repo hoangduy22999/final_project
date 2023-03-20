@@ -58,7 +58,7 @@
                 <% else %>
                   <span class="btn-danger rounded-pill text-center h5" style="display: inline-block;font-size: 18px !important;"><%= check[:time] %></span>
                 <% end %>
-                <% time_late += check[:time_late] %>
+                <% time_late += check[:time_late].to_i %>
               <% end %>
               <span class="btn-warning rounded-pill text-center h5" style="display: inline-block;font-size: 18px !important;"><%= time_late_strftime(time_late) %></span>
               <% time_late = 0 %>

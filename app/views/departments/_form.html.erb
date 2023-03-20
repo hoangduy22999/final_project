@@ -2,7 +2,7 @@
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "name:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.text_field :first_name, class: "form-control" %>
+      <%= form.text_field :name, class: "form-control" %>
     </div>
   </div>
 
@@ -10,26 +10,26 @@
     <%= form.fields_for :user_department_attributes, {class: "form-control"} do |ff| %>
         <%= ff.label "leader:", class: "control-label col-sm-1"  %>
         <div class="col-sm-5">
-        <%= ff.select :user_id, department_options, {}, { class: "form-control" } %>
-        </div>
-
-        <%= ff.label :role, class: "control-label col-sm-1"  %>
-        <div class="col-sm-5">
-        <%= ff.select :role, [["Leader", "leader"]], {}, { class: "form-control", disabled: true } %>
+          <%= ff.hidden_field :role, :value => 'leader' %>
+          <%= ff.hidden_field :role, :value => ff.object&.user_id %>
+          <input id="sub_leader_input" name="department[user_department_attributes][user]" list="brow" class="form-control" value="<%= selected_user(ff.object&.user_id) %>">
+          <datalist id="brow">
+            <% User.includes(:department).status_active.each do |user|%>
+              <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">
+            <% end %>
+          </datalist>
         </div>
     <% end %>
-  </div>
-
-  <div class="row d-flex align-items-center mb-4">
     <%= form.fields_for :user_department_attributes, {class: "form-control"} do |ff| %>
         <%= ff.label "sub_leader:", class: "control-label col-sm-1"  %>
         <div class="col-sm-5">
-        <%= ff.select :user_id, department_options, {}, { class: "form-control" } %>
-        </div>
-
-        <%= ff.label :role, class: "control-label col-sm-1"  %>
-        <div class="col-sm-5">
-        <%= ff.select :role, [["Sub Leader", "subleader"]], {}, { class: "form-control", disabled: true } %>
+          <input name ="department[user_department_attributes][user]" list="brow" class="form-control" value="<%= selected_user(ff.object&.user_id) %>">
+          <%= ff.hidden_field :role, :value => 'sub_leader' %> 
+          <datalist id="brow">
+            <% User.includes(:department).status_active.each do |user|%>
+              <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">
+            <% end %>
+          </datalist>
         </div>
     <% end %>
   </div>
@@ -38,3 +38,4 @@
     <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
   </div>
 <% end %>
+
