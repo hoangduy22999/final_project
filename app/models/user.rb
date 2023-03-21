@@ -73,11 +73,28 @@ class User < ApplicationRecord
     avatar&.try(:url)
   end
 
+  composed_of :salary,
+    :class_name => 'Money',
+    :mapping => %w(price cents),
+    :converter => Proc.new { |value| Money.new(value) }
+
   # class method
   class << self
     def random_password
       (('A'..'Z').to_a.sample(4) + ['~', '!', '@', '#', '$', '%', '^', '&', '*', '_',
                                     '-'].sample(1) + ('0'..'9').to_a.sample(2) + ('a'..'z').to_a.sample(4)).join
+    end
+
+    def to_csv
+      attributes = %w{id email}
+  
+      CSV.generate(headers: true) do |csv|
+        csv << attributes
+  
+        all.find_each do |user|
+          csv << attributes.map{ |attr| user.send(attr) }
+        end
+      end
     end
   end
 end

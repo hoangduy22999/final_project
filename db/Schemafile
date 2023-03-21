@@ -22,6 +22,7 @@ create_table :users do |t|
   t.string 'address', null: false
   t.string 'phone', null: false
   t.string 'avatar', null: true
+  t.integer 'salary', null: true
 
   ## Recoverable
   t.string   :reset_password_token

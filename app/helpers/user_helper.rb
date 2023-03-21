@@ -40,4 +40,9 @@ module UserHelper
       object << [city.name.titleize, city.id]
     end
   end
+
+  def salary_decoration(salary)
+    return salary_decoration(salary / 1000) if salary > 1000
+    return salary
+  end
 end

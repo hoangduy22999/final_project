@@ -74,3 +74,5 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'select2-rails'
 gem 'will_paginate'
 gem 'stimulus-rails'
+gem 'csv', '~> 3.2', '>= 3.2.6'
+gem "money", "~> 6.16"

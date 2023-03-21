@@ -19,10 +19,10 @@ Things you may want to cover:
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-bundle exec rails ridgepole:apply
 ```
+Deployment instructions
+bundle exec rails ridgepole:apply
 
 To import fake data from seed
-```
 bundle exec rails ridgepole:seed
+```

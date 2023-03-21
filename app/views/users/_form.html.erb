@@ -80,21 +80,20 @@
       <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
     </div>
   </div>
-  <% if current_user.role_admin? %>
-    <div class="row d-flex align-items-center mb-4">
-      <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
-          <%= ff.label :department, class: "control-label col-sm-1"  %>
-          <div class="col-sm-5">
-          <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
-          </div>
 
-          <%= ff.label :role, class: "control-label col-sm-1"  %>
-          <div class="col-sm-5">
-          <%= ff.select :role, role_options, {}, { class: "form-control" } %>
-          </div>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
+        <%= ff.label :department, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
+        </div>
+
+        <%= ff.label :role, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :role, role_options, {}, { class: "form-control" } %>
+        </div>
+    <% end %>
+  </div>
 
   <div class="row">
     <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
