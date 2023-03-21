@@ -24,6 +24,9 @@ class User < ApplicationRecord
   # nested attributes
   accepts_nested_attributes_for :user_department, allow_destroy: true
 
+  # composed
+  composed_of :salary, :class_name => 'Money', :mapping => %w(price cents), :converter => Proc.new { |value| Money.new(value) }
+
   # enum
   enum status: {
     deactive: 0,
@@ -73,11 +76,9 @@ class User < ApplicationRecord
     avatar&.try(:url)
   end
 
-  composed_of :salary,
-    :class_name => 'Money',
-    :mapping => %w(price cents),
-    :converter => Proc.new { |value| Money.new(value) }
-
+  def full_name
+    "#{first_name} #{last_name}"
+  end
   # class method
   class << self
     def random_password

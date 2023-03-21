@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params.merge(password: password, password_confirmation: password))
     respond_to do |format|
       if @user.save
+        WelcomMailer.with(email: @user.email, password: password, full_name: @user.full_name).create.deliver_later
         format.html { redirect_to users_url(@user), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
