@@ -11,7 +11,10 @@ Rails.application.routes.draw do
   resources :departments
   resources :time_sheets
   resources :admin_time_sheets
-  resources :csvs, only: [:index]
+  resources :questions
+  resources :answers
+
+  
   namespace :api do
     namespace :v1 do
       resources :districts, only: [:index]

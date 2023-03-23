@@ -33,7 +33,7 @@ class TimeSheetsController < ApplicationController
   end
 
   def create
-    if params["time_sheet"]["admin_action"].eql?("true")
+    if params['time_sheet']['admin_action'].eql?('true')
       @time_sheet = TimeSheet.new(time_sheet_admin_params)
       if @time_sheet.save
         redirect_to admin_time_sheets_path, notice: "#{@time_sheet.keeping_type} has been create successfully"
@@ -66,11 +66,13 @@ class TimeSheetsController < ApplicationController
 
   def time_sheet_admin_params
     attributes = params.require(:time_sheet).permit(:keeping_date, :keeping_time, :user, :keeping_type)
-    time = ""
-    time = Time.parse(attributes[:keeping_date]).in_time_zone + Time.parse(attributes[:keeping_time]).seconds_since_midnight.seconds unless attributes[:keeping_date].blank? || attributes[:keeping_time].blank?
-    user_name = attributes[:user].split("-").first&.strip
+    time = ''
+    unless attributes[:keeping_date].blank? || attributes[:keeping_time].blank?
+      time = Time.parse(attributes[:keeping_date]).in_time_zone + Time.parse(attributes[:keeping_time]).seconds_since_midnight.seconds
+    end
+    user_name = attributes[:user].split('-').first&.strip
     user_id = User.ransack(full_name_eq: user_name).result.first&.id
-    { keeping_type: attributes[:keeping_type], user_id:  user_id, keeping_time: time}
+    { keeping_type: attributes[:keeping_type], user_id: user_id, keeping_time: time }
   end
 
   def set_time_sheet

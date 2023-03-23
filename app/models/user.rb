@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_one :user_department, dependent: :destroy
   has_one :department, through: :user_department
   has_many :time_sheets, dependent: :destroy
+  has_many :questions, dependent: :nullify
+  has_many :answers, dependent: :nullify
 
   # nested attributes
   accepts_nested_attributes_for :user_department, allow_destroy: true

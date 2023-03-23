@@ -18,10 +18,10 @@ module TimeSheetHelper
   end
 
   def time_late_strftime(minutes)
-    hour = minutes/60
-    minutes = minutes%60
+    hour = minutes / 60
+    minutes = minutes % 60
     hour = hour < 10 ? "0#{hour}" : hour.to_s
     minutes = minutes < 10 ? "0#{minutes}" : minutes.to_s
-    hour + ":" + minutes
+    "#{hour}:#{minutes}"
   end
 end

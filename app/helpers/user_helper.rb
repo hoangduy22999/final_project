@@ -43,6 +43,7 @@ module UserHelper
 
   def salary_decoration(salary)
     return salary_decoration(salary / 1000) if salary > 1000
-    return salary
+
+    salary
   end
 end

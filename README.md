@@ -25,4 +25,7 @@ bundle exec rails ridgepole:apply
 
 To import fake data from seed
 bundle exec rails ridgepole:seed
+
+To create model without migrations
+bundle exec rails ridgepole:model["models"]
 ```

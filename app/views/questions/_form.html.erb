@@ -1,0 +1,12 @@
+<%= form_with(model: question, html: { class: "form-horizontal" }) do |form| %>
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "question:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :content, class: "form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+  </div>
+<% end %>
+

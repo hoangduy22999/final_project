@@ -101,8 +101,29 @@ create_table :time_sheets do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
+create_table :questions do |t|
+  t.bigint 'user_id', null: false
+  t.string 'content', null: false
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :answers do |t|
+  t.bigint 'user_id', null: false
+  t.bigint 'question_id', null: false
+  t.string 'content', null: false
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
 add_foreign_key "districts", "cities", name: "city"
 add_foreign_key "users", "districts", name: "district"
 add_foreign_key "user_departments", "departments", name: "department"
 add_foreign_key "user_departments", "users", name: "user"
 add_foreign_key "departments", "users", column: "manager_id" ,name: "user"
+add_foreign_key "time_sheets", "users", name: "user"
+add_foreign_key "questions", "users", name: "user"
+add_foreign_key "answers", "users", name: "user"
+add_foreign_key "answers", "questions", name: "question"

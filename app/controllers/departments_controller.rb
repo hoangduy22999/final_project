@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DepartmentsController < ApplicationController
-  before_action :set_department, only: [:show, :edit, :update, :destroy]
+  before_action :set_department, only: %i[show edit update destroy]
   def index
     @departments = Department.includes(:users, :manager, user_departments: :user).all.paginate(page: params[:page])
   end
@@ -10,13 +10,12 @@ class DepartmentsController < ApplicationController
     @department = Department.new
   end
 
-  def show
-  end
+  def show; end
 
   def update
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to departments_path, notice: "Time Sheet was successfully updated." }
+        format.html { redirect_to departments_path, notice: 'Time Sheet was successfully updated.' }
         format.json { render :show, status: :ok, location: @department }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -29,7 +28,7 @@ class DepartmentsController < ApplicationController
     @department = Department.new(department_params)
     respond_to do |format|
       if @department.save
-        format.html { redirect_to new_department_path(@department), notice: 'Department was successfully created.' }
+        format.html { redirect_to departments_path, notice: 'Department was successfully created.' }
         format.json { render :show, status: :created, location: @department }
       else
         flash.now[:error] = @department.errors.full_messages.first
@@ -43,7 +42,7 @@ class DepartmentsController < ApplicationController
     @department.destroy
 
     respond_to do |format|
-      format.html { redirect_to departments_path, notice: "Department was successfully destroyed." }
+      format.html { redirect_to departments_path, notice: 'Department was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
