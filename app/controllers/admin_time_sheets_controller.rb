@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminTimeSheetsController < ApplicationController
-  before_action :set_time_sheet, only: [:destroy, :edit, :update, :show]
+  before_action :set_time_sheet, only: %i[destroy edit update show]
 
   def index
     param_date = params[:date]
@@ -9,14 +9,16 @@ class AdminTimeSheetsController < ApplicationController
     @time_sheets = TimeSheet.includes(:user).where(keeping_time: time.all_month).ransack(params[:where]).result.paginate(page: params[:page]).per_page(10)
   end
 
-  def create
-  end
+  def create; end
 
   def destroy
     @time_sheet.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), notice: "Time Sheet was successfully destroyed." }
+      format.html do
+        redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]),
+                    notice: 'Time Sheet was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -24,7 +26,7 @@ class AdminTimeSheetsController < ApplicationController
   def update
     respond_to do |format|
       if @time_sheet.update(time_sheet_params)
-        format.html { redirect_to time_sheet_url(@time_sheet), notice: "Time Sheet was successfully updated." }
+        format.html { redirect_to time_sheet_url(@time_sheet), notice: 'Time Sheet was successfully updated.' }
         format.json { render :show, status: :ok, location: @time_sheet }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -33,8 +35,7 @@ class AdminTimeSheetsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @time_sheet = TimeSheet.new

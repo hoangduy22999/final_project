@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:destroy]
 
@@ -21,8 +23,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def destroy
-  end
+  def destroy; end
 
   def new
     @question = Question.includes(:answers).find(params[:format])
@@ -30,6 +31,7 @@ class AnswersController < ApplicationController
   end
 
   private
+
   def set_answer
     @answer = Answer.find(params[:id])
   end

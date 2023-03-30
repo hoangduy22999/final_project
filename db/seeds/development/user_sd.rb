@@ -3,7 +3,7 @@
 debug_print __FILE__
 
 print_log('INSERT USER')
-districts = District.all.pluck(:id)
+districts = District.all
 time_now = Time.zone.now
 skip_department_ids = UserDepartment.pluck(:department_id)
 user_index = User.last&.id || 0
@@ -12,6 +12,7 @@ Department.where.not(id: skip_department_ids).pluck(:id).each.with_index(1) do |
   user_count = UserDepartment.where(department_id: department_id).count
   (0..(10 - user_count)).to_a.map do |user|
     user_index += 1
+    district = districts.sample
     User.create!({
                    first_name: Faker::Name.first_name,
                    last_name: Faker::Name.last_name,
@@ -22,7 +23,8 @@ Department.where.not(id: skip_department_ids).pluck(:id).each.with_index(1) do |
                    role: rand(0..1),
                    gender: rand(0..2),
                    status: rand(0..1),
-                   district_id: districts.sample,
+                   district_id: district.id,
+                   city_id: district.city.id,
                    address: Faker::Address.street_address,
                    phone: Faker::PhoneNumber.subscriber_number(length: 11),
                    avatar: Faker::LoremFlickr.image,

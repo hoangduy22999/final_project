@@ -27,8 +27,7 @@ class QuestionsController < ApplicationController
 
   def show; end
 
-  def update
-  end
+  def update; end
 
   def destroy
     @question.destroy
@@ -38,6 +37,7 @@ class QuestionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   private
 
   def set_question

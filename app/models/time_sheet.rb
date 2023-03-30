@@ -31,7 +31,7 @@ class TimeSheet < ApplicationRecord
       end
 
       if keeping_time >= keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
-        return ((keeping_time - keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)) / 60).to_i
+        ((keeping_time - keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)) / 60).to_i
       end
     else
       return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME)
@@ -39,9 +39,9 @@ class TimeSheet < ApplicationRecord
       if keeping_time < keeping_time.change(hour: CHECK_OUT_MORNING_TIME)
         return ((keeping_time.change(hour: CHECK_OUT_MORNING_TIME) - keeping_time) / 60).to_i
       end
-      
+
       if keeping_time > keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
-        return ((keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME)- keeping_time) / 60).to_i
+        ((keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME) - keeping_time) / 60).to_i
       end
     end
   end
@@ -60,9 +60,8 @@ class TimeSheet < ApplicationRecord
     errors.add(:base, 'Checkin time greater than Checkout time')
   end
 
-
   def check_in_today
-    return if keeping_type =='check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in')
+    return if keeping_type == 'check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in')
 
     errors.add(:base, 'You are not checking in today')
   end

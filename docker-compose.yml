@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: final_project
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    volumes:
+      - .:/final_project
+    ports:
+      - "3000:3000"
+    links:
+      - db

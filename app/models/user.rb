@@ -27,7 +27,9 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :user_department, allow_destroy: true
 
   # composed
-  composed_of :salary, :class_name => 'Money', :mapping => %w(price cents), :converter => Proc.new { |value| Money.new(value) }
+  composed_of :salary, class_name: 'Money', mapping: %w[price cents], converter: proc { |value|
+                                                                                   Money.new(value)
+                                                                                 }
 
   # enum
   enum status: {
@@ -89,13 +91,13 @@ class User < ApplicationRecord
     end
 
     def to_csv
-      attributes = %w{id email}
-  
+      attributes = %w[id email]
+
       CSV.generate(headers: true) do |csv|
         csv << attributes
-  
+
         all.find_each do |user|
-          csv << attributes.map{ |attr| user.send(attr) }
+          csv << attributes.map { |attr| user.send(attr) }
         end
       end
     end
