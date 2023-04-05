@@ -4,9 +4,10 @@ class TimeSheetsController < ApplicationController
   before_action :set_time_sheet, only: [:update]
 
   def index
-    param_date = params[:date]
-    time = param_date.blank? ? current_time : DateTime.new(param_date[:year].to_i, param_date[:month].to_i)
-    @result = []
+    param_date = params[:year_month] || ""
+    param_date = param_date.split("-")
+    time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
+    result = []
     end_month = time.end_of_month
     beginning_month = time.beginning_of_month
     current_month = time.month
@@ -20,7 +21,7 @@ class TimeSheetsController < ApplicationController
     end_date = end_month.end_of_week
     while start_date < end_date
       tmp_day = start_date.day
-      @result << if start_date.month != current_month
+      result << if start_date.month != current_month
                    { day: tmp_day, current_month: false }
                  elsif !time_sheets[tmp_day]
                    { day: tmp_day, current_month: true }
@@ -29,7 +30,8 @@ class TimeSheetsController < ApplicationController
                  end
       start_date += 1.days
     end
-    @time_sheets = TimeSheet.new
+    time_sheet = TimeSheet.new(keeping_type: current_keeping_type)
+    @data = {result: result, time_sheet: time_sheet, disabled: check_out_today}
   end
 
   def create
@@ -77,5 +79,15 @@ class TimeSheetsController < ApplicationController
 
   def set_time_sheet
     @time_sheet = TimeSheet.find_by(id: params[:id])
+  end
+
+  def current_keeping_type
+    check_in = TimeSheet.keeping_type_check_in.where(keeping_time: Time.now.all_day).count
+    check_out = TimeSheet.keeping_type_check_out.where(keeping_time: Time.now.all_day).count
+    check_in > check_out ?  "check_out" : "check_in"
+  end
+
+  def check_out_today
+    TimeSheet.keeping_type_check_out.where(keeping_time: Time.now.all_day).present?
   end
 end

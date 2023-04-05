@@ -2,38 +2,25 @@
   <div class="col-2">
     <form action="time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
-        <%= select_month(current_select_date, { use_short_month: true }, class: "mr-2 form-control") %>
-        <%= select_year(current_select_date, { start_year: 2014 , end_year: Time.zone.now.year }, {class: "form-control mr-2"})  %>
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="submit">
-            <i class="fas fa-search fa-sm"></i>
-          </button>
-        </div>
+        <input class="form-control" type="month" id="start" name="year_month" min="2018-03" value="<%= current_select_month %>" onchange="this.form.submit();">
       </div>
     </form>
   </div>
-
+  <% time_sheet = @data[:time_sheet]  %>
+  <% result = @data[:result] %>
   <div>
-    <%= form_with(model: @time_sheets, html: { class: "form-horizontal mr-2" }) do |form| %>
-      <%= form.hidden_field :keeping_type, value: "check_in"  %>
+    <% keeping_type = time_sheet.keeping_type %>
+    <%= form_with(model: time_sheet, html: { class: "form-horizontal mr-2" }) do |form| %>
+      <%= form.hidden_field :keeping_type, value: keeping_type  %>
       <div class="row">
-        <%= form.submit "CheckIn", class: "btn btn-primary waves-effect waves-light ml-4" %>
-      </div>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form_with(model: @time_sheets, html: { class: "form-horizontal" }) do |form| %>
-      <%= form.hidden_field :keeping_type, value: "check_out"  %>
-      <div class="row">
-        <%= form.submit "CheckOut", class: "btn btn-primary waves-effect waves-light ml-4" %>
+        <%= form.submit keeping_type.humanize, class: "btn btn-#{keeping_type.eql?("check_out") ? 'danger' : 'success'} waves-effect waves-light ml-4", disabled: @data[:disabled] %>
       </div>
     <% end %>
   </div>
 </div>
 
 <div class="row">
-  <div class="col">
+  <div class="col-sm-10">
     <div class="row mt-3" style="height: 30px">
       <% Date::DAYNAMES.each do |day_name| %>
         <div class="col border text-center font-weight-bold">
@@ -42,30 +29,38 @@
       <% end %>
     </div>
     <% time_late = 0 %>
-    <% (@result.count / 7).times do |row| %>
+    <% (result.count / 7).times do |row| %>
       <div class="row"  style="height: 120px">
         <% 7.times do |day| %>
           <div class="col border">
-            <% this_day =  @result[row * 7 + day]%>
+            <% this_day =  result[row * 7 + day]%>
             <% if this_day.class == Hash %>
               <span class="font-weight-bold h6" ><%= this_day[:day] if this_day[:current_month] %></span>
             <% else %>
               <span class="font-weight-bold h6"><%= this_day.first[:day] %><span>
               </br>
               <% this_day.each do |check| %>
-                <% if check[:type].eql?("check_in") %>
-                  <span class="btn-success rounded-pill text-center h5" style="display: inline-block;font-size: 18px !important;"><%= check[:time] %></span>
-                <% else %>
-                  <span class="btn-danger rounded-pill text-center h5" style="display: inline-block;font-size: 18px !important;"><%= check[:time] %></span>
-                <% end %>
+                <span class="btn-<%= check[:type].eql?("check_in") ? 'success' : 'danger' %> rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;"><%= check[:time] %></span>
                 <% time_late += check[:time_late].to_i %>
               <% end %>
-              <span class="btn-warning rounded-pill text-center h5" style="display: inline-block;font-size: 18px !important;"><%= time_late_strftime(time_late) %></span>
-              <% time_late = 0 %>
+              <% if time_late != 0 %>
+                <span class="btn-warning rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
+                <% time_late = 0 %>
+              <% end %>
             <% end %>
           </div>
         <% end %>
       </div>
     <% end %>
+  </div>
+  <div class="ml-4 mt-3">
+    <b><h5>Note:</h5></b>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
+    <h5>- Present: 6</h5>
   </div>
 </div>
