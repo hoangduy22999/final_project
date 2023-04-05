@@ -1,0 +1,52 @@
+<!-- Logout Modal-->
+<div class="modal fade" id="<%= holiday.id ?  "updateHoliday#{holiday.id}" : "holidayForm" %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-4">
+          <%= form_with(model: holiday, html: { class: "form-horizontal" }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Holiday</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="row d-flex align-items-center">
+                <%= form.label "Name:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.text_field :name, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Status:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.select :status, status_options, {}, { class: "form-control" } %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Start:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.date_field :start_date, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "End:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.date_field :end_date, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Description:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.text_field :description, class: "form-control" %>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+            </div>
+          <% end %>
+        </div>
+    </div>
+</div>

@@ -26,4 +26,8 @@ module ApplicationHelper
     action = controller.action_name
     "#{action.eql?('index') ? 'List' : action} #{controller.controller_name}".titleize
   end
+
+  def strftime_custom(date)
+    date.strftime("%d/%m/%y")
+  end
 end

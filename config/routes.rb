@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :admin_time_sheets
   resources :questions
   resources :answers
+  resources :holidays
 
   namespace :api do
     namespace :v1 do

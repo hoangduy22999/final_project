@@ -1,5 +1,5 @@
 <!-- DataTales Example -->
-<form action="users" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+<form action="holidays" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
   <div class="input-group">
     <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
     <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
@@ -11,45 +11,44 @@
     </div>
   </div>
 </form>
+
+<button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#holidayForm" style="width: 100px;">
+  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+  Add
+</button>
+<%= render 'form', holiday: Holiday.new %>
 <div class="table-responsive mt-3">
   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
       <thead>
           <tr>
-              <th>Id</th>
+              <th>#</th>
               <th>Name</th>
               <th>Status</th>
-              <th>Position</th>
-              <th>Department</th>
-              <th>Age</th>
-              <th>Address</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>Date</th>
+              <th>Description</th>
               <th>Action</th>
           </tr>
       </thead>
       <tbody>
-        <% @users.each.with_index(1) do |user, index| %>
+        <% @holidays.each.with_index(1) do |holiday, index| %>
           <tr>
-            <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
-            <td><%= full_name(user) %></td>
-            <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
-            <td><%= user.user_department&.role %></td>
-            <td><%= user.department&.name %></td>
-            <td><%= user.age %></td>
-            <td><%= full_address(user) %></td>
-            <td><%= user.user_department&.start_date&.strftime("%F") %></td>
-            <td><%= user.salary %></td>
+            <td><%= index %></td>
+            <td><%= holiday.name %></td>
+            <td><div class="w-75 text-center text-light rounded bg-<%= holiday.status.eql?("active") ? "success" : "danger" %>"><%= holiday.status %></div></td>
+            <td><%= strftime_custom(holiday.start_date) + " - " + strftime_custom(holiday.end_date) %></td>
+            <td><%= holiday.description %></td>
             <td>
               <div class="text-center">
-                <a href="users/<%= user.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-                <a href="users/<%= user.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
+                <a class="actionLink mr-3" title="Edit" data-toggle="modal" data-target="#updateHoliday<%= holiday.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+                <a href="holidays/<%= holiday.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this Holiday?" data-method="delete">
                   <i class="fa-solid fa-trash text-danger"></i>
                 </a>
+                <%= render 'form', holiday: holiday %>
               </div>
             </td>
           </tr>
         <% end %>
       </tbody>
   </table>
-  <%= will_paginate @users %>
+  <%= will_paginate @holidays %>
 </div>
