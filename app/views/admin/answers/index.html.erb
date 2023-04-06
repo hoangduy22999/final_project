@@ -26,7 +26,7 @@
         <% @questions.each.with_index(1) do |question, index| %>
           <tr>
             <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
-            <td><%= link_to question.content, new_answer_path(question.id) %></td>
+            <td><%= link_to question.content, new_admin_answer_path(question.id) %></td>
             <td><%= question.answers.count %></div></td>
             <td><%= question.user.full_name %></td>
             <td><%= question.created_at&.strftime("%F") %></td>
