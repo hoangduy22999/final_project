@@ -33,7 +33,7 @@ class User < ApplicationRecord
 
   # enum
   enum status: {
-    deactive: 0,
+    inactive: 0,
     active: 1
   }, _prefix: true
 

@@ -12,6 +12,12 @@ module TimeSheetHelper
     time.strftime("%Y-%m")
   end
 
+  def current_select_month_ransack
+    param_date = params[:where]["year_month"] if params[:where]
+    time = param_date.blank? ? Time.zone.now : DateTime.new(param_date[0..3].to_i, param_date[-2..-1].to_i)
+    time.strftime("%Y-%m")
+  end
+
   def check_type_options
     TimeSheet.keeping_types.keys.each_with_object([['-- Choose Type --', '']]) do |type, object|
       object << [type.titleize, type]

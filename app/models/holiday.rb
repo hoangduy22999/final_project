@@ -3,7 +3,10 @@ class Holiday < ApplicationRecord
   validates :start_date, date: { before_or_equal_to: :end_date }
   # enum
   enum status: {
-    active: 0,
-    inactive: 1
+    inactive: 0,
+    active: 1
   }, _prefix: true
+
+  # ransacker
+  ransacker :status, formatter: proc { |key| statuses[key] }
 end

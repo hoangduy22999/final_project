@@ -2,7 +2,14 @@ class HolidaysController < ApplicationController
   before_action :set_holiday, only: %i[update show destroy]
 
   def index
-    @holidays = Holiday.ransack(params[:where]).result.order(start_date: :desc).paginate(page: params[:page]).per_page(10)
+    where = params[:where] || {}
+    param_date = where.present? ? where["year_month"]&.split("-") : ""
+    time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
+    where.merge!(start_date_lteq: strftime_custom(time.end_of_month), end_date_gteq: strftime_custom(time.beginning_of_month))
+    @holidays = Holiday.ransack(where).result
+                       .order(start_date: :desc)
+                       .paginate(page: params[:page])
+                       .per_page(10)
   end
 
   def new
@@ -50,5 +57,9 @@ class HolidaysController < ApplicationController
 
   def holiday_params
     params.require(:holiday).permit(:name, :start_date, :end_date, :description, :status)
+  end
+
+  def strftime_custom(date)
+    date.strftime("%d-%m-%Y")
   end
 end
