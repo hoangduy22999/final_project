@@ -58,9 +58,10 @@ ActiveRecord::Schema.define(version: 0) do
     t.date "start_date"
     t.date "end_date"
     t.text "description"
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "status", default: 0, null: false
+  end
 
   create_table "leave_requests", force: :cascade do |t|
     t.integer "created_by"
@@ -84,10 +85,10 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "time_sheets", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.datetime "keeping_time"
     t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "keeping_time"
   end
 
   create_table "user_departments", force: :cascade do |t|

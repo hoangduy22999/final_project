@@ -1,4 +1,4 @@
-class HolidaysController < ApplicationController
+class Admin::HolidaysController < Admin::AdminController
   before_action :set_holiday, only: %i[update show destroy]
 
   def index
@@ -22,11 +22,11 @@ class HolidaysController < ApplicationController
     @holiday = Holiday.new(holiday_params)
     respond_to do |format|
       if cannot? :create, @holiday
-        format.html { redirect_to holidays_path(@holiday), alert: "Permission denied" }
+        format.html { redirect_to admin_holidays_path(@holiday), alert: "Permission denied" }
       elsif @holiday.save
-        format.html { redirect_to holidays_path(@holiday), notice: 'Holiday was successfully created.' }
+        format.html { redirect_to admin_holidays_path(@holiday), notice: 'Holiday was successfully created.' }
       else
-        format.html { redirect_to holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
+        format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
       end
     end
   end
@@ -34,9 +34,9 @@ class HolidaysController < ApplicationController
   def update
     respond_to do |format|
       if @holiday.update(holiday_params)
-        format.html { redirect_to holidays_path(@holiday), notice: 'Holiday was successfully updated.' }
+        format.html { redirect_to admin_holidays_path(@holiday), notice: 'Holiday was successfully updated.' }
       else
-        format.html { redirect_to holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
+        format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
       end
     end
   end

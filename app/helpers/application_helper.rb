@@ -28,6 +28,6 @@ module ApplicationHelper
   end
 
   def strftime_custom(date)
-    date.strftime("%d/%m/%y")
+    date.strftime('%d/%m/%y')
   end
 end

@@ -3,6 +3,7 @@
 class TimeSheet < ApplicationRecord
   # relationships
   belongs_to :user
+  has_one :department, through: :user
 
   # validates
   validates :user, :keeping_type, presence: true

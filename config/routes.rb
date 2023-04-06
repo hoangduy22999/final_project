@@ -9,11 +9,14 @@ Rails.application.routes.draw do
   patch 'reset_password', to: 'passwords#reset_password'
   resources :users
   resources :departments
-  resources :time_sheets
-  resources :admin_time_sheets
+  resources :time_sheets, only: %i[index create]
   resources :questions
-  resources :answers
-  resources :holidays
+
+  namespace :admin do
+    resources :holidays
+    resources :time_sheets
+    resources :answers
+  end
 
   namespace :api do
     namespace :v1 do

@@ -1,16 +1,21 @@
 <!-- DataTales Example -->
-<form action="holidays" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
-  <div class="input-group">
-    <input name="where[name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2" value="<%= params[:where].present?  ? params[:where]["name_cont"] : ""%>">
-    <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-    <input class="form-control" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
+<div class="row">
+  <div class="col-sm-6">
+    <form action="holidays" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+      <div class="input-group">
+        <input name="where[name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2" value="<%= params[:where].present?  ? params[:where]["name_cont"] : ""%>">
+        <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+        <input class="form-control" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
+      </div>
+    </form>
   </div>
-</form>
-
-<button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#holidayForm" style="width: 100px;">
-  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-  Add
-</button>
+  <div class="col-sm-6">
+    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#holidayForm" style="width: 100px;">
+      <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+      Add
+    </button>
+  </div>
+</div>
 <%= render 'form', holiday: Holiday.new %>
 <div class="table-responsive mt-3">
   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

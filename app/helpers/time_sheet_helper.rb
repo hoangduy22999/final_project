@@ -8,14 +8,14 @@ module TimeSheetHelper
 
   def current_select_month
     param_date = params[:year_month]
-    time = param_date.blank? ? Time.zone.now : DateTime.new(param_date[0..3].to_i, param_date[-2..-1].to_i)
-    time.strftime("%Y-%m")
+    time = param_date.blank? ? Time.zone.now : DateTime.new(param_date[0..3].to_i, param_date[-2..].to_i)
+    time.strftime('%Y-%m')
   end
 
   def current_select_month_ransack
-    param_date = params[:where]["year_month"] if params[:where]
-    time = param_date.blank? ? Time.zone.now : DateTime.new(param_date[0..3].to_i, param_date[-2..-1].to_i)
-    time.strftime("%Y-%m")
+    param_date = params[:where]['year_month'] if params[:where]
+    time = param_date.blank? ? Time.zone.now : DateTime.new(param_date[0..3].to_i, param_date[-2..].to_i)
+    time.strftime('%Y-%m')
   end
 
   def check_type_options
