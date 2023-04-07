@@ -8,15 +8,12 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @questions = current_user.questions.new(question_params)
+    @question = current_user.questions.new(question_params)
     respond_to do |format|
-      if @questions.save
+      if @question.save
         format.html { redirect_to questions_path, notice: 'Question was successfully created.' }
-        format.json { render :show, status: :created, location: @questions }
       else
-        flash.now[:error] = @questions.errors.full_messages.first
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @questions.errors, status: :unprocessable_entity }
+        format.html { redirect_to questions_path, alert: @question.errors.full_messages.first }
       end
     end
   end
@@ -34,7 +31,6 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to questions_path, notice: 'Question was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

@@ -48,6 +48,10 @@ class TimeSheet < ApplicationRecord
     end
   end
 
+  def present
+    
+  end
+
   private
 
   def check_today

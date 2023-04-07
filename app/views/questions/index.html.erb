@@ -35,14 +35,15 @@
         <% @questions.each.with_index(1) do |question, index| %>
           <tr>
             <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
-            <td><%= link_to question.content, new_admin_answer_path(question.id) %></td>
+            <td><%= link_to question.content, questions_path(question) %></td>
             <td><%= question.answers.count %></div></td>
             <td>
               <div class="text-center">
-                <a href="questions/<%= question.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+                <a class="actionLink mr-3" title="Edit" data-toggle="modal" data-target="#updateQuestion<%= question.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
                 <a href="questions/<%= question.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this question?" data-method="delete">
                   <i class="fa-solid fa-trash text-danger"></i>
                 </a>
+                <%= render 'form', question: question %>
               </div>
             </td>
           </tr>

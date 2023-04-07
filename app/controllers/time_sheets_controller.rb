@@ -7,31 +7,12 @@ class TimeSheetsController < ApplicationController
     param_date = params[:year_month] || ""
     param_date = param_date.split("-")
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
-    result = []
-    end_month = time.end_of_month
-    beginning_month = time.beginning_of_month
-    current_month = time.month
-    time_sheets = TimeSheet.where(keeping_time: time.all_month,
-                                  user_id: params[:user_id] || current_user.id).order(:keeping_time)
-    time_sheets = time_sheets.map do |ts|
-                    { day: ts.keeping_time.day, time: ts.keeping_time.strftime('%H:%M'), type: ts.keeping_type,
-                      time_late: ts.time_late }
-                  end.group_by { |a| a[:day] }
-    start_date = beginning_month.beginning_of_week
-    end_date = end_month.end_of_week
-    while start_date < end_date
-      tmp_day = start_date.day
-      result << if start_date.month != current_month
-                   { day: tmp_day, current_month: false }
-                 elsif !time_sheets[tmp_day]
-                   { day: tmp_day, current_month: true }
-                 else
-                   time_sheets[tmp_day]
-                 end
-      start_date += 1.days
-    end
-    time_sheet = TimeSheet.new(keeping_type: current_keeping_type)
-    @data = {result: result, time_sheet: time_sheet, disabled: check_out_today}
+    @data = TimeSheetService.new(
+                                user_id: params[:user_id] || current_user.id,
+                                year_month: time,
+                                current_keeping_type: current_keeping_type,
+                                check_out_today: check_out_today
+                                ).perfom
   end
 
   def create

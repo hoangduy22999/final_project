@@ -20,5 +20,8 @@ module FinalProject
     #
     config.time_zone = 'Hanoi'
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # config autoload
+    config.autoload_paths << "#{root}/app/services"
   end
 end
