@@ -53,11 +53,11 @@
       </div>
     <% end %>
   </div>
-  <div class="ml-4 mt-3">
+  <div class="ml-2 mt-3">
     <h4><b>Note:<b></h4>
-    <h5>- Present: 6</h5>
-    <h5><b>- Total Late Time: <%= time_late_strftime(@data[:total_time_late]) %></b></h5>
-    <h5>- Present: 6</h5>
+    <h5><b>- Full Hours: <%= @data[:full_hours] %>h</b></h5>
+    <h5><b>- Present: <%= time_late_strftime(@data[:present], true) %></b></h5>
+    <h5><b>- Late Time: <%= time_late_strftime(@data[:total_time_late], true) %></b></h5>
     <h5>- Present: 6</h5>
     <h5>- Present: 6</h5>
     <h5>- Present: 6</h5>
