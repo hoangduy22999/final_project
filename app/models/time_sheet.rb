@@ -17,6 +17,11 @@ class TimeSheet < ApplicationRecord
     check_out: 1
   }, _prefix: true
 
+  enum change_by: {
+    user: 0,
+    admin: 1
+  }, _prefix: true
+
   # scopes
   scope :check_today, lambda { |user_id, day|
     where(user_id: user_id, keeping_time: day)
@@ -55,7 +60,7 @@ class TimeSheet < ApplicationRecord
   private
 
   def check_today
-    return unless TimeSheet.find_by(user_id: user_id, keeping_type: keeping_type, keeping_time: keeping_time.all_day)
+    return if TimeSheet.find_by(user_id: user_id, keeping_type: keeping_type, keeping_time: keeping_time.all_day).blank?
 
     errors.add(:base, "You has been #{keeping_type.titleize} today")
   end
@@ -67,7 +72,7 @@ class TimeSheet < ApplicationRecord
   end
 
   def check_in_today
-    return if keeping_type == 'check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in')
+    return if keeping_type == 'check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in') || change_by == 'admin'
 
     errors.add(:base, 'You are not checking in today')
   end

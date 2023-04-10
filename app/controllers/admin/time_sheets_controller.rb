@@ -9,13 +9,13 @@ class Admin::TimeSheetsController < Admin::AdminController
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
     @time_sheets = TimeSheet.includes(:user, :department).where(keeping_time: time.all_month, user: {status: 'active'})
                             .ransack(where).result
-                            .order(created_at: :desc)
+                            .order(keeping_time: :desc)
                             .paginate(page: params[:page]).per_page(15)
   end
 
   def create
-    @time_sheet = TimeSheet.new(time_sheet_params)
-    if @time_sheet.save(validate: false)
+    @time_sheet = TimeSheet.change_by_admin.new(time_sheet_params)
+    if @time_sheet.save
       redirect_to admin_time_sheets_path, notice: "Time Sheet has been create successfully"
     else
       redirect_to admin_time_sheets_path, alert: @time_sheet.errors.full_messages.first
@@ -36,7 +36,7 @@ class Admin::TimeSheetsController < Admin::AdminController
 
   def update
     respond_to do |format|
-      if @time_sheet.update(time_sheet_params)
+      if @time_sheet.update(time_sheet_params.merge(change_by: 'admin'))
         format.html { redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), notice: 'Time Sheet was successfully updated.' }
       else
         format.html { edirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), alert: @time_sheet.errors.full_messages.first  }

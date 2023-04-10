@@ -41,6 +41,17 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["name"], name: "index_departments_on_name"
   end
 
+  create_table "dependents", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.integer "relationship"
+    t.date "birthday"
+    t.string "phone"
+    t.string "address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "districts", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -51,6 +62,17 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_districts_on_name"
+  end
+
+  create_table "educations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.string "degree"
+    t.string "specialization"
+    t.date "end_date"
+    t.date "start_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "holidays", force: :cascade do |t|
@@ -74,6 +96,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "on_time"
     t.bigint "reference_ids", array: true
     t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "questions", force: :cascade do |t|
@@ -89,6 +113,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "change_by", default: 0
   end
 
   create_table "user_departments", force: :cascade do |t|
@@ -135,10 +160,23 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["status"], name: "index_users_on_status"
   end
 
+  create_table "work_experiences", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "company_name"
+    t.string "job_title"
+    t.date "from_date"
+    t.date "end_date"
+    t.string "job_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "answers", "questions", name: "question"
   add_foreign_key "answers", "users", name: "user"
   add_foreign_key "departments", "users", column: "manager_id", name: "user"
+  add_foreign_key "dependents", "users", name: "user"
   add_foreign_key "districts", "cities", name: "city"
+  add_foreign_key "educations", "users", name: "user"
   add_foreign_key "leave_requests", "users", column: "approve_by", name: "approve_by"
   add_foreign_key "leave_requests", "users", name: "user"
   add_foreign_key "questions", "users", name: "user"
@@ -146,4 +184,5 @@ ActiveRecord::Schema.define(version: 0) do
   add_foreign_key "user_departments", "departments", name: "department"
   add_foreign_key "user_departments", "users", name: "user"
   add_foreign_key "users", "districts", name: "district"
+  add_foreign_key "work_experiences", "users", name: "user"
 end
