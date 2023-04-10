@@ -96,6 +96,7 @@ create_table :time_sheets do |t|
   t.bigint 'user_id', null: false
   t.datetime 'keeping_time', null: true
   t.integer 'keeping_type', null: false
+  t.integer 'change_by', default: 0
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
@@ -140,6 +141,45 @@ create_table :leave_requests do |t|
   t.text 'reason'
   t.integer 'on_time'
   t.bigint 'reference_ids', array: true
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :work_experiences do |t|
+  t.bigint 'user_id'
+  t.string 'company_name'
+  t.string 'job_title'
+  t.date 'from_date'
+  t.date 'end_date'
+  t.string 'job_description'
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :dependents do |t|
+  t.bigint 'user_id'
+  t.string 'name'
+  t.integer 'relationship'
+  t.date 'birthday'
+  t.string 'phone'
+  t.string 'address'
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :educations do |t|
+  t.bigint 'user_id'
+  t.string 'name'
+  t.string 'degree'
+  t.string 'specialization'
+  t.date 'end_date'
+  t.date 'start_date'
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
 end
 
 
@@ -154,3 +194,6 @@ add_foreign_key "answers", "users", name: "user"
 add_foreign_key "answers", "questions", name: "question"
 add_foreign_key "leave_requests", "users", column: "user_id", name: "user"
 add_foreign_key "leave_requests", "users", column: "approve_by", name: "approve_by"
+add_foreign_key "work_experiences", "users", name: 'user'
+add_foreign_key "dependents", "users", name: 'user'
+add_foreign_key "educations", "users", name: 'user'
