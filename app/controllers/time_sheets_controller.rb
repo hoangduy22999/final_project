@@ -30,10 +30,6 @@ class TimeSheetsController < ApplicationController
     params.require(:time_sheet).permit(:keeping_type)
   end
 
-  def set_time_sheet
-    @time_sheet = TimeSheet.find_by(id: params[:id])
-  end
-
   def current_keeping_type
     check_in = TimeSheet.keeping_type_check_in.where(keeping_time: Time.now.all_day).count
     check_out = TimeSheet.keeping_type_check_out.where(keeping_time: Time.now.all_day).count

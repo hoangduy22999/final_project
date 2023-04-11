@@ -29,7 +29,7 @@ class TimeSheet < ApplicationRecord
 
   # function
   def time_late
-    return 0 if TimeSheet.where(keeping_time: keeping_time.all_day).count <= 1
+    return 0 if TimeSheet.where(keeping_time: keeping_time.all_day, user_id: user_id).count <= 1
     if keeping_type == 'check_in'
       return 0 if keeping_time <= keeping_time.change(hour: CHECK_IN_MORNING_TIME)
       return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_MORNING_TIME) && keeping_time <= keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)

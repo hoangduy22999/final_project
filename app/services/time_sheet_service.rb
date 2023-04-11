@@ -26,10 +26,11 @@ class TimeSheetService
     end_date = end_month.end_of_week
     while start_date < end_date
       tmp_day = start_date.day
+      weekend = weekend?(start_date)
       result << if start_date.month != current_month
-                   { day: tmp_day, current_month: false }
+                   { day: tmp_day, current_month: false, weekend: false }
                  elsif !time_sheets[tmp_day]
-                   { day: tmp_day, current_month: true }
+                   { day: tmp_day, current_month: true, weekend: weekend }
                  else
                    time_sheets[tmp_day]
                  end
@@ -46,7 +47,8 @@ class TimeSheetService
       time_late = ts.time_late
       total_time_late += ts.time_late
       present += ts.present
-      { day: ts.keeping_time.day, time: ts.keeping_time.strftime('%H:%M'), type: ts.keeping_type, time_late: ts.time_late }
+      keeping_time = ts.keeping_time
+      { day: keeping_time.day, time: keeping_time.strftime('%H:%M'), type: ts.keeping_type, time_late: ts.time_late, weekend: weekend?(keeping_time) }
     end.group_by { |a| a[:day] } 
     [time_sheets, total_time_late, present]
   end
@@ -87,5 +89,9 @@ class TimeSheetService
       time_range.each { |day| days << day.day }
     end
     days
+  end
+
+  def weekend?(date)
+    date.sunday? || date.saturday?
   end
 end

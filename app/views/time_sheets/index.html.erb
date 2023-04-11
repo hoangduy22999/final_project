@@ -36,6 +36,7 @@
             <% this_day =  result[row * 7 + day]%>
             <% if this_day.class == Hash %>
               <span class="font-weight-bold h6" ><%= this_day[:day] if this_day[:current_month] %></span>
+              </br>
             <% else %>
               <span class="font-weight-bold h6"><%= this_day.first[:day] %><span>
               </br>
@@ -47,6 +48,7 @@
                 <span class="btn-warning rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
                 <% time_late = 0 %>
               <% end %>
+              </br>
             <% end %>
           </div>
         <% end %>
