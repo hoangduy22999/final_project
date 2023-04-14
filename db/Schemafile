@@ -201,6 +201,20 @@ create_table :meetings do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
+create_table :contracts do |t|
+  t.bigint 'user_department_id'
+  t.integer 'base_salary'
+  t.integer 'contract_type'
+  t.integer 'payment_form'
+  t.date 'start_date'
+  t.date 'end_date'
+  t.string 'description'
+
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
 
 add_foreign_key "districts", "cities", name: "city"
 add_foreign_key "users", "districts", name: "district"
@@ -216,3 +230,4 @@ add_foreign_key "leave_requests", "users", column: "approve_by", name: "approve_
 add_foreign_key "work_experiences", "users", name: 'user'
 add_foreign_key "dependents", "users", name: 'user'
 add_foreign_key "educations", "users", name: 'user'
+add_foreign_key "contracts", "user_departments", name: 'user_department'

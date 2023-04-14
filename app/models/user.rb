@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :time_sheets, dependent: :destroy
   has_many :questions, dependent: :nullify
   has_many :answers, dependent: :nullify
+  has_many :leave_requests, dependent: :destroy
 
   # nested attributes
   accepts_nested_attributes_for :user_department, allow_destroy: true
@@ -68,6 +69,10 @@ class User < ApplicationRecord
 
     late_time = (check_in_late.positive? ? check_in_late : 0) + (check_out_late.positive? ? 0 : check_out_late)
     Time.new.change(hour: late_time / 60, min: late_time % 60).strftime('%H:%M') || '00:00'
+  end
+
+  def leader_department?
+    user_department.role_leader?
   end
 
   # ransacker

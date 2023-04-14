@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-class DepartmentsController < ApplicationController
+class Admin::DepartmentsController < Admin::BaseController
   before_action :set_department, only: %i[show edit update destroy]
   def index
     @departments = Department.includes(:users, :manager, user_departments: :user).all.paginate(page: params[:page])

@@ -1,0 +1,29 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">User</th>
+      <th scope="col">Department</th>
+      <th scope="col">Type</th>
+      <th scope="col">Time</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @leave_requests.each do |leave_request| %>
+    <tr>
+      <th scope="row">1</th>
+      <td><%= leave_request.user.full_name %></td>
+      <td><%= role_department(leave_request.user).titleize %></td>
+      <td><%= leave_request.leave_type.titleize %></td>
+      <td>@mdo</td>
+      <td>
+        <div class="">
+          <%= render "button", leave_request: leave_request, status: "approved" %>
+          <%= render "button", leave_request: leave_request, status: "rejected" %>
+        </div>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

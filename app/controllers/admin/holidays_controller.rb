@@ -1,4 +1,4 @@
-class Admin::HolidaysController < Admin::AdminController
+class Admin::HolidaysController < Admin::BaseController
   before_action :set_holiday, only: %i[update show destroy]
 
   def index

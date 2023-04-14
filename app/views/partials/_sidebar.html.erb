@@ -25,8 +25,8 @@
                   </a>
                   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                       <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" href="/users">List User</a>
-                          <a class="collapse-item" href="/users/new">New User</a>
+                          <a class="collapse-item" href="/admin/users">List User</a>
+                          <a class="collapse-item" href="/admin/users/new">New User</a>
                       </div>
                   </div>
               </li>
@@ -41,8 +41,8 @@
                   <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                       data-parent="#accordionSidebar">
                       <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" href="/departments">List Department</a>
-                          <a class="collapse-item" href="/departments/new">New Department</a>
+                          <a class="collapse-item" href="/admin/departments">List Department</a>
+                          <a class="collapse-item" href="/admin/departments/new">New Department</a>
                       </div>
                   </div>
               </li>
@@ -62,6 +62,22 @@
                   <span>Question</span></a>
               </li>
               <% end %>
+              <!-- Divider -->
+              <hr class="sidebar-divider">
+
+              <% if current_user.leader_department? %>
+              <!-- Heading -->
+              <div class="sidebar-heading">
+                  LEADER
+              </div>
+              <!-- Nav Item - Timekeeping -->
+              <li class="nav-item">
+                <a class="nav-link" href="/leader/leave_requests">
+                  <i class="fas fa-code-pull-request"></i>
+                  <span>Leave Request</span>
+                </a>
+              </li>
+              <% end %>
 
               <!-- Divider -->
               <hr class="sidebar-divider">
@@ -75,6 +91,14 @@
                 <a class="nav-link" href="/time_sheets">
                   <i class="fas fa-fw fa-table"></i>
                   <span>Time Keeping</span>
+                </a>
+              </li>
+
+              <!-- Nav Item - Timekeeping -->
+              <li class="nav-item">
+                <a class="nav-link" href="/leave_requests">
+                  <i class="fas fa-code-pull-request"></i>
+                  <span>Leave Request</span>
                 </a>
               </li>
 

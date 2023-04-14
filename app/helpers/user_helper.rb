@@ -46,4 +46,16 @@ module UserHelper
 
     salary
   end
+
+  def role_department(user)
+    user_department = user.user_department
+    user_department.department.name + ' ' + user_department.role
+  end
+
+  def multi_day_present(start_date, end_date)
+    if start_date.year == end_date.year
+    else
+      
+    end
+  end
 end

@@ -1,0 +1,139 @@
+<%= form_with(model: [:admin, user], html: { class: "form-horizontal" }) do |form| %>
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "firt_name:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :first_name, class: "form-control" %>
+    </div>
+
+    <%= form.label "last_name:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :last_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "email:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :email, class: "form-control" %>
+    </div>
+
+    <%= form.label "phone:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :phone, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "gender:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :gender, gender_options, {},  { class: "form-control" } %>
+    </div>
+    <% if current_user.role_admin? %>
+      <%= form.label "role:", class: "control-label col-sm-1" %>
+      <div class="col-sm-5">
+        <%= form.select :role, user_role_options, {},  { class: "form-control" }  %>
+      </div>
+    <% end %>
+  </div>
+
+    <div class="row d-flex align-items-center mb-4">
+    <%= form.label "status:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :status, status_options, {}, { class: "form-control" } %>
+    </div>
+
+    <%= form.label "birthday:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.date_field :birthday, class: "form-control" %>
+    </div>
+  </div>
+  
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "city:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :city_id, city_options, {}, { class: "form-control" } %>
+    </div>
+
+    <%= form.label "district:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.select :district_id, [["-- Choose District --", ""], [user.district&.name, user.district&.id]], {}, { class: "form-control" } %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.label "address:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :address, class: "form-control" %>
+    </div>
+
+    <%= form.label "avatar:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.file_field :avatar, accept:'image/*', class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <div class="col-sm-7">
+    </div>
+
+    <div class="col-sm-5" id="avatarDiv">
+      <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center mb-4">
+    <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
+        <%= ff.label :department, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
+        </div>
+
+        <%= ff.label :role, class: "control-label col-sm-1"  %>
+        <div class="col-sm-5">
+        <%= ff.select :role, role_options, {}, { class: "form-control" } %>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+  </div>
+<% end %>
+
+<script>
+  citySelect = document.getElementById("user_city_id");
+  districtSelect = document.getElementById("user_district_id");
+  user_avatar.onchange = function (){
+    const [file] = this.files
+    if (file) {
+      var currentAvatar = document.getElementById("formAvatar")
+      if (currentAvatar){
+        currentAvatar.src = URL.createObjectURL(file)
+      }
+      else {
+        console.log("Couldn't create avatar");
+        var newAvatar = document.createElement('image');
+        newAvatar.src = URL.createObjectURL(file)
+        console.log(newAvatar)
+        document.getElementById("avatarDiv").appendChild(newAvatar)
+      }
+    }
+  }
+  citySelect.onchange = function (){
+  fetch(`http://127.0.0.1:3000/api/v1/districts.json?city_id=${citySelect.value}`)
+  .then((response) => response.json())
+  .then((data) => {
+    var districts = data['data']
+    while (districtSelect[1]) {
+    districtSelect[1].remove()
+    }
+    for(var i = 0; i < districts.length; i++) {
+      var opt = document.createElement('option');
+      var district = districts[i]['attributes']
+      opt.value = district['id'];
+      opt.innerHTML = district['name'];
+      districtSelect.appendChild(opt);
+    }
+  });
+  };
+</script>

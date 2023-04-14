@@ -13,7 +13,7 @@
     <%= form_with(model: time_sheet, html: { class: "form-horizontal mr-2" }) do |form| %>
       <%= form.hidden_field :keeping_type, value: keeping_type  %>
       <div class="row">
-        <%= form.submit keeping_type.humanize, class: "btn btn-#{keeping_type.eql?("check_out") ? 'danger' : 'success'} waves-effect waves-light ml-4", disabled: @data[:disabled] %>
+        <%= form.submit keeping_type.humanize, class: "btn btn-#{keeping_type.eql?("check_out") ? 'danger' : 'success'} waves-effect waves-light ml-4", disabled: @data[:disabled],data: {confirm: 'Are You Sure'} %>
       </div>
     <% end %>
   </div>
@@ -55,14 +55,16 @@
       </div>
     <% end %>
   </div>
-  <div class="ml-2 mt-3">
-    <h4><b>Note:<b></h4>
+  <div class="ml-3 mt-3">
+    <h4><b>Details:<b></h4>
     <h5><b>- Full Hours: <%= @data[:full_hours] %>h</b></h5>
     <h5><b>- Present: <%= time_late_strftime(@data[:present], true) %></b></h5>
     <h5><b>- Late Time: <%= time_late_strftime(@data[:total_time_late], true) %></b></h5>
-    <h5>- Present: 6</h5>
-    <h5>- Present: 6</h5>
-    <h5>- Present: 6</h5>
-    <h5>- Present: 6</h5>
+    <h5><b>- Leave Paid: 0</b></h5>
+    <h5><b>- Leave Unpaid: 0</b></h5>
+    <h5><b>- Present: 6</b></h5>
+    <h5><b>- Present: 6</b></h5>
+    </br>
+    <h4><b>Note:<b></h4>
   </div>
 </div>

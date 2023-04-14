@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Admin::AnswersController < Admin::AdminController
+class Admin::AnswersController < Admin::BaseController
   before_action :set_answer, only: [:destroy]
 
   def index

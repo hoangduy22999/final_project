@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["name"], name: "index_cities_on_name"
   end
 
+  create_table "contracts", force: :cascade do |t|
+    t.bigint "user_department_id"
+    t.integer "base_salary"
+    t.integer "contract_type"
+    t.integer "payment_form"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "departments", force: :cascade do |t|
     t.string "name", null: false
     t.integer "manager_id"
@@ -100,9 +112,26 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "meetings", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.integer "room_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "content", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -173,6 +202,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_foreign_key "answers", "questions", name: "question"
   add_foreign_key "answers", "users", name: "user"
+  add_foreign_key "contracts", "user_departments", name: "user_department"
   add_foreign_key "departments", "users", column: "manager_id", name: "user"
   add_foreign_key "dependents", "users", name: "user"
   add_foreign_key "districts", "cities", name: "city"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Admin::TimeSheetsController < Admin::AdminController
+class Admin::TimeSheetsController < Admin::BaseController
   before_action :set_time_sheet, only: %i[destroy edit update show]
 
   def index
