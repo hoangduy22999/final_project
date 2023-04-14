@@ -8,9 +8,9 @@ class Leader::LeaveRequestsController < Leader::BaseController
   def update
     respond_to do |format|
       if @leave_request.update(leave_request_param)
-        format.html { redirect_to leader_leave_requests_path, notice: 'Holiday was successfully updated.' }
+        format.html { redirect_to leader_leave_requests_path, notice: 'Leave request was successfully updated.' }
       else
-        format.html { redirect_to leader_leave_requests_path, alert: @holiday.errors.full_messages.first }
+        format.html { redirect_to leader_leave_requests_path, alert: @leave_request.errors.full_messages.first }
       end
     end
   end

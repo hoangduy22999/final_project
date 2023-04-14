@@ -1,4 +1,4 @@
-<%= form_with(model: [:leader, leave_request], html: { class: "form-horizontal inline-block" }) do |form| %>
+<%= form_with(model: [:leader, leave_request], html: { class: "d-inline" }) do |form| %>
   <%= form.hidden_field :status, value: status %>
-  <%= form.submit status.titleize, class: "btn btn-primary waves-effect waves-light ml-4" %>
+  <%= form.submit status.titleize, class: "btn btn-#{status.eql?("approve") ? 'success' : 'danger'} waves-effect waves-light ml-4" %>
 <% end %>

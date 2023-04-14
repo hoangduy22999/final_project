@@ -6,7 +6,7 @@
       <th scope="col">Department</th>
       <th scope="col">Type</th>
       <th scope="col">Time</th>
-      <th scope="col">Action</th>
+      <th scope="col" class="text-center">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -18,9 +18,9 @@
       <td><%= leave_request.leave_type.titleize %></td>
       <td>@mdo</td>
       <td>
-        <div class="">
-          <%= render "button", leave_request: leave_request, status: "approved" %>
-          <%= render "button", leave_request: leave_request, status: "rejected" %>
+        <div class="text-center">
+        <%= render "button", leave_request: leave_request, status: "approve" %>
+        <%= render "button", leave_request: leave_request, status: "reject" %>
         </div>
       </td>
     </tr>
