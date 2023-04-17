@@ -243,6 +243,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.24.0)
       parser (>= 3.1.1.0)
+    ruby-holidayapi (1.0.1)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -337,6 +338,7 @@ DEPENDENCIES
   reek (~> 6.1, >= 6.1.1)
   ridgepole
   rubocop (~> 1.37)
+  ruby-holidayapi (~> 1.0)
   sass-rails (>= 6)
   select2-rails
   selenium-webdriver

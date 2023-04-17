@@ -1,7 +1,8 @@
-<table class="table table-hover">
+<%= render "button_multi" %>
+<table class="table table-hover mt-4">
   <thead>
-    <tr>
-      <th scope="col">#</th>
+    <tr class="text-center">
+      <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange="selectAll(this)"></th>
       <th scope="col">User</th>
       <th scope="col">Department</th>
       <th scope="col">Type</th>
@@ -11,14 +12,14 @@
   </thead>
   <tbody>
     <% @leave_requests.each do |leave_request| %>
-    <tr>
-      <th scope="row">1</th>
+    <tr class="text-center leaveRequestTr">
+      <td class=""><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange="selectMulti()"></td>
       <td><%= leave_request.user.full_name %></td>
       <td><%= role_department(leave_request.user).titleize %></td>
       <td><%= leave_request.leave_type.titleize %></td>
       <td>@mdo</td>
       <td>
-        <div class="text-center">
+        <div>
         <%= render "button", leave_request: leave_request, status: "approve" %>
         <%= render "button", leave_request: leave_request, status: "reject" %>
         </div>
@@ -27,3 +28,49 @@
     <% end %>
   </tbody>
 </table>
+<%= will_paginate @leave_requests %>
+
+<script>
+
+  function selectMulti() {
+    disableCheck(checkedInput())
+    showAllSubmit(checkedInput())
+  }
+
+  function selectAll(element){
+    disableCheck(element.checked)
+    let elements = document.getElementsByClassName("checkMultiLeave");
+    for(let i = 0; i < elements.length; i++) {
+      elements[i].checked = element.checked
+    }
+    showAllSubmit(element.checked)
+  }
+
+  function checkedInput() {
+    let elements = document.getElementsByClassName("checkMultiLeave");
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked == true) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function disableCheck(disabled){
+    let elements = document.getElementsByClassName("actionOneLeave");
+    for(let i=0; i < elements.length; i++) {
+      elements[i].disabled = disabled
+    }
+  }
+
+  function showAllSubmit(showButton){
+    let elements = document.getElementsByClassName("actionMultiLeave")
+    for(let i=0; i < elements.length; i++) {
+      if (showButton){
+        $(elements[i]).removeClass('d-none');
+      } else {
+        $(elements[i]).addClass('d-none');
+      }
+    }
+  }
+</script>

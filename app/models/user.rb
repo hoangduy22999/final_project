@@ -13,6 +13,7 @@ class User < ApplicationRecord
   validates :phone, length: { in: 10..13 }
   # validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
   validates :address, :birthday, presence: true
+  validate :raise_change_email
 
   # relationships
   belongs_to :district
@@ -88,6 +89,8 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+
   # class method
   class << self
     def random_password
@@ -106,5 +109,14 @@ class User < ApplicationRecord
         end
       end
     end
+  end
+
+  # private methods
+  private
+
+  def raise_change_email
+    return unless email_changed?
+
+    errors.add(:email, "Can't change your email")
   end
 end

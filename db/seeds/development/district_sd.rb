@@ -4,6 +4,8 @@ debug_print __FILE__
 
 print_log('INSERT DISTRICT AND CITY')
 
+return if City.count >= 126
+
 city_json = File.read(Rails.root.join('db/json/tinh_tp.json'))
 district_json = File.read(Rails.root.join('db/json/quan_huyen.json'))
 city_data = JSON.parse(city_json).map(&:last)

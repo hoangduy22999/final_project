@@ -2,7 +2,7 @@
 
 module SeedPreLoad
   def reject_skipping_resources(resources, db_resources, skipping_key)
-    resources.reject { |record| db_resources.include?(record[skipping_key]) }.map do |obj|
+    resources.reject { |record| db_resources.include?(record[skipping_key.to_sym]) }.map do |obj|
       obj.merge(time_attributes)
     end
   end

@@ -58,4 +58,9 @@ module UserHelper
       
     end
   end
+
+  def leader_options
+    leader_ids = UserDepartment.role_admin.pluck(:user_id)
+    User.where(user_id: leader_ids).or(User.role_admin)
+  end
 end

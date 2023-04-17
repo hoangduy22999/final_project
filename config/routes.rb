@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   namespace :leader do
     resources :leave_requests, only: %i[index update]
+    patch :update_multi_requests, to: 'leave_requests#update_multi'
   end
 
   namespace :api do

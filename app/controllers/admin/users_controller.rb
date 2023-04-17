@@ -4,7 +4,7 @@ class Admin::UsersController < Admin::BaseController
   def index
     @users = User.includes(:department, district: :city).ransack(params[:where]).result
                  .order(created_at: :desc)
-                 .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE)
+                 .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
   end
 
   def new

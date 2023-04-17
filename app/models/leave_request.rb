@@ -15,7 +15,7 @@ class LeaveRequest < ApplicationRecord
   enum status: {
     pending: 0,
     approved: 1,
-    reject: 2
+    rejected: 2
   }, _prefix: true
 
   enum leave_type: {

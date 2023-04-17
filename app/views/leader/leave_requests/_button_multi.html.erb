@@ -1,0 +1,18 @@
+<%= form_with(url: "/leader/update_multi_requests", method: 'patch', html: { class: "d-inline", onsubmit: "addLeaveRequestIds()" }) do |form| %>
+  <%= form.hidden_field :leave_requests, name: "leave_request_ids", id: "leave_request_ids" %>
+  <%= form.submit "Approve All", class: "btn btn-success waves-effect waves-light ml-4 actionMultiLeave d-none" %>
+  <%= form.submit "Reject All", class: "btn btn-danger waves-effect waves-light ml-4 actionMultiLeave d-none" %>
+<% end %>
+
+<script>
+  function addLeaveRequestIds(){
+    let elements = document.getElementsByClassName("checkMultiLeave");
+    let leaveRequestIds = []
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked) {
+        leaveRequestIds.push(elements[i].value)
+      }
+    }
+    document.getElementById("leave_request_ids").value = leaveRequestIds
+  }
+</script>

@@ -3,7 +3,15 @@
 class UsersController < ApplicationController
   def profile; end
 
-  def update_profile; end
+  def update_profile
+    respond_to do |format|
+      if current_user.update(user_params)
+        format.html { redirect_to profile_path, notice: 'User was successfully updated.' }
+      else
+        format.html { redirect_to profile_path, alert: current_user.errors.full_messages.first  }
+      end
+    end
+  end
 
   private
 

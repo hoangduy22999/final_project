@@ -77,3 +77,4 @@ gem 'select2-rails'
 gem 'stimulus-rails'
 gem 'will_paginate'
 gem 'cancancan'
+gem "ruby-holidayapi", "~> 1.0"
