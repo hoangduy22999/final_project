@@ -1,114 +1,118 @@
-          <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-              <!-- Sidebar - Brand -->
-              <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../">
-                  <div class="sidebar-brand-icon rotate-n-15">
-                      <i class="fas fa-laugh-wink"></i>
-                  </div>
-                  <div class="sidebar-brand-text mx-3">Final Project</div>
-              </a>
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-laugh-wink"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Final Project</div>
+  </a>
 
-            <% if current_user.role_admin? %>
-              <!-- Divider -->
-              <hr class="sidebar-divider">
-              <!-- Heading -->
-              <div class="sidebar-heading">
-                  ADMIN
-              </div>
+  <% if current_user.role_admin? %>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        ADMIN
+    </div>
 
-              <!-- Nav Item - Pages Collapse Menu -->
-              <li class="nav-item">
-                  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                      aria-expanded="true" aria-controls="collapseTwo">
-                      <i class="fas fa-fw fa-cog"></i>
-                      <span>User</span>
-                  </a>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                      <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" href="/admin/users">List User</a>
-                          <a class="collapse-item" href="/admin/users/new">New User</a>
-                      </div>
-                  </div>
-              </li>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>User</span>
+      </a>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="/admin/users">List User</a>
+          <a class="collapse-item" href="/admin/users/new">New User</a>
+        </div>
+      </div>
+    </li>
 
-              <!-- Nav Item - Utilities Collapse Menu -->
-              <li class="nav-item">
-                  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                      aria-expanded="true" aria-controls="collapseUtilities">
-                      <i class="fas fa-fw fa-wrench"></i>
-                      <span>Department</span>
-                  </a>
-                  <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                      data-parent="#accordionSidebar">
-                      <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" href="/admin/departments">List Department</a>
-                          <a class="collapse-item" href="/admin/departments/new">New Department</a>
-                      </div>
-                  </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/time_sheets">
-                  <i class="fa-solid fa-timeline"></i>
-                  <span>Time Keeping</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/holidays">
-                  <i class="fa-solid fa-champagne-glasses"></i>
-                  <span>Holiday</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/answers">
-                  <i class="fa fa-fw fa-question"></i>
-                  <span>Question</span></a>
-              </li>
-              <% end %>
-              <!-- Divider -->
-              <hr class="sidebar-divider">
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+        aria-expanded="true" aria-controls="collapseUtilities">
+        <i class="fas fa-fw fa-wrench"></i>
+        <span>Department</span>
+      </a>
+      <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+        data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="/admin/departments">List Department</a>
+          <a class="collapse-item" href="/admin/departments/new">New Department</a>
+        </div>
+      </div>
+    </li>
 
-              <% if current_user.leader_department? %>
-              <!-- Heading -->
-              <div class="sidebar-heading">
-                  LEADER
-              </div>
-              <!-- Nav Item - Timekeeping -->
-              <li class="nav-item">
-                <a class="nav-link" href="/leader/leave_requests">
-                  <i class="fas fa-code-pull-request"></i>
-                  <span>Leave Request</span>
-                </a>
-              </li>
-              <% end %>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/time_sheets">
+        <i class="fa-solid fa-timeline"></i>
+        <span>Time Keeping</span></a>
+    </li>
 
-              <!-- Divider -->
-              <hr class="sidebar-divider">
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/holidays">
+        <i class="fa-solid fa-champagne-glasses"></i>
+        <span>Holiday</span></a>
+    </li>
 
-              <!-- Heading -->
-              <div class="sidebar-heading">
-                  USER
-              </div>
-              <!-- Nav Item - Timekeeping -->
-              <li class="nav-item">
-                <a class="nav-link" href="/time_sheets">
-                  <i class="fas fa-fw fa-table"></i>
-                  <span>Time Keeping</span>
-                </a>
-              </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/answers">
+        <i class="fa fa-fw fa-question"></i>
+        <span>Question</span></a>
+    </li>
+  <% end %>
 
-              <!-- Nav Item - Timekeeping -->
-              <li class="nav-item">
-                <a class="nav-link" href="/leave_requests">
-                  <i class="fas fa-code-pull-request"></i>
-                  <span>Leave Request</span>
-                </a>
-              </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
 
-              <!-- Nav Item - Utilities Collapse Menu -->
-              <li class="nav-item">
-                <a class="nav-link" href="/questions">
-                  <i class="fa fa-fw fa-question"></i>
-                  <span>Question</span>
-                </a>
-              </li>
-              <!-- Divider -->
-              <hr class="sidebar-divider d-none d-md-block">
-          </ul>
+  <% if current_user.leader_department? %>
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        LEADER
+    </div>
+    <!-- Nav Item - Timekeeping -->
+    <li class="nav-item">
+      <a class="nav-link" href="/leader/leave_requests">
+        <i class="fas fa-code-pull-request"></i>
+        <span>Leave Request</span>
+      </a>
+    </li>
+  <% end %>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+      USER
+  </div>
+  <!-- Nav Item - Timekeeping -->
+  <li class="nav-item">
+    <a class="nav-link" href="/time_sheets">
+      <i class="fas fa-fw fa-table"></i>
+      <span>Time Keeping</span>
+    </a>
+  </li>
+
+  <!-- Nav Item - Timekeeping -->
+  <li class="nav-item">
+    <a class="nav-link" href="/leave_requests">
+      <i class="fas fa-code-pull-request"></i>
+      <span>Leave Request</span>
+    </a>
+  </li>
+
+  <!-- Nav Item - Utilities Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="/questions">
+      <i class="fa fa-fw fa-question"></i>
+      <span>Question</span>
+    </a>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+</ul>

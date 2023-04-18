@@ -36,9 +36,14 @@ module UserHelper
   end
 
   def city_options
-    City.all.each_with_object([['-- Choose City --', '']]) do |city, object|
-      object << [city.name.titleize, city.id]
+    City.all.order(name: :asc).each_with_object([['-- Choose City --', '']]) do |city, object|
+      object << [city.name, city.id]
     end
+  end
+
+  def default_district_options(user)
+    district_options = [["-- Choose District --", ""]]
+    user.new_record? ? district_options :  district_options << [user.district&.name, user.district&.id]
   end
 
   def salary_decoration(salary)

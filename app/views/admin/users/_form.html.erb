@@ -51,12 +51,12 @@
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "city:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.select :city_id, city_options, {}, { class: "form-control" } %>
+      <%= form.select :city_id, city_options, {}, { class: "form-control", onchange: "setDistrictSelect()" } %>
     </div>
 
     <%= form.label "district:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
-      <%= form.select :district_id, [["-- Choose District --", ""], [user.district&.name, user.district&.id]], {}, { class: "form-control" } %>
+      <%= form.select :district_id, default_district_options(user), {}, { class: "form-control" } %>
     </div>
   </div>
 
@@ -100,40 +100,4 @@
   </div>
 <% end %>
 
-<script>
-  citySelect = document.getElementById("user_city_id");
-  districtSelect = document.getElementById("user_district_id");
-  user_avatar.onchange = function (){
-    const [file] = this.files
-    if (file) {
-      var currentAvatar = document.getElementById("formAvatar")
-      if (currentAvatar){
-        currentAvatar.src = URL.createObjectURL(file)
-      }
-      else {
-        console.log("Couldn't create avatar");
-        var newAvatar = document.createElement('image');
-        newAvatar.src = URL.createObjectURL(file)
-        console.log(newAvatar)
-        document.getElementById("avatarDiv").appendChild(newAvatar)
-      }
-    }
-  }
-  citySelect.onchange = function (){
-  fetch(`http://127.0.0.1:3000/api/v1/districts.json?city_id=${citySelect.value}`)
-  .then((response) => response.json())
-  .then((data) => {
-    var districts = data['data']
-    while (districtSelect[1]) {
-    districtSelect[1].remove()
-    }
-    for(var i = 0; i < districts.length; i++) {
-      var opt = document.createElement('option');
-      var district = districts[i]['attributes']
-      opt.value = district['id'];
-      opt.innerHTML = district['name'];
-      districtSelect.appendChild(opt);
-    }
-  });
-  };
-</script>
+<script src="/javascripts/district_select.js" rel="preload"></script>

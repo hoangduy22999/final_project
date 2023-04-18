@@ -6,11 +6,16 @@ class Ability
   def initialize(user)
     return unless user.present?
 
+    if user.user_department.role_leader
+      can %i[update read], LeaveRequest, approve_by: user.id
+    end
+
     if user.role_admin?
       can :manage, :all
     else
       can :manage, Post, user_id: user.id
       can :manage, User, id: user.id
+      can :manage, LeaveRequest, user_id: user.id
     end
 
     # Define abilities for the user here. For example:

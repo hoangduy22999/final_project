@@ -3,19 +3,26 @@ class LeaveRequestsController < ApplicationController
 
   def index
     @leave_requests = current_user.leave_requests.includes(user: [:user_department, :department])
-                                                 .ransack((params[:where] || {}).merge({status_eq: "pending", approve_by_eq: current_user.id})).result
+                                                 .ransack((params[:where] || {})).result
                                                  .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
     @leave_request = LeaveRequest.new
   end
 
   def create
-    @leave_request = current_user.leave_requests.create(leave_request_params)
+    @leave_request = current_user.leave_requests.create(leave_request_params.merge(created_by: current_user.id))
     if @leave_request.save
+      redirect_to leave_requests_path, notice: "Time Sheet has been create successfully"
     else
+      redirect_to leave_requests_path, alert: @leave_request.errors.full_messages.first
     end
   end
 
   def update
+    if @leave_request.update(leave_request_params)
+      redirect_to leave_requests_path, notice: "Time Sheet has been create successfully"
+    else
+      redirect_to leave_requests_path, alert: @leave_request.errors.full_messages.first
+    end
   end
 
   def destroy

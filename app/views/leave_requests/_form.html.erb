@@ -12,17 +12,38 @@
         </div>
         <div class="modal-body">
           <div class="row d-flex align-items-center">
-            <%= form.label "reason:", class: "control-label" %>
+            <%= form.label "leave_type:", class: "control-label" %>
           </div>
           <div class="row d-flex align-items-center mb-3">
-            <%= form.text_field :content, class: "form-control" %>
+            <%= form.select :leave_type, leave_type_options, {}, class: "form-control" %>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <%= form.label "start_time:", class: "control-label" %>
+          </div>
+          <div class="row d-flex align-items-center mb-3">
+            <%= form.datetime_field :start_date, class: "form-control" %>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <%= form.label "end_time:", class: "control-label" %>
+          </div>
+          <div class="row d-flex align-items-center mb-3">
+            <%= form.datetime_field :end_date, class: "form-control" %>
           </div>
 
           <div class="row d-flex align-items-center">
             <%= form.label "approve_by:", class: "control-label" %>
           </div>
           <div class="row d-flex align-items-center mb-3">
-            <%= form.select_field :approve_by, class: "form-control" %>
+            <%= form.select :approve_by, leader_options, {}, class: "form-control" %>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <%= form.label "reason:", class: "control-label" %>
+          </div>
+          <div class="row d-flex align-items-center mb-3">
+            <%= form.text_area :reason, class: "form-control" %>
           </div>
         </div>
         <div class="modal-footer">

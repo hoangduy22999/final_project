@@ -4,7 +4,10 @@ namespace :ridgepole do
   desc 'Apply database schema'
   task apply: :environment do
     ridgepole('--apply', "-E #{Rails.env}", "--file #{schema_file}")
-    Rake::Task['db:schema:dump'].invoke if Rails.env.development?
+    if Rails.env.development?
+      Rake::Task['db:schema:dump'].invoke
+      Rake::Task['annotate_models'].invoke
+    end
   end
 
   desc 'import seed data'
