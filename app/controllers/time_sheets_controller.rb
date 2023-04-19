@@ -10,8 +10,6 @@ class TimeSheetsController < ApplicationController
     @data = TimeSheetService.new(
                                 user_id: params[:user_id] || current_user.id,
                                 year_month: time,
-                                current_keeping_type: current_keeping_type,
-                                check_out_today: check_out_today
                                 ).perfom
   end
 
@@ -28,15 +26,5 @@ class TimeSheetsController < ApplicationController
 
   def time_sheet_params
     params.require(:time_sheet).permit(:keeping_type)
-  end
-
-  def current_keeping_type
-    check_in = TimeSheet.keeping_type_check_in.where(keeping_time: Time.now.all_day).count
-    check_out = TimeSheet.keeping_type_check_out.where(keeping_time: Time.now.all_day).count
-    check_in > check_out ?  "check_out" : "check_in"
-  end
-
-  def check_out_today
-    TimeSheet.keeping_type_check_out.where(keeping_time: Time.now.all_day).present?
   end
 end

@@ -45,7 +45,6 @@ class TimeSheet < ApplicationRecord
 
   # function
   def time_late
-    return 0 if TimeSheet.where(keeping_time: keeping_time.all_day, user_id: user_id).count <= 1
     if keeping_type == 'check_in'
       return 0 if keeping_time <= keeping_time.change(hour: CHECK_IN_MORNING_TIME)
       return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_MORNING_TIME) && keeping_time <= keeping_time.change(hour: CHECK_IN_AFTERNOON_TIME)
@@ -69,11 +68,9 @@ class TimeSheet < ApplicationRecord
     end
   end
 
-  def present
-    return 0 if keeping_type.eql?('check_out') || keeping_time >= keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME)
-    ts = TimeSheet.find_by(user_id: user_id, keeping_type: 'check_out', keeping_time: keeping_time.all_day)
-    check_out_time = ts&.keeping_time
-    return 0 if ts.blank? || check_out_time <= check_out_time.change(hour: CHECK_IN_MORNING_TIME)
+  def time_present(check_out_time)
+    return 0 if keeping_time >= keeping_time.change(hour: CHECK_OUT_AFTERNOON_TIME) ||
+                check_out_time <= check_out_time.change(hour: CHECK_IN_MORNING_TIME)
 
     diff_time = ((check_out_time - keeping_time) / 60).to_i
     if keeping_time <= keeping_time.change(hour: CHECK_IN_MORNING_TIME)

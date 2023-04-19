@@ -40,7 +40,7 @@
             <% else %>
               <span class="font-weight-bold h6"><%= this_day.first[:day] %><span>
               </br>
-              <% this_day.each do |check| %>
+              <% this_day.first(2).each do |check| %>
                 <span class="btn-<%= check[:type].eql?("check_in") ? 'success' : 'danger' %> rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;"><%= check[:time] %></span>
                 <% time_late += check[:time_late].to_i %>
               <% end %>
@@ -49,6 +49,10 @@
                 <% time_late = 0 %>
               <% end %>
               </br>
+              <% this_day[2]&.first(2)&.each do |leave_request| %>
+                <span class="btn-info rounded-pill text-center" style="display: inline-block; width: 100%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
+                <span class="btn-info rounded-pill text-center" style="display: inline-block; width: 100%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
+              <% end %>
             <% end %>
           </div>
         <% end %>
