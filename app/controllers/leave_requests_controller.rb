@@ -9,19 +9,19 @@ class LeaveRequestsController < ApplicationController
   end
 
   def create
-    @leave_request = current_user.leave_requests.create(leave_request_params.merge(created_by: current_user.id))
+    @leave_request = current_user.leave_requests.new(leave_request_params.merge(created_by: current_user.id))
     if @leave_request.save
-      redirect_to leave_requests_path, notice: "Time Sheet has been create successfully"
+      redirect_to time_sheets_path, notice: "Time Sheet has been create successfully"
     else
-      redirect_to leave_requests_path, alert: @leave_request.errors.full_messages.first
+      redirect_to time_sheets_path, alert: @leave_request.errors.full_messages.first
     end
   end
 
   def update
     if @leave_request.update(leave_request_params)
-      redirect_to leave_requests_path, notice: "Time Sheet has been create successfully"
+      redirect_to time_sheets_path, notice: "Time Sheet has been create successfully"
     else
-      redirect_to leave_requests_path, alert: @leave_request.errors.full_messages.first
+      redirect_to time_sheets_path, alert: @leave_request.errors.full_messages.first
     end
   end
 
