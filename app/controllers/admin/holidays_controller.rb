@@ -9,7 +9,7 @@ class Admin::HolidaysController < Admin::BaseController
     @holidays = Holiday.ransack(where).result
                        .order(start_date: :desc)
                        .paginate(page: params[:page])
-                       .per_page(10)
+                       .per_page(params[:per_page] || PER_PAGE_BIG)
   end
 
   def new
@@ -45,7 +45,7 @@ class Admin::HolidaysController < Admin::BaseController
     @holiday.destroy
 
     respond_to do |format|
-      format.html { redirect_to holidays_path, notice: 'Holiday was successfully destroyed.' }
+      format.html { redirect_to admin_holidays_path, notice: 'Holiday was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

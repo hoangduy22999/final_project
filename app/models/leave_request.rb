@@ -32,7 +32,7 @@ class LeaveRequest < ApplicationRecord
   # relationship
   belongs_to :user
   belongs_to :approve_user, class_name: 'User', foreign_key: "approve_by"
-  belongs_to :created_by, class_name: 'User', foreign_key: "created_by"
+  belongs_to :created_user, class_name: 'User', foreign_key: "created_by"
 
   # enum
   enum on_time: {
@@ -54,6 +54,12 @@ class LeaveRequest < ApplicationRecord
     unpaid_leave: 2,
     over_time: 3,
     compensatory_leave: 4
+    forgot_kepping: 5
+  }, _prefix: true
+
+  enum keeping_type: {
+    check_in: 0,
+    check_out: 1
   }, _prefix: true
 
   # function

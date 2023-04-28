@@ -22,6 +22,6 @@ module FinalProject
     # config.eager_load_paths << Rails.root.join("extras")
 
     # config autoload
-    config.autoload_paths << "#{root}/app/services"
+    config.autoload_paths << Rails.root.join('app/services')
   end
 end

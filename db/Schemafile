@@ -141,8 +141,9 @@ create_table :leave_requests do |t|
   t.text 'reason'
   t.integer 'on_time'
   t.bigint 'reference_ids', array: true
+  t.integer 'keeping_type', null: false
 
-  t.datetime "created_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: f  t.integer 'keeping_type', null: falsealse
   t.datetime "updated_at", precision: 6, null: false
 end
 
@@ -210,6 +211,16 @@ create_table :contracts do |t|
   t.date 'end_date'
   t.string 'description'
 
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :action_histories do |t|
+  t.bigint 'user_id'
+  t.integer 'action_type'
+  t.string 'resource'
+  t.string 'pre_value'
+  t.string 'after_value'
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

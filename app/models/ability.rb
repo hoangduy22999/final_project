@@ -6,7 +6,7 @@ class Ability
   def initialize(user)
     return unless user.present?
 
-    if user.user_department.role_leader
+    if user.user_department.role_leader?
       can %i[update read], LeaveRequest, approve_by: user.id
     end
 
