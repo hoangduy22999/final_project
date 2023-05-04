@@ -105,17 +105,11 @@ class TimeSheetService
     days = []
     all_month = start_month.all_month
     Holiday.status_active.where(start_date: all_month).or(Holiday.status_active.where(end_date: all_month)).each do |holiday|
-      start_date = holiday.start_date
-      end_date = holiday.end_date
-      include_start_date = all_month.cover?(start_date)
-      time_range = if include_start_date && all_month.cover?(end_date)
-                      start_date..end_date
-                    elsif include_start_date
-                      start_date..all_month.last
-                    else
-                      all_month.first..end_date
-                    end
-      time_range.each { |day| days << day.day }
+      start_date = holiday.start_date.to_date
+      end_date = holiday.end_date.to_date
+      start_date = all_month.cover?(start_date) ? start_date : all_month.first.to_date
+      end_date = all_month.cover?(end_date) ? end_date : all_month.last.to_date
+      start_date.upto(end_date) { |date| days << date.day }
     end
     days
   end
