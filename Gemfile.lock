@@ -139,6 +139,7 @@ GEM
     json (2.6.3)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
+    jwt (2.7.0)
     kwalify (0.7.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -185,6 +186,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.5)
+    rack-cors (2.0.1)
+      rack (>= 2.0.0)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
     rack-proxy (0.7.4)
@@ -331,11 +334,13 @@ DEPENDENCIES
   groupdate (~> 6.2)
   jbuilder (~> 2.7)
   jsonapi-serializer
+  jwt
   listen (~> 3.3)
   money (~> 6.16)
   pg (~> 1.1)
   pry (~> 0.14.1)
   puma (~> 5.0)
+  rack-cors
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4)
   ransack!

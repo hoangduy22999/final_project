@@ -132,6 +132,15 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def generate_token
+    payload = {
+      user_id: id,
+      expiry: DateTime.now + ENV['TOKEN_LIFE'].to_i.months
+    }
+    JWT.encode payload, ENV['HMAC_SECRET'], 'HS256'
+  end
+
+
 
   # class method
   class << self

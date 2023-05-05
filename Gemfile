@@ -79,3 +79,5 @@ gem 'will_paginate'
 gem 'cancancan'
 gem "ruby-holidayapi", "~> 1.0"
 gem "annotate"
+gem 'rack-cors'
+gem 'jwt'

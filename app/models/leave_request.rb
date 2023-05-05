@@ -8,6 +8,7 @@
 #  approve_by    :bigint
 #  created_by    :integer
 #  end_date      :datetime
+#  keeping_type  :integer          not null
 #  leave_type    :integer
 #  on_time       :integer
 #  reason        :text
@@ -53,7 +54,7 @@ class LeaveRequest < ApplicationRecord
     paid_leave: 1,
     unpaid_leave: 2,
     over_time: 3,
-    compensatory_leave: 4
+    compensatory_leave: 4,
     forgot_kepping: 5
   }, _prefix: true
 

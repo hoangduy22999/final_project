@@ -92,12 +92,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.date "start_date"
     t.date "end_date"
     t.text "description"
-    t.integer "status", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
   end
 
   create_table "leave_requests", force: :cascade do |t|
+    t.bigint "user_id"
     t.integer "created_by"
     t.integer "leave_type"
     t.bigint "approve_by"
@@ -107,7 +108,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.text "reason"
     t.integer "on_time"
     t.bigint "reference_ids", array: true
-    t.bigint "user_id"
+    t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -138,10 +139,10 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "time_sheets", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.datetime "keeping_time"
     t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "keeping_time"
     t.integer "change_by", default: 0
   end
 
@@ -175,13 +176,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "last_sign_in_ip", limit: 255
     t.integer "status", default: 0, null: false
     t.bigint "district_id"
-    t.bigint "city_id"
     t.string "address", null: false
     t.string "phone", null: false
     t.string "avatar"
-    t.integer "salary"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "city_id"
+    t.integer "salary"
     t.index ["district_id"], name: "index_users_on_district_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

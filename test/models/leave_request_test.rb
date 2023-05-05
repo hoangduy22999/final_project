@@ -8,6 +8,7 @@
 #  approve_by    :bigint
 #  created_by    :integer
 #  end_date      :datetime
+#  keeping_type  :integer          not null
 #  leave_type    :integer
 #  on_time       :integer
 #  reason        :text
