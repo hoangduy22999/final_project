@@ -3,7 +3,7 @@
     <form action="time_sheets" class="form-horizontal" method="get">
       <div class="input-group">
         <input class="form-control mr-2" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
-        <input name ="where[user_id_eq]" list="brow" class="form-control" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
+        <input name ="where[user_id_eq]" list="brow" autocomplete="off" class="form-control" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
         <datalist id="brow">
           <% User.includes(:department).each do |user|%>
             <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">

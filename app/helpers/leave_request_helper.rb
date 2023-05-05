@@ -11,4 +11,8 @@ module LeaveRequestHelper
       object << [leave_type.titleize, leave_type]
     end
   end
+
+  def users_in_department(current_user)
+    User.where(id: current_user.department.user_departments.pluck(:user_id))
+  end
 end

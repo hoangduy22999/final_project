@@ -1,4 +1,4 @@
-<%= form_with(url: "/leader/update_multi_requests", method: 'patch', html: { class: "d-inline", onsubmit: "addLeaveRequestIds()" }) do |form| %>
+<%= form_with(url: "/leader/update_multi_requests", method: 'patch', html: { class: "ml-4 d-inline", onsubmit: "addLeaveRequestIds()" }) do |form| %>
   <%= form.hidden_field :leave_requests, name: "leave_request_ids", id: "leave_request_ids" %>
   <span class="actionMultiLeave d-none"><b id="itemsSelected">Items Selected</b></span>
   <%= form.submit "Approve All", class: "btn btn-success waves-effect waves-light ml-4 actionMultiLeave d-none" %>

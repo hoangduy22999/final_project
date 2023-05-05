@@ -35,7 +35,7 @@
             <%= form.label "User:", class: "control-label" %>
           </div>
           <div class="row d-flex align-items-center mb-3">
-            <input name ="time_sheet[user]" list="brow" class="form-control" value="<%= selected_user(form.object.user_id) %>">
+            <input name ="time_sheet[user]" autocomplete="off" list="brow" class="form-control" value="<%= selected_user(form.object.user_id) %>">
             <datalist id="brow">
               <% User.includes(:department).status_active.each do |user|%>
                 <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">

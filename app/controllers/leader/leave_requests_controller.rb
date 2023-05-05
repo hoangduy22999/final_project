@@ -2,7 +2,8 @@ class Leader::LeaveRequestsController < Leader::BaseController
   before_action :set_leave_request, only: %i[update]
 
   def index
-    @leave_requests = LeaveRequest.includes(user: [:user_department, :department])
+    @leave_requests = current_user.leave_requests_need_approve
+                                  .includes(user: [:user_department, :department])
                                   .ransack((params[:where] || {}).merge({status_eq: "pending", approve_by_eq: current_user.id})).result
                                   .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
   end
