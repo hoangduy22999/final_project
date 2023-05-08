@@ -137,9 +137,9 @@ class User < ApplicationRecord
   def generate_token
     payload = {
       user_id: id,
-      expiry: DateTime.now + ENV['TOKEN_LIFE'].to_i.months
+      expiry: DateTime.now + ENV.fetch('TOKEN_LIFE').to_i.months
     }
-    JWT.encode payload, ENV['HMAC_SECRET'], 'HS256'
+    JWT.encode payload, ENV.fetch('HMAC_SECRET'), 'HS256'
   end
 
 

@@ -81,3 +81,4 @@ gem "ruby-holidayapi", "~> 1.0"
 gem "annotate"
 gem 'rack-cors'
 gem 'jwt'
+gem 'active_model_serializers'

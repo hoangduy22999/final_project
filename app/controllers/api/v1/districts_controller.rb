@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
-module Api
-  module V1
-    class DistrictsController < ApplicationController
-      def index
-        districts = District.where(city_id: params[:city_id]).ransack(params[:where]).result.order(name: :asc)
-        render json: DistrictSerializer.new(districts).serializable_hash, status: :ok
-      end
-    end
+class Api::V1::DistrictsController < Api::V1::ApplicationApi
+  skip_before_action :authorized
+
+  def index
+    service = V1::Api::Districts::IndexService.new(
+      params, {current_user: current_user}
+    )
+    service.perform
+    data = service.data
+    render status: 200,
+            json: data,
+            adapter: :json,
+            root: 'data',
+            each_serializer: Cities::IndexSerializer,
+            meta: { page: service.page_params, page_number: data.total_pages }
   end
 end

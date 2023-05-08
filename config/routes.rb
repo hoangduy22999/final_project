@@ -32,7 +32,9 @@ Rails.application.routes.draw do
         delete "sign_out", :to => 'sessions#destroy'
       end
       resources :districts, only: [:index]
-      resources :leave_requests, only: [:index]
+      resources :cities, only: [:index]
+      resources :leave_requests, only: [:index, :create, :update, :destroy]
+      resources :time_sheets, only: [:index, :create, :update, :destroy]
     end
   end
 end

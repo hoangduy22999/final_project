@@ -65,9 +65,8 @@ class Api::V1::ApplicationApi < ActionController::API
 
   def logged_id
     header_token = request.headers['token']
-    decode_token = JWT.decode(header_token, ENV['HMAC_SECRET'], true, { algorithm: 'HS256' }).first
+    decode_token = JWT.decode(header_token, ENV.fetch('HMAC_SECRET'), true, { algorithm: 'HS256' }).first
     return nil unless decode_token['expiry'] && decode_token['expiry'].to_datetime >= DateTime.now
-
     decode_token['user_id']
   rescue JWT::DecodeError
     nil
