@@ -8,9 +8,7 @@
 #  approve_by    :bigint
 #  created_by    :integer
 #  end_date      :datetime
-#  keeping_type  :integer          not null
 #  leave_type    :integer
-#  on_time       :integer
 #  reason        :text
 #  reference_ids :bigint           is an Array
 #  start_date    :datetime
@@ -62,6 +60,10 @@ class LeaveRequest < ApplicationRecord
     check_in: 0,
     check_out: 1
   }, _prefix: true
+
+  # ransacker
+  ransacker :status, formatter: proc { |key| statuses[key] }
+  ransacker :leave_type, formatter: proc { |key| leave_types[key] }
 
   # function
   def references

@@ -3,7 +3,7 @@
     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content p-4">
-      <%= form_with(model: leave_request, html: { class: "form-horizontal" }) do |form| %>
+      <%= form_with(model: leave_request, html: { class: "form-horizontal",  data: {confirm: 'Are You Sure'}  }) do |form| %>
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add Leave Request</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -48,17 +48,9 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+          <%= form.submit "Save",class: "btn btn-primary waves-effect waves-light ml-4" %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
-
-  <%# t.integer 'leave_type'
-  t.bigint 'approve_by'
-  t.datetime 'start_date'
-  t.datetime 'end_date'
-  t.text 'reason'
-  t.integer 'on_time'
-  t.bigint 'reference_ids', array: true %>

@@ -17,7 +17,7 @@
 <table class="table table-hover mt-4">
   <thead>
     <tr class="text-center">
-      <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange="selectAll(this)"></th>
+      <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange=""></th>
       <th scope="col">User</th>
       <th scope="col">Department</th>
       <th scope="col">Type</th>
@@ -28,7 +28,7 @@
   <tbody>
     <% @leave_requests.each do |leave_request| %>
       <tr class="text-center leaveRequestTr">
-        <td class=""><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange="selectMulti()"></td>
+        <td class=""><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange=""></td>
         <td><%= leave_request.user.full_name %></td>
         <td><%= role_department(leave_request.user).titleize %></td>
         <td><%= leave_request.leave_type.titleize %></td>

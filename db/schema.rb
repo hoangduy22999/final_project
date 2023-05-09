@@ -106,9 +106,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "reason"
-    t.integer "on_time"
     t.bigint "reference_ids", array: true
-    t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
