@@ -24,7 +24,7 @@ class TimeSheet < ApplicationRecord
   # validates
   validates :user, :keeping_type, presence: true
   validate :check_today, unless: -> { keeping_time.blank? }, on: :create
-  validate :check_out_time, :check_in_today, unless: -> { keeping_time.blank? }
+  validate :check_out_time, :check_in_today
   validates :keeping_time, presence: true, date: { before_or_equal_to: Time.now.end_of_day }
 
   # enums
@@ -102,12 +102,16 @@ class TimeSheet < ApplicationRecord
   end
 
   def check_out_time
+    return if keeping_type.nil? || keeping_type.nil?
+
     return if keeping_type =='check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in')&.keeping_time < keeping_time
 
     errors.add(:base, 'Checkin time greater than Checkout time')
   end
 
   def check_in_today
+    return if keeping_type.nil? || keeping_type.nil?
+    
     return if keeping_type == 'check_in' || TimeSheet.find_by(user_id: user_id, keeping_time: keeping_time.all_day, keeping_type: 'check_in') || change_by == 'admin'
 
     errors.add(:base, 'You are not checking in today')

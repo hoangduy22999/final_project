@@ -8,21 +8,29 @@ class Api::V1::LeaveRequestsController < Api::V1::ApplicationApi
     service.perform
     data = service.data
 
-    render status: 200,
-            json: data,
-            adapter: :json,
-            root: 'data',
-            each_serializer: LeaveRequests::IndexSerializer,
-            meta: { page: service.page_params, page_number: data.total_pages }
+    render_index(data, LeaveRequests::IndexSerializer, service.page_params, data.total_pages)
   end
 
   def create
+    service = V1::Api::TimeSheets::CreateService.new(params, {current_user: current_user})
+    service.perform
+    data = service.data
+
+    render_success(data, LeaveRequests::IndexSerializer)
   end
 
   def update
+    service = V1::Api::TimeSheets::UpdateService.new(params, {current_user: current_user, object: @leave_request})
+    service.perform
+    data = service.data
+    render_success(data, LeaveRequests::IndexSerializer)
   end
 
   def destroy
+    service = V1::Api::TimeSheets::DestroyService.new(params, {current_user: current_user, object: @leave_request})
+    service.perform
+    data = service.data
+    render_success(data, LeaveRequests::IndexSerializer)
   end
 
   private
@@ -31,9 +39,7 @@ class Api::V1::LeaveRequestsController < Api::V1::ApplicationApi
       @leave_request = LeaveRequest.find_by(params[:id])
 
       raise NotFound unless @leave_request
-    end
 
-    def leave_request_params
-      params.require(:leave_request).permit(:leave_type, :approve_by, :start_date, :end_date, :reason, :on_time, :reference_ids)
+      raise NotFound if @leave_request.status_approved?
     end
 end

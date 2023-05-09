@@ -28,13 +28,14 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       devise_scope :user do
-        post "sign_in", :to => 'sessions#create'
-        delete "sign_out", :to => 'sessions#destroy'
+        post "sign_in", to:  'sessions#create'
+        delete "sign_out", to: 'sessions#destroy'
       end
       resources :districts, only: [:index]
       resources :cities, only: [:index]
       resources :leave_requests, only: [:index, :create, :update, :destroy]
-      resources :time_sheets, only: [:index, :create, :update, :destroy]
+      resources :time_sheets, only: [:index, :create]
+      get 'leaders', to: 'users#leaders'
     end
   end
 end

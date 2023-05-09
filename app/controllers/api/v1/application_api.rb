@@ -27,6 +27,23 @@ class Api::V1::ApplicationApi < ActionController::API
     render json: { errors: errors }, status: :bad_request
   end
 
+  def render_success(data, serializer)
+    render status: 200,
+            json: data,
+            adapter: :json,
+            root: 'data',
+            serializer: serializer
+  end
+
+  def render_index(data, serializer, page, total_pages)
+    render status: 200,
+            json: data,
+            adapter: :json,
+            root: 'data',
+            each_serializer: serializer,
+            meta: { page: page, page_number: total_pages }
+  end
+
   # def current_device
   #   @current_device ||= Device.find_by(device_token: current_device_id)
   # end

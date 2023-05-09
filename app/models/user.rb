@@ -76,6 +76,8 @@ class User < ApplicationRecord
   composed_of :salary, class_name: 'Money', mapping: %w[price cents], converter: proc { |value|
                                                                                    Money.new(value)
                                                                                  }
+                                                                                
+  scope :leader_department, -> { joins(:user_department).where(user_departments: { role: "leader" }) }
 
   # enum
   enum status: {
@@ -132,6 +134,10 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def name_with_department
+    full_name + " - " + department.name
   end
 
   def generate_token
