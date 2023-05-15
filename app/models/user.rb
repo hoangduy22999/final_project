@@ -24,7 +24,7 @@
 #  role                   :integer          default("user"), not null
 #  salary                 :integer
 #  sign_in_count          :integer          default(0)
-#  status                 :integer          default("inactive"), not null
+#  status                 :integer          default("active"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  city_id                :bigint
@@ -68,14 +68,11 @@ class User < ApplicationRecord
   has_many :leave_requests, dependent: :destroy
   has_many :leave_requests_need_approve, class_name: 'LeaveRequest', foreign_key: "approve_by", dependent: :nullify
   has_many :employees, through: :department, source: 'users', class_name: 'User'
+  has_one :education, dependent: :destroy
+  has_one :dependent, dependent: :destroy
 
   # nested attributes
-  accepts_nested_attributes_for :user_department, allow_destroy: true
-
-  # composed
-  composed_of :salary, class_name: 'Money', mapping: %w[price cents], converter: proc { |value|
-                                                                                   Money.new(value)
-                                                                                 }
+  accepts_nested_attributes_for :user_department, :education, :dependent, allow_destroy: true
                                                                                 
   scope :leader_department, -> { joins(:user_department).where(user_departments: { role: "leader" }) }
 

@@ -68,4 +68,10 @@ module UserHelper
     leader_ids = UserDepartment.role_admin.pluck(:user_id)
     User.where(user_id: leader_ids).or(User.role_admin)
   end
+
+  def user_relationship_options
+    Dependent.relationships.keys.each_with_object([['-- Choose Relation --', '']]) do |relation, object|
+      object << [relation.titleize, relation]
+    end
+  end
 end

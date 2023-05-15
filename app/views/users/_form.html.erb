@@ -1,20 +1,32 @@
 <%= form_with(model: user,url: "/profile", method: "patch", html: { class: "form-horizontal" }) do |form| %>
+  <i><b>Basic Information</b></i>
+  <hr class="hr" />
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "firt_name:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
+    <div class="col-sm-2">
       <%= form.text_field :first_name, class: "form-control" %>
     </div>
 
     <%= form.label "last_name:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
+    <div class="col-sm-2">
       <%= form.text_field :last_name, class: "form-control" %>
+    </div>
+
+    <%= form.label "email:", class: "control-label col-sm-1" %>
+    <div class="col-sm-5">
+      <%= form.text_field :email, class: "form-control" %>
     </div>
   </div>
 
   <div class="row d-flex align-items-center mb-4">
-    <%= form.label "email:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
-      <%= form.text_field :email, class: "form-control" %>
+    <%= form.label "gender:", class: "control-label col-sm-1" %>
+    <div class="col-sm-2">
+      <%= form.select :gender, gender_options, {},  { class: "form-control" } %>
+    </div>
+
+    <%= form.label "birthday:", class: "control-label col-sm-1" %>
+    <div class="col-sm-2">
+      <%= form.date_field :birthday, class: "form-control" %>
     </div>
 
     <%= form.label "phone:", class: "control-label col-sm-1" %>
@@ -22,37 +34,25 @@
       <%= form.text_field :phone, class: "form-control" %>
     </div>
   </div>
-
-  <div class="row d-flex align-items-center mb-4">
-    <%= form.label "gender:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
-      <%= form.select :gender, gender_options, {},  { class: "form-control" } %>
-    </div>
-
-    <%= form.label "birthday:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
-      <%= form.date_field :birthday, class: "form-control" %>
-    </div>
-  </div>
   
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "city:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
+    <div class="col-sm-2">
       <%= form.select :city_id, city_options, {}, { class: "form-control", onchange: "setDistrictSelect()" } %>
     </div>
 
     <%= form.label "district:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
+    <div class="col-sm-2">
       <%= form.select :district_id, [["-- Choose District --", ""], [user.district&.name, user.district&.id]], {}, { class: "form-control" } %>
     </div>
-  </div>
 
-  <div class="row d-flex align-items-center mb-4">
     <%= form.label "address:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
       <%= form.text_field :address, class: "form-control" %>
     </div>
+  </div>
 
+  <div class="row d-flex align-items-center mb-4">
     <%= form.label "avatar:", class: "control-label col-sm-1" %>
     <div class="col-sm-5">
       <%= form.file_field :avatar, accept:'image/*', class: "form-control" %>
@@ -60,27 +60,92 @@
   </div>
 
   <div class="row d-flex align-items-center mb-4">
-    <div class="col-sm-7">
-    </div>
-
     <div class="col-sm-5" id="avatarDiv">
       <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
     </div>
   </div>
 
-  <div class="row d-flex align-items-center mb-4">
-    <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
-        <%= ff.label :department, class: "control-label col-sm-1"  %>
-        <div class="col-sm-5">
-        <%= ff.select :department_id, department_options, {}, { class: "form-control" } %>
-        </div>
+  <i><b>Department Information</b></i>
+  <hr class="hr" />
+  <%= form.fields_for :user_department, user.user_department, {class: "form-control"} do |ff| %>
+    <div class="row d-flex align-items-center mb-4">
+          <%= ff.label :department, class: "control-label col-sm-1"  %>
+          <div class="col-sm-5">
+          <%= ff.select :department_id, department_options, {}, { class: "form-control", disabled: true } %>
+          </div>
 
-        <%= ff.label :role, class: "control-label col-sm-1"  %>
-        <div class="col-sm-5">
-        <%= ff.select :role, role_options, {}, { class: "form-control" } %>
-        </div>
-    <% end %>
-  </div>
+          <%= ff.label :role, class: "control-label col-sm-1"  %>
+          <div class="col-sm-5">
+          <%= ff.select :role, role_options, {}, { class: "form-control", disabled: true  } %>
+          </div>
+    </div>
+  <% end %>
+
+  <i><b>Education</b></i>
+  <hr class="hr" />
+  <%= form.fields_for :education, user.education, {class: "form-control"} do |education| %>
+    <div class="row d-flex align-items-center mb-4">
+      <%= education.label :name, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :name, class: "form-control" %>
+      </div>
+
+      <%= education.label :specialization, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :specialization, class: "form-control"  %>
+      </div>
+    </div>
+
+    <div class="row d-flex align-items-center mb-4">
+      <%= education.label :degree, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :degree, class: "form-control"  %>
+      </div>
+
+      <%= education.label :start_date, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= education.date_field :start_date, class: "form-control"  %>
+      </div>
+
+      <%= education.label :end_date, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= education.date_field :end_date, class: "form-control"  %>
+      </div>
+    </div>
+  <% end %>
+
+  <i><b>Dependent User</b></i>
+  <hr class="hr" />
+  <%= form.fields_for :dependent, user.dependent, {class: "form-control"} do |dependent| %>
+    <div class="row d-flex align-items-center mb-4">
+      <%= dependent.label :name, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= dependent.text_field :name, class: "form-control"%>
+      </div>
+
+      <%= dependent.label :address, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= dependent.text_field :address, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row d-flex align-items-center mb-4">
+      <%= dependent.label :relationship, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= dependent.select :relationship, user_relationship_options, {}, { class: "form-control" } %>
+      </div>
+
+      <%= dependent.label :birthday, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= dependent.date_field :birthday, class: "form-control" %>
+      </div>
+
+      <%= dependent.label :phone, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= dependent.text_field :phone, class: "form-control" %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="row">
     <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>

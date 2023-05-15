@@ -9,6 +9,9 @@ class Admin::UsersController < Admin::BaseController
 
   def new
     @user = User.new
+    @user.build_user_department unless @user.build_user_department.present?
+    @user.build_education unless @user.build_education.present?
+    @user.build_dependent unless @user.build_dependent.present?
   end
   
   def create
@@ -27,10 +30,16 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def show
+    @user.build_user_department unless @user.user_department.present?
+    @user.build_education unless @user.education.present?
+    @user.build_dependent unless @user.dependent.present?
+  end
+
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to admin_users_url(@user), notice: 'User was successfully updated.' }
+        format.html { redirect_to admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         flash.now[:error] = @user.errors.full_messages.first
@@ -57,6 +66,8 @@ class Admin::UsersController < Admin::BaseController
 
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status, :city_id,
-                                 :district_id, :address, :phone, :avatar, user_department_attributes: %i[id department_id role])
+                                 :district_id, :address, :phone, :avatar,
+                                 education_attributes: %i[id name degree start_date end_date specialization],
+                                 dependent_attributes: %i[id name address birthday relationship phone])
   end
 end

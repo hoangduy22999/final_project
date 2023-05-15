@@ -19,7 +19,7 @@ user_avatar.onchange = function (){
 }
 
 function setDistrictSelect() {
-  fetch(`http://127.0.0.1:3001/api/v1/districts.json?city_id=${citySelect.value}`)
+  fetch(`http://0.0.0.0:3001/api/v1/districts.json?city_id=${citySelect.value}`)
   .then((response) => response.json())
   .then((data) => {
     var districts = data['data']
@@ -29,7 +29,7 @@ function setDistrictSelect() {
       }
     }
     for(let i = 0; i < districts.length; i++) {
-      let district = districts[i]['attributes']
+      let district = districts[i]
       if (districtSelect[1] != district['name']) {
         let opt = document.createElement('option');
         opt.value = district['id'];

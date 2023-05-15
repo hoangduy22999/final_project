@@ -17,6 +17,9 @@
 #  user  (user_id => users.id)
 #
 class Education < ApplicationRecord
+  # validates
+  validates :start_date, date: { before_or_equal_to: :end_date }, if: ->{ end_date.present? && start_date.present? }
+
   # relationship
   belongs_to :user
 end

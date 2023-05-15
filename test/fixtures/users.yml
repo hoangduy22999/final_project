@@ -22,7 +22,7 @@
 #  role                   :integer          default("user"), not null
 #  salary                 :integer
 #  sign_in_count          :integer          default(0)
-#  status                 :integer          default("inactive"), not null
+#  status                 :integer          default("active"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  city_id                :bigint

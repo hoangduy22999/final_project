@@ -16,7 +16,7 @@ create_table :users do |t|
   t.datetime "last_sign_in_at", precision: 6
   t.string "current_sign_in_ip", limit: 255
   t.string "last_sign_in_ip", limit: 255
-  t.integer 'status', null: false, default: 0
+  t.integer 'status', null: false, default: 1
   t.bigint 'district_id', null: true
   t.bigint 'city_id', null: true
   t.string 'address', null: false
