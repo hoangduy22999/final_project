@@ -12,7 +12,7 @@
 #  reason        :text
 #  reference_ids :bigint           is an Array
 #  start_date    :datetime
-#  status        :integer
+#  status        :integer          default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  user_id       :bigint
@@ -53,7 +53,8 @@ class LeaveRequest < ApplicationRecord
     unpaid_leave: 2,
     over_time: 3,
     compensatory_leave: 4,
-    forgot_kepping: 5
+    forgot_kepping: 5,
+    other: 6
   }, _prefix: true
 
   enum keeping_type: {

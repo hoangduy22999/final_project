@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "created_by"
     t.integer "leave_type"
     t.bigint "approve_by"
-    t.integer "status"
+    t.integer "status", default: 0
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "reason"

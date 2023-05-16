@@ -12,7 +12,7 @@
 #  reason        :text
 #  reference_ids :bigint           is an Array
 #  start_date    :datetime
-#  status        :integer
+#  status        :integer          default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  user_id       :bigint

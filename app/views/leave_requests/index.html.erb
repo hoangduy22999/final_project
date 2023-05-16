@@ -8,7 +8,8 @@
           <% end %>
         </datalist>
         <%= select_tag "where[leave_type_eq]",  options_for_select(leave_type_options, params[:where].present?  ? params[:where]["leave_type_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-        <input class="form-control" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
+        <%= select_tag "where[time_range]",  options_for_select(time_range_options, params[:where].present?  ? params[:where]["time_range"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+        </select>
       </div>
     </form>
   </div>
@@ -18,10 +19,11 @@
   <thead>
     <tr class="text-center">
       <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange=""></th>
-      <th scope="col">User</th>
       <th scope="col">Department</th>
       <th scope="col">Type</th>
+      <th scope="col">Status</th>
       <th scope="col">Time</th>
+      <th scope="col">Date</th>
       <th scope="col" class="text-center">Action</th>
     </tr>
   </thead>
@@ -29,14 +31,17 @@
     <% @leave_requests.each do |leave_request| %>
       <tr class="text-center leaveRequestTr">
         <td class=""><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange=""></td>
-        <td><%= leave_request.user.full_name %></td>
         <td><%= role_department(leave_request.user).titleize %></td>
         <td><%= leave_request.leave_type.titleize %></td>
-        <td>@mdo</td>
+        <td class="<%= leave_request.status_pending? ? 'text-warning' : (leave_request.status_rejected? ? 'text-danger' : 'text-success') %>">
+          <i><b><%= leave_request.status&.titleize %></b></i>
+        </td>
+        <td><%= "#{leave_request.start_date&.strftime('%H:%M -')} #{leave_request.end_date&.strftime('%H:%M')}" %></td>
+        <td><%= leave_request.end_date&.strftime("%d-%m-%Y") %></td>
         <td>
           <div class="text-center">
             <a class="actionLink mr-3" title="Edit" data-toggle="modal" data-target="#updateLeaveRequest<%= leave_request.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-            <a href="leave_request/<%= leave_request.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
+            <a href="leave_requests/<%= leave_request.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
               <i class="fa-solid fa-trash text-danger"></i>
             </a>
           </div>
