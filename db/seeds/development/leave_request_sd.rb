@@ -17,10 +17,10 @@ attributes = (User.where.not(id: skip_user_ids).pluck(:id) * 10).map do |user_id
     created_by: user_id,
     user_id: user_id,
     leave_type: rand(0..4),
-    status: rand(0..2),
-    on_time: rand(0..3),
+    status: rand(0..2)
     approve_by: leader.user_id,
     start_date: date,
     end_date: date,
     reference_ids: leader.department.users.last(10).pluck(:id)
+  })
 end

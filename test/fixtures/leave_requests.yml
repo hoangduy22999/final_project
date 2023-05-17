@@ -6,8 +6,10 @@
 #  approve_by    :bigint
 #  created_by    :integer
 #  end_date      :datetime
+#  envidence     :string
 #  leave_type    :integer
-#  reason        :text
+#  message       :text
+#  reason        :integer          default(0)
 #  reference_ids :bigint           is an Array
 #  start_date    :datetime
 #  status        :integer          default("pending")

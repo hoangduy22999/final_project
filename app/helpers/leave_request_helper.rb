@@ -59,4 +59,10 @@ module LeaveRequestHelper
     end
     )
   end
+
+  def reason_options
+    LeaveRequest.reasons.keys.each_with_object([['-- Choose Reason --', '']]) do |reason, object|
+      object << [reason.titleize, reason]
+    end
+  end
 end

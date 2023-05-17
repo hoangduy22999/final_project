@@ -1,7 +1,7 @@
 class LeaveRequestsController < ApplicationController
   include LeaveRequestHelper
 
-  before_action :set_leave_request, only: [:update, :destroy]
+  before_action :set_leave_request, only: [:update, :destroy, :show]
 
   def index
     @leave_requests = current_user.leave_requests.includes(user: [:user_department, :department])
@@ -19,13 +19,14 @@ class LeaveRequestsController < ApplicationController
     end
   end
 
-  def update
-    return redirect_to leave_requests_path, alert: "Can't update approve or reject leave request" unless @leave_request.status_pending?
+  def show; end
 
+  def update
+    # return redirect_to leave_requests_path, alert: "Can't update approve or reject leave request" unless @leave_request.status_pending?
     if @leave_request.update(leave_request_params)
-      redirect_to leave_requests_path, notice: "Leave Request has been update successfully"
+      redirect_to leave_request_path(@leave_request), notice: "Leave Request has been update successfully"
     else
-      redirect_to leave_requests_path, alert: @leave_request.errors.full_messages.first
+      redirect_to leave_request_path(@leave_request), alert: @leave_request.errors.full_messages.first
     end
   end
 
@@ -50,6 +51,6 @@ class LeaveRequestsController < ApplicationController
   end
 
   def leave_request_params
-    params.require(:leave_request).permit(:leave_type, :approve_by, :start_date, :end_date, :reason, :on_time, :reference_ids)
+    params.require(:leave_request).permit(:leave_type, :approve_by, :start_date, :end_date, :reason, :reference_ids, :target_date)
   end
 end

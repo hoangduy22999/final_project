@@ -2,22 +2,6 @@ citySelect = document.getElementById("user_city_id");
 districtSelect = document.getElementById("user_district_id");
 setDistrictSelect()
 
-user_avatar.onchange = function (){
-  const [file] = this.files
-  if (file) {
-    var currentAvatar = document.getElementById("formAvatar")
-    if (currentAvatar){
-      currentAvatar.src = URL.createObjectURL(file)
-    }
-    else {
-      var newAvatar = document.createElement('image');
-      newAvatar.src = URL.createObjectURL(file)
-      console.log(newAvatar)
-      document.getElementById("avatarDiv").appendChild(newAvatar)
-    }
-  }
-}
-
 function setDistrictSelect() {
   fetch(`http://0.0.0.0:3001/api/v1/districts.json?city_id=${citySelect.value}`)
   .then((response) => response.json())

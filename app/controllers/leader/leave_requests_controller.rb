@@ -1,5 +1,5 @@
 class Leader::LeaveRequestsController < Leader::BaseController
-  before_action :set_leave_request, only: %i[update]
+  before_action :set_leave_request, only: %i[update, show]
 
   def index
     @leave_requests = current_user.leave_requests_need_approve
@@ -7,6 +7,8 @@ class Leader::LeaveRequestsController < Leader::BaseController
                                   .ransack((params[:where] || {}).merge(status_eq: "pending")).result
                                   .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
   end
+
+  def show; end
 
   def update
     respond_to do |format|

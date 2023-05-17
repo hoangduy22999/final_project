@@ -104,11 +104,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "status", default: 0
     t.datetime "start_date"
     t.datetime "end_date"
-    t.text "reason"
+    t.integer "reason", default: 0
     t.bigint "reference_ids", array: true
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "envidence"
+    t.text "message"
   end
 
   create_table "meetings", force: :cascade do |t|
@@ -162,7 +164,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "email", default: "", null: false
     t.datetime "birthday", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
+    t.string "reset_password_token", limit: 255
     t.integer "role", default: 0, null: false
     t.integer "gender", default: 0, null: false
     t.datetime "reset_password_sent_at"
@@ -181,6 +183,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "salary"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "reset_passwomessagerd_token"
     t.index ["district_id"], name: "index_users_on_district_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

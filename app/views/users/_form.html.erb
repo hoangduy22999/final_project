@@ -54,14 +54,12 @@
 
   <div class="row d-flex align-items-center mb-4">
     <%= form.label "avatar:", class: "control-label col-sm-1" %>
-    <div class="col-sm-5">
-      <%= form.file_field :avatar, accept:'image/*', class: "form-control" %>
+    <div class="col-sm-1">
+      <%= form.file_field :avatar, accept:'image/*', onchange: 'setupImage(this.files)', class: "form-control d-none" %>
+      <input type="button" class="form-input" value="Browse..." onclick="document.getElementById('user_avatar').click();" />
     </div>
-  </div>
-
-  <div class="row d-flex align-items-center mb-4">
-    <div class="col-sm-5" id="avatarDiv">
-      <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formAvatar', style: 'width: 200px;'%>
+    <div class="col-sm-4" id="imageDiv">
+      <%= image_tag user.avatar? ? user.avatar_url : "", id: 'formImage', style: 'width: 420px;'%>
     </div>
   </div>
 
@@ -153,3 +151,4 @@
 <% end %>
 
 <script src="/javascripts/district_select.js" rel="preload"></script>
+<script src="/javascripts/image_select.js" rel="preload"></script>
