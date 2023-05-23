@@ -32,7 +32,7 @@
     </div>
     <% time_late = 0 %>
     <% (result.count / 7).times do |row| %>
-      <div class="row"  style="height: 120px">
+      <div class="row"  style="min-height: 120px">
         <% 7.times do |day| %>
           <div class="col border">
             <% this_day =  result[row * 7 + day]%>
@@ -47,13 +47,18 @@
                 <% time_late += check[:time_late].to_i %>
               <% end %>
               <% if time_late != 0 %>
-                <span class="btn-warning rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
+                <span class="btn-warning rounded-pill text-center" style="display: inline-block; width: 31%;font-size: 15px !important;">
+                  <%= time_late_strftime(time_late) %>
+                </span>
                 <% time_late = 0 %>
               <% end %>
               </br>
-              <% this_day[2]&.first(2)&.each do |leave_request| %>
-                <span class="btn-info rounded-pill text-center" style="display: inline-block; width: 100%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
-                <span class="btn-info rounded-pill text-center" style="display: inline-block; width: 100%;font-size: 15px !important;"><%= time_late_strftime(time_late) %></span>
+              <% this_day.select {|day| day[:type] && day[:type] != "check_in" && day[:type] != "check_out"}.each do |leave_request| %>
+                <span class="btn-info rounded-pill text-center" style="display: inline-block; width: 100%; font-size: 15px !important;">
+                  <%= "#{leave_request[:time_range]}" %>
+                  <br>
+                  <%= "#{leave_request[:type].titleize}" %>
+                </span>
               <% end %>
             <% end %>
           </div>
@@ -68,9 +73,11 @@
     <h5><b>- Late Time: <%= time_late_strftime(@data[:total_time_late], true) %></b></h5>
     <h5><b>- Leave Paid: 0</b></h5>
     <h5><b>- Leave Unpaid: 0</b></h5>
-    <h5><b>- Present: 6</b></h5>
-    <h5><b>- Present: 6</b></h5>
     </br>
     <h4><b>Note:<b></h4>
+    <span class="btn-success rounded-pill text-center mt-1" style="display: inline-block; width: 50%;font-size: 12px !important;">Check in</span>
+    <span class="btn-danger rounded-pill text-center mt-1" style="display: inline-block; width: 50%;font-size: 12px !important;">Check out</span>
+    <span class="btn-warning rounded-pill text-center mt-1" style="display: inline-block; width: 50%;font-size: 12px !important;">Late</span>
+    <span class="btn-info rounded-pill text-center mt-1" style="display: inline-block; width: 50%;font-size: 12px !important;">Leave Request</span>
   </div>
 </div>

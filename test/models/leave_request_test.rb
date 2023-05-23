@@ -11,7 +11,7 @@
 #  envidence     :string
 #  leave_type    :integer
 #  message       :text
-#  reason        :integer          default(0)
+#  reason        :integer          default("injury_or_illness")
 #  reference_ids :bigint           is an Array
 #  start_date    :datetime
 #  status        :integer          default("pending")

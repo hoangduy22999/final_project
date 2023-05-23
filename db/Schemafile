@@ -215,16 +215,18 @@ create_table :contracts do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
-# create_table :action_histories do |t|
-#   t.bigint 'user_id'
-#   t.integer 'action_type'
-#   t.string 'resource'
-#   t.string 'pre_value'
-#   t.string 'after_value'
+create_table :action_histories do |t|
+  t.bigint 'user_id'
+  t.integer 'action_type'
+  t.string 'resource_id'
+  t.string 'resource_type'
+  t.string 'pre_value'
+  t.string 'after_value'
+  t.string 'column_name'
 
-#   t.datetime "created_at", precision: 6, null: false
-#   t.datetime "updated_at", precision: 6, null: false
-# end
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
 
 
 add_foreign_key "districts", "cities", name: "city"

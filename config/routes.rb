@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :time_sheets, only: %i[index create]
   resources :questions
   resources :leave_requests
+  get 'leave_request/export', to: 'leave_requests#export', defaults: { format: :csv }
 
   namespace :admin do
     resources :holidays

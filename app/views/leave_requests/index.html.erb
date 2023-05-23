@@ -13,6 +13,14 @@
       </div>
     </form>
   </div>
+  <div class="col-sm-1">
+    <%= link_to new_leave_request_path do %>
+      <button class="btn btn-primary" href="/leave_requests/new" style="width: 100px;">
+        <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
+        Add
+      </button>
+    <% end %>
+  </div>
 </div>
 <table class="table table-hover mt-4">
   <thead>

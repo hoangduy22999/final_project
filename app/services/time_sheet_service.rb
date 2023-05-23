@@ -20,18 +20,21 @@ class TimeSheetService
     time_sheets = TimeSheet.where(keeping_time: start_month.all_month, user_id: @user_id).order(:keeping_time)
     disabled, current_keeping_type = keeping_button_value(time_sheets)
     time_sheet = TimeSheet.new(keeping_type: current_keeping_type)
+    leave_requests = LeaveRequest.where(user_id: user_id, start_date: start_month.all_month).order(:start_date)
     time_sheets, total_time_late, present = hash_timesheet(time_sheets)
     start_date = start_month.beginning_of_week
     end_date = end_month.end_of_week
     while start_date < end_date
       tmp_day = start_date.day
       weekend = weekend?(start_date)
+      leave_request = leave_requests.select { |lr| lr.start_date.day.eql?(tmp_day) }
+      leave_hash = leave_request.map {|lr| { day: tmp_day, type: "leave_request", time_range: "#{lr.start_date.strftime('%H:%M')} - #{lr.end_date.strftime('%H:%M')}", status: lr.status, type: lr.leave_type}}
       result << if start_date.month != current_month
                    { day: tmp_day, current_month: false, weekend: false }
                  elsif !time_sheets[tmp_day]
-                   { day: tmp_day, current_month: true, weekend: weekend }
+                  leave_hash << { day: tmp_day, current_month: true, weekend: weekend }
                  else
-                   time_sheets[tmp_day]
+                   time_sheets[tmp_day] + leave_hash
                  end
       start_date += 1.days
     end
