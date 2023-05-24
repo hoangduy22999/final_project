@@ -1,5 +1,0 @@
-<%- headers = ['Email', 'Date'] -%>
-<%= CSV.generate_line headers %>
-<%- @leave_requests.each do |leave_request| -%>
-  <%= CSV.generate_line([leave_request.approve_user.full_name, leave_request.created_at]) -%>
-<%- end -%>
