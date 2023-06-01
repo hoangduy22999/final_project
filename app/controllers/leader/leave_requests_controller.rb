@@ -1,5 +1,5 @@
 class Leader::LeaveRequestsController < Leader::BaseController
-  before_action :set_leave_request, only: %i[update, show]
+  before_action :set_leave_request, only: %i[update show]
 
   def index
     @leave_requests = current_user.leave_requests_need_approve
@@ -14,6 +14,18 @@ class Leader::LeaveRequestsController < Leader::BaseController
     respond_to do |format|
       if @leave_request.update(leave_request_param)
         format.html { redirect_to leader_leave_requests_path, notice: "Leave request was successfully #{@leave_request.status}." }
+        LeaveRequestMailer.with({ 
+          email: @leave_request.user.email,
+          leader_name: @leave_request.approve_user.full_name,
+          user_name: @leave_request.user.full_name,
+          type: @leave_request.leave_type.titleize,
+          time: @leave_request.leave_request_time,
+          reason: @leave_request.reason.titleize,
+          message: @leave_request.message,
+          status: @leave_request.status
+          })
+        .updated
+        .deliver_later
       else
         format.html { redirect_to leader_leave_requests_path, alert: @leave_request.errors.full_messages.first }
       end
@@ -25,6 +37,20 @@ class Leader::LeaveRequestsController < Leader::BaseController
     respond_to do |format|
       if leave_requests.present? && leave_requests.update_all(leave_requests_param)
         format.html { redirect_to leader_leave_requests_path, notice: "Leave request was successfully #{leave_requests&.first&.status}." }
+        leave_requests.each do |leave_request|
+          LeaveRequestMailer.with({ 
+            email: leave_request.user.email,
+            leader_name: leave_request.approve_user.full_name,
+            user_name: leave_request.user.full_name,
+            type: leave_request.leave_type.titleize,
+            time: leave_request.leave_request_time,
+            reason: leave_request.reason.titleize,
+            message: leave_request.message,
+            status: leave_request.status
+            })
+          .updated
+          .deliver_later
+        end
       else
         format.html { redirect_to leader_leave_requests_path, alert: leave_requests&.first&.errors&.full_messages&.first || "Leave request was empty" }
       end

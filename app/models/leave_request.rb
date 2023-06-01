@@ -34,7 +34,7 @@ class LeaveRequest < ApplicationRecord
   # validates
   validates :end_date, :leave_type, presence: true
   validates :start_date, presence: true, date: { before_or_equal_to: :end_date }
-  validate :approve_by_leader, :time_dulicate, :request_one_date
+  validate :approve_by_leader, :request_one_date
 
   # relationshipuser
   belongs_to :user
@@ -85,6 +85,11 @@ class LeaveRequest < ApplicationRecord
     envidence&.try(:url)
   end
 
+
+  def leave_request_time
+    "#{start_date.strftime('%H:%M')} - #{end_date.strftime('%H:%M')} #{start_date.strftime('%m/%d/%Y')}"
+  end
+
   # private methods
   private
 
@@ -102,17 +107,23 @@ class LeaveRequest < ApplicationRecord
 
   def time_dulicate
     range_time = (start_date..end_date)
-    return if LeaveRequest.where(start_date: range_time).or(LeaveRequest.where(end_date: range_time)).blank?
+    return if LeaveRequest.where(start_date: range_time).or(LeaveRequest.where(end_date: range_time))
+                          .where.not(id: id).blank?
 
     errors.add(:base, "Have present request in this time")
   end
 
   def send_mail_for_leader
-    LeaveRequestMailer.with(leader_full_name: approve_user.full_name, user_full_name: user.full_name, leave_request_type: leave_type.titleize, leave_request_time: leave_request_time)
-                      .created.deliver_later
-  end
-
-  def leave_request_time
-    "#{start_date.strftime('%H:%M')} - #{end_date.strftime('%H:%M')} #{start_date.strftime('%m/%d/%Y')}"
+    LeaveRequestMailer.with({ 
+                            email: approve_user.email,
+                            leader_name: approve_user.full_name,
+                            user_name: user.full_name,
+                            type: leave_type.titleize,
+                            time: leave_request_time,
+                            reason: reason.titleize,
+                            message: message
+                            })
+                      .created
+                      .deliver_later
   end
 end

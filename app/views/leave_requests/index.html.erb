@@ -47,8 +47,8 @@
         <td><%= leave_request.end_date&.strftime("%d-%m-%Y") %></td>
         <td>
           <div class="text-center">
-            <a class="actionLink mr-3" href="leave_requests/<%= leave_request.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-            <a href="leave_requests/<%= leave_request.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
+            <a class="actionLink mr-3" href="/leave_requests/<%= leave_request.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+            <a href="/leave_requests/<%= leave_request.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
               <i class="fa-solid fa-trash text-danger"></i>
             </a>
           </div>

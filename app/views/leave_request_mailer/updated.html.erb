@@ -1,6 +1,6 @@
-<p>Hello <%= @result[:leader_name] %>,</p>
+<p>Hello <%= @result[:user_name] %>,</p>
 
-<p>Your have new leave request from : <%= @result[:user_name] %></p>
+<p>Your leave request has been <%= @result[:status] %> by <%= @result[:leader_name] %></p>
 <p>Type: <%= @result[:type] %> - Time: <%= @result[:time] %></p>
 <p>Reason: <%= @result[:reason] %></p>
 <p>Please approve or reject in Leader site </p>

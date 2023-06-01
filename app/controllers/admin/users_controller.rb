@@ -67,6 +67,7 @@ class Admin::UsersController < Admin::BaseController
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :birthday, :role, :gender, :status, :city_id,
                                  :district_id, :address, :phone, :avatar,
+                                 user_department_attributes: %i[id department_id role],
                                  education_attributes: %i[id name degree start_date end_date specialization],
                                  dependent_attributes: %i[id name address birthday relationship phone])
   end

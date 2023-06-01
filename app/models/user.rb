@@ -172,8 +172,8 @@ class User < ApplicationRecord
   private
 
   def raise_change_email
-    return unless email_changed?
+    return if new_record? || !email_changed?
 
-    errors.add(:email, "Can't change your email")
+    errors.add(:email, "Cannot change your email")
   end
 end
