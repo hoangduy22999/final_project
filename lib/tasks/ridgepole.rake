@@ -21,6 +21,9 @@ namespace :ridgepole do
   desc 'create model'
   task :model, [:model] do |_t, args|
     system "bundle exec rails g model #{args[:model]} --skip-migration"
+    if Rails.env.development?
+      Rake::Task['annotate_models'].invoke
+    end
   end
 
   private

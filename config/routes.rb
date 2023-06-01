@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :questions
   resources :leave_requests
   get 'csvs/export', to: 'csvs#export', defaults: { format: :csv }
+  resources :room_pickers
+  resources :chats, only: %i[index]
+  resources :room_pickers, only: %i[index]
 
   namespace :admin do
     resources :holidays
@@ -19,6 +22,7 @@ Rails.application.routes.draw do
     resources :answers
     resources :departments
     resources :users
+    resources :rooms
   end
 
   namespace :leader do

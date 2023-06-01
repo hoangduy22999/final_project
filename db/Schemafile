@@ -185,6 +185,25 @@ end
 
 create_table :rooms do |t|
   t.string 'name'
+  t.string 'description'
+  t.integer 'capacity'
+  t.integer 'status', default: 0, null: false
+  t.time 'start_at'
+  t.time 'end_at'
+  t.integer 'rest_day', array: true, default: []
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table :room_pickers do |t|
+  t.bigint 'user_id'
+  t.integer 'room_id'
+  t.datetime 'start_at'
+  t.datetime 'end_at'
+  t.text 'description'
+  t.boolean 'repeat', default: false
+  t.integer 'repeat_type', default: 0
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# time_sheet_csvs_controller.rb
-
 class CsvsController < ApplicationController
   def export
     @object = klass_name.ransack(params[:where]).result

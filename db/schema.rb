@@ -143,10 +143,28 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "room_pickers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "room_id"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.text "description"
+    t.boolean "repeat", default: false
+    t.integer "repeat_type", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "description"
+    t.integer "capacity"
+    t.time "start_at"
+    t.time "end_at"
+    t.integer "rest_day", default: [], array: true
+    t.integer "status", default: 0, null: false
   end
 
   create_table "time_sheets", force: :cascade do |t|

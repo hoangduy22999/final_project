@@ -34,8 +34,7 @@ class LeaveRequest < ApplicationRecord
   # validates
   validates :end_date, :leave_type, presence: true
   validates :start_date, presence: true, date: { before_or_equal_to: :end_date }
-  validate :approve_by_leader
-  validate :request_one_date
+  validate :approve_by_leader, :time_dulicate, :request_one_date
 
   # relationshipuser
   belongs_to :user

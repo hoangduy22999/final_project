@@ -4,6 +4,7 @@ module ApplicationHelper
   include UserHelper
   include TimeSheetHelper
   include LeaveRequestHelper
+  include RoomHelper
 
   def toastr_flash
     flash.each_with_object([]) do |(type, message), flash_messages|
