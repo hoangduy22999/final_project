@@ -9,7 +9,7 @@
 #  name        :string
 #  rest_day    :integer          default([]), is an Array
 #  start_at    :time
-#  status      :integer          default(0), not null
+#  status      :integer          default("available"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

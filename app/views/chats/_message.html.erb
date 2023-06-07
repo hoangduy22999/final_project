@@ -1,0 +1,12 @@
+<div class="chat-message-<%= sender %> pb-4" data-controller='room-chat' data-room-chat-meassage-id='<%= message.id %>'>
+  <div data-room-chat-target = 'messageId'>
+    <div>
+      <img src="<%= user.avatar_url || '/assets/default_avatar.png'%>" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+      <div class="text-muted small text-nowrap mt-2">2:44 am</div>
+    </div>
+    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+      <div class="font-weight-bold mb-1"><%= user.full_name %></div>
+      <%= message.content %>
+    </div>
+  </div>
+</div>

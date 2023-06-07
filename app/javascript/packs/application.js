@@ -12,7 +12,6 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "../js/sb-admin-2"
 import "../js/sb-admin-2.min"
-import "../vendor/chart.js/Chart.min"
 import "../vendor/jquery-easing/jquery.easing.min"
 import "../vendor/bootstrap/js/bootstrap.bundle.min"
 import "../vendor/jquery/jquery.min"
@@ -45,7 +44,3 @@ toastr.options = {
   "showMethod": "fadeIn",
   "hideMethod": "fadeOut"
 }
-// Support component names relative to this directory:
-var componentRequireContext = require.context("components", true);
-var ReactRailsUJS = require("react_ujs");
-ReactRailsUJS.useContext(componentRequireContext);

@@ -1,17 +1,13 @@
 # == Schema Information
 #
-# Table name: rooms
+# Table name: messages
 #
 #  id          :bigint           not null, primary key
-#  capacity    :integer
-#  description :string
-#  end_at      :time
-#  name        :string
-#  rest_day    :integer          default([]), is an Array
-#  start_at    :time
-#  status      :integer          default("available"), not null
+#  content     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  receiver_id :bigint
+#  sender_id   :bigint
 #
 
 # This model initially had no columns defined. If you add columns to the

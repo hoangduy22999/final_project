@@ -82,5 +82,3 @@ gem "annotate"
 gem 'rack-cors'
 gem 'jwt'
 gem 'active_model_serializers'
-
-gem "react-rails", "= 2.7"

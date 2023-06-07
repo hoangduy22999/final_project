@@ -136,6 +136,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "sender_id"
+    t.bigint "receiver_id"
+    t.string "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "content", null: false

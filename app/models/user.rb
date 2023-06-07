@@ -67,10 +67,11 @@ class User < ApplicationRecord
   has_many :questions, dependent: :nullify
   has_many :answers, dependent: :nullify
   has_many :leave_requests, dependent: :destroy
-  has_many :leave_requests_need_approve, class_name: 'LeaveRequest', foreign_key: "approve_by", dependent: :nullify
+  has_many :leave_requests_need_approve, class_name: 'LeaveRequest', foreign_key: 'approve_by', dependent: :nullify
   has_many :employees, through: :department, source: 'users', class_name: 'User'
   has_one :education, dependent: :destroy
   has_one :dependent, dependent: :destroy
+  has_many :sended_messages, class_name: 'Message', foreign_key: 'sender_id', department: :nullify
 
   # nested attributes
   accepts_nested_attributes_for :user_department, :education, :dependent, allow_destroy: true
