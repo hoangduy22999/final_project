@@ -1,1 +1,44 @@
-<%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>
+
+<div id='calendar' style=""></div>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.8/index.global.min.js' rel="preload"></script>
+<script>
+	$( document ).ready(function() {
+		var calendarEl = document.getElementById('calendar');
+		let events = [];
+		<% @room_pickers.each do |rp| %>
+			events.push({
+				id: '<%= rp.id %>',
+				title: '<%= rp.room.name %>',
+				start: '<%= rp.start_at.strftime('%FT%T') %>',
+				end: '<%= rp.end_at.strftime('%FT%T') %>',
+				color: '<%= rp.room.color %>'
+			})
+		<% end %>
+
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+			initialView: 'timeGridWeek',
+			allDaySlot: false,
+			slotMinTime: '07:00',
+			slotMaxTime: '21:00',
+			height: 810,
+			selectable: true,
+
+			events: events,
+			eventClick: function(info) {
+				alert('Event: ' + info.event.title);
+
+				calendar.unselect()
+			},
+			select: function(info) {
+				alert('Event: ' + info.startStr);
+
+				calendar.unselect()
+			}
+		});
+
+		calendar.render();
+	});
+
+
+</script>

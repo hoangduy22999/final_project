@@ -82,3 +82,5 @@ gem "annotate"
 gem 'rack-cors'
 gem 'jwt'
 gem 'active_model_serializers'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'

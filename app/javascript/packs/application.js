@@ -4,6 +4,9 @@
 // that code so it'll be compiled.
 
 //= require select2
+//= require moment 
+//= require fullcalendar
+//= require fullcalendar/locale-all
 
 
 import Rails from "@rails/ujs"

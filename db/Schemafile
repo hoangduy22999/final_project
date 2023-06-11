@@ -191,6 +191,7 @@ create_table :rooms do |t|
   t.time 'start_at'
   t.time 'end_at'
   t.integer 'rest_day', array: true, default: []
+  t.string 'color'
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

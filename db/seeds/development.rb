@@ -10,4 +10,6 @@ include SeedPreLoad
 # load_seed('time_sheet_sd', 'development')
 # load_seed('leave_request_sd', 'development')
 # load_seed('holiday_sd', 'development')
-load_seed('chat_sd', 'development')
+# load_seed('chat_sd', 'development')
+load_seed('room_sd', 'development')
+load_seed('room_picker_sd', 'development')

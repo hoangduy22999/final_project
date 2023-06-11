@@ -4,6 +4,7 @@
 #
 #  id          :bigint           not null, primary key
 #  capacity    :integer
+#  color       :string
 #  description :string
 #  end_at      :time
 #  name        :string

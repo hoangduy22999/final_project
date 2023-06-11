@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["receiver_id"], name: "index_messages_on_receiver_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -173,6 +175,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.time "end_at"
     t.integer "rest_day", default: [], array: true
     t.integer "status", default: 0, null: false
+    t.string "color"
   end
 
   create_table "time_sheets", force: :cascade do |t|

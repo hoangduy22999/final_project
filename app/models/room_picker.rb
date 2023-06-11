@@ -19,6 +19,14 @@ class RoomPicker < ApplicationRecord
   belongs_to :room
 
   # validation
-  validates :start_at, presence: true, date: { before_or_equal_to: :end}
+  validates :start_at, presence: true, date: { before_or_equal_to: :end_at}
   validates :end_at, presence: true
+
+  enum repeat_type: {
+    daily: 0,
+    weekly: 1,
+    monthly: 2,
+    yearly: 3,
+    one_time: 4
+  }, _prefix: true
 end

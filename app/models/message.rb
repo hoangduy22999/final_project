@@ -9,6 +9,11 @@
 #  receiver_id :bigint
 #  sender_id   :bigint
 #
+# Indexes
+#
+#  index_messages_on_receiver_id  (receiver_id)
+#  index_messages_on_sender_id    (sender_id)
+#
 class Message < ApplicationRecord
   # relationship
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'

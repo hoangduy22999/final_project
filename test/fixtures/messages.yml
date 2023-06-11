@@ -9,6 +9,11 @@
 #  receiver_id :bigint
 #  sender_id   :bigint
 #
+# Indexes
+#
+#  index_messages_on_receiver_id  (receiver_id)
+#  index_messages_on_sender_id    (sender_id)
+#
 
 # This model initially had no columns defined. If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
