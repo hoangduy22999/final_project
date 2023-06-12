@@ -45,6 +45,6 @@ class Admin::RoomsController < Admin::BaseController
   end
 
   def room_params
-    params.require(:room).permit(:id, :name, :description, :capacity, :status, :start_at, :end_at, :rest_day => [])
+    params.require(:room).permit(:id, :name, :description, :capacity, :status, :start_at, :end_at, :color, :rest_day => [])
   end
 end

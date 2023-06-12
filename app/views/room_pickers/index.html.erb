@@ -1,6 +1,6 @@
 
 <div id='calendar' style=""></div>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.8/index.global.min.js' rel="preload"></script>
+<script src="/javascripts/fullcalendar-6.1.8/dist/index.global.min.js" rel="preload"></script>
 <script>
 	$( document ).ready(function() {
 		var calendarEl = document.getElementById('calendar');
@@ -29,6 +29,16 @@
 				alert('Event: ' + info.event.title);
 
 				calendar.unselect()
+			},
+			eventMouseEnter: function(info){
+				info.el.style.cursor = 'pointer';
+				info.el.style.borderColor = 'white';
+				info.el.style.borderWidth = '3px';
+			},
+			eventMouseLeave: function(info){
+				info.el.style.cursor = '';
+				info.el.style.borderColor = '';
+				info.el.style.borderWidth = '0px';
 			},
 			select: function(info) {
 				alert('Event: ' + info.startStr);
