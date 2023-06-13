@@ -41,7 +41,8 @@ Rails.application.routes.draw do
       resources :leave_requests, only: [:index, :create, :update, :destroy]
       resources :time_sheets, only: [:index, :create]
       get 'leaders', to: 'users#leaders'
-      resources :room_pickers, only: [:index, :new, :update, :destroy]
+      resources :room_pickers, only: [:index, :create, :update, :destroy]
+      resources :holidays, only: [:index, :create, :update, :destroy]
     end
   end
 end

@@ -35,7 +35,7 @@ class Api::V1::ApplicationApi < ActionController::API
             serializer: serializer
   end
 
-  def render_index(data, serializer, page, total_pages)
+  def render_index(data, serializer, page = 1, total_pages = 9999)
     render status: 200,
             json: data,
             adapter: :json,
@@ -72,6 +72,10 @@ class Api::V1::ApplicationApi < ActionController::API
 
   def current_client
     @current_client ||= Client.find_by(client_type: request.headers["Client-Type"])
+  end
+
+  def current_user
+    current_user ||= User.find_by(id: params[:user_id])
   end
 
   def current_device_id

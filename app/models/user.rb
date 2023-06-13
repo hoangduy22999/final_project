@@ -72,6 +72,7 @@ class User < ApplicationRecord
   has_one :education, dependent: :destroy
   has_one :dependent, dependent: :destroy
   has_many :sended_messages, class_name: 'Message', foreign_key: 'sender_id', dependent: :nullify
+  has_many :room_pickers, dependent: :destroy
 
   # nested attributes
   accepts_nested_attributes_for :user_department, :education, :dependent, allow_destroy: true

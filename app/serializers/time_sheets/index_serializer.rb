@@ -1,5 +1,15 @@
 class TimeSheets::IndexSerializer < ActiveModel::Serializer
-  attributes :id, :keeping_type, :keeping_time
-  attribute(:keeping_date) { object.keeping_time.to_date }
-  attribute(:keeping_time) { object.keeping_time.strftime("%T") }
+  attributes :id
+
+  attribute(:title) { object.keeping_type.humanize + ' - ' + object.keeping_time.strftime("%H:%M%p") }
+  attribute(:start) { object.keeping_time.strftime("%FT%T") }
+  attribute(:color) { keeping_color }
+  attribute(:textColor) { keeping_color }
+
+
+  private
+
+  def keeping_color
+    object.keeping_type_check_in? ? 'green' : 'red'
+  end
 end

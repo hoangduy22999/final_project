@@ -1,5 +1,5 @@
 class Api::V1::RoomPickersController < Api::V1::ApplicationApi
-  skip_before_action :authorized, only: %i[index]
+  skip_before_action :authorized, only: %i[index create]
   before_action :set_room_picker, only: %i[update destroy]
 
   def index
@@ -9,27 +9,27 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   end
 
   def create
-    service = V1::Api::TimeSheets::CreateService.new(params, {current_user: current_user})
+    service = V1::Api::RoomPickers::CreateService.new(params, {current_user: current_user})
     service.perform
     data = service.data
 
-    render_success(data, TimeSheets::IndexSerializer)
+    render_success(data, RoomPickers::IndexSerializer)
   end
 
   def update
-    service = V1::Api::TimeSheets::CreateService.new(params, {current_user: current_user})
+    service = V1::Api::RoomPickers::CreateService.new(params, {current_user: current_user})
     service.perform
     data = service.data
 
-    render_success(data, TimeSheets::IndexSerializer)
+    render_success(data, RoomPickers::IndexSerializer)
   end
 
   def destroy
-    service = V1::Api::TimeSheets::CreateService.new(params, {current_user: current_user})
+    service = V1::Api::RoomPickers::CreateService.new(params, {current_user: current_user})
     service.perform
     data = service.data
 
-    render_success(data, TimeSheets::IndexSerializer)
+    render_success(data, RoomPickers::IndexSerializer)
   end
 
   private
