@@ -1,4 +1,4 @@
-class V1::Api::RoomPickers::UpdateService < V1::ApplicationService
+class V1::Api::RoomPickers::DestroyService < V1::ApplicationService
 
   attr_accessor :object
 

@@ -54,8 +54,71 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button id="removeRoomPicker" type="button" class="btn btn-danger d-none" data-dismiss="modal">Remove</button>
-        <button id="saveRoomPicker" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        <button id="createRoomPicker" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Button trigger modal -->
+<button id="buttonShowUpdateModal" type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#updateRoomPicker">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="updateRoomPicker" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-2" for="update_room_picker_name">Name:</label>
+					<div class="col-sm-10 align-items-center">
+						<input class="form-control updatePickerInput" type="text" name="room_picker[name]" id="update_room_picker_name">
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-2" for="update_room_picker_room_id">Room:</label>
+					<div class="col-sm-10 align-items-center">
+						<select class="form-control updatePickerInput" type="text" name="room_picker[name]" id="update_room_picker_room_id">
+							<% room_available.each do |room| %>
+								<option value="<%= room.first %>"><%= room.last.titleize %></option>
+							<% end %>
+						</select>
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-2" for="update_room_picker_repeat_type">Repeat:</label>
+					<div class="col-sm-10 align-items-center">
+						<select class="form-control updatePickerInput" type="text" name="room_picker[repeat_type]" id="update_room_picker_repeat_type">
+							<% RoomPicker.repeat_types.each do |type, value| %>
+								<option value="<%= type %>"><%= type.titleize %></option>
+							<% end %>
+						</select>
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-2" for="update_room_picker_start_at">Start:</label>
+					<div class="col-sm-10 align-items-center">
+						<input class="form-control updatePickerInput" type="datetime-local" name="room_picker[start_at]" id="update_room_picker_start_at">
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-2" for="update_room_picker_end_at">End:</label>
+					<div class="col-sm-10 align-items-center">
+						<input class="form-control updatePickerInput" type="datetime-local" name="room_picker[end_at]" id="update_room_picker_end_at">
+					</div>
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button id="removePicker" type="button" class="btn btn-danger updatePickerInput" data-dismiss="modal">Remove</button>
+        <button id="sumitUpdateRoomPicker" type="button" class="btn btn-primary updatePickerInput" data-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>
@@ -87,10 +150,38 @@
 							}
 		}
 
+		function getFormUpdateData(){
+			return {
+								description: document.getElementById('update_room_picker_name').value,
+								repeat_type: document.getElementById('update_room_picker_repeat_type').value,
+								room_id: document.getElementById('update_room_picker_room_id').value,
+								start_at: document.getElementById('update_room_picker_start_at').value,
+								end_at: document.getElementById('update_room_picker_end_at').value
+			}
+		}
+
+		function disableForm(value){
+			document.querySelectorAll('.updatePickerInput').forEach(function(input){
+				input.disabled = !value;
+			});
+		}
+
+		function setFormUpdateData(event, time){
+			document.getElementById('update_room_picker_name').value = event.description;
+			document.getElementById('update_room_picker_repeat_type').value = event.repeat_type;
+			document.getElementById('update_room_picker_room_id').value = event.room_id;
+			document.getElementById('update_room_picker_start_at').value = datetimeLocal(time.start);
+			document.getElementById('update_room_picker_end_at').value = datetimeLocal(time.end);
+		}
+
 		const buttonShowModal = document.getElementById('buttonShowModal');
-		var removeRoomPicker = document.getElementById('removeRoomPicker');
 		const roomPickerStartAt = document.getElementById('room_picker_start_at');
 		const roomPickerEndAt = document.getElementById('room_picker_end_at');
+		const roomPickerName = document.getElementById('room_picker_name');
+
+		const buttonShowUpdateModal = document.getElementById('buttonShowUpdateModal');
+		const updatePickerStartAt = document.getElementById('update_room_picker_start_at');
+		const updatePickerEndAt = document.getElementById('update_room_picker_end_at');
 
 		var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
 			initialView: 'timeGridWeek',
@@ -98,13 +189,18 @@
 			slotMinTime: '06:00',
 			slotMaxTime: '22:00',
 			height: 910,
-			selectable: true,
+			selectable: true, 
+			editable: true,
+    	droppable: true,
 
 			eventMaxStack: 2,
  			events: function(fetchInfo, successCallback, failureCallback) {
         $.ajax({
             url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
             dataType: 'json',
+						beforeSend: function(request) {
+							request.setRequestHeader("token", '1');
+						},
             data: {
 							where: {
 								start_at_gteq: fetchInfo.startStr,
@@ -117,48 +213,53 @@
         });
     	},
 			eventClick: function(info) {
-				let roomPickerId = info.event._def.publicId
+				let deletePickerButton = removeListener("removePicker")
+				let eventId = info.event._def.publicId
 
-				removeRoomPicker = removeListener("saveRoomPicker");
-				removeRoomPicker.classList.remove('d-none');
-				console.log(removeRoomPicker);
-				console.log(roomPickerId);
-				let submitRoomPicker = removeListener("saveRoomPicker");
-				removeRoomPicker.addEventListener("click", function(){
+				disableForm(info.event._def.extendedProps.user_id == <%= current_user.id %>)
+
+				setFormUpdateData(info.event._def.extendedProps, info.event);
+				deletePickerButton.addEventListener("click", function(){
 					$.ajax({
-            url: '<%= ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
-						method: 'DELETE',
+            url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
+						method: "DELETE",
             dataType: 'json',
             data: {
-							id: roomPickerId,
 							user_id: <%= current_user.id %>
             },
             success: function(data) {
 							calendar.refetchEvents();
-							alert('Delete Event Success')
-            }
+							toastr.success('Delete Event Success', '', { closeButton: true, progressBar: true })
+            },
+						error: function (xhr, ajaxOptions, thrownError) {
+							toastr.error(xhr.responseJSON.errors, '', { closeButton: true, progressBar: true })
+						}
         	});
 				});
 
-				submitRoomPicker.addEventListener("click", function(){
+				let saveUpdatePicker = removeListener("sumitUpdateRoomPicker")
+				saveUpdatePicker.addEventListener("click", function(){
 					$.ajax({
-            url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
-						method: "POST",
+            url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
+						method: "PATCH",
             dataType: 'json',
             data: {
-							room_picker: getFormData(),
+							room_picker: getFormUpdateData(),
 							user_id: <%= current_user.id %>
             },
             success: function(data) {
 							calendar.refetchEvents();
-							alert('Create Event Success')
-            }
+							toastr.success('Update Event Success', '', { closeButton: true, progressBar: true })
+            },
+						error: function (xhr, ajaxOptions, thrownError) {
+							toastr.error(xhr.responseJSON.errors, '', { closeButton: true, progressBar: true })
+						}
         	});
 				});
+				
+				buttonShowUpdateModal.click();
 
-				buttonShowModal.click();
-
-				calendar.unselect()
+				calendar.unselect();
 			},
 			eventMouseEnter: function(info){
 				info.el.style.cursor = 'pointer';
@@ -173,10 +274,11 @@
 			select: function(info) {
 				roomPickerStartAt.value = datetimeLocal(info.startStr);
 				roomPickerEndAt.value = datetimeLocal(info.endStr);
-				removeRoomPicker.classList.add('d-none');
+				roomPickerName.value = '';
+
 				buttonShowModal.click();
 
-				let submitRoomPicker = removeListener("saveRoomPicker");
+				let submitRoomPicker = removeListener("createRoomPicker");
 				submitRoomPicker.addEventListener("click", function(){
 					$.ajax({
             url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
@@ -188,12 +290,42 @@
             },
             success: function(data) {
 							calendar.refetchEvents();
-							alert('Create Event Success')
-            }
+							toastr.success('Create Event Success', '', { closeButton: true, progressBar: true })
+            },
+						error: function (xhr, ajaxOptions, thrownError) {
+							toastr.error(xhr.responseJSON.errors, '', { closeButton: true, progressBar: true })
+						}
         	});
 				});
 
 				calendar.unselect()
+			},
+			eventDrop: function(info) {
+				let eventId = info.event._def.publicId;
+				if (!confirm("Are you sure about this change?")) {
+					info.revert();
+				} else {
+					$.ajax({
+            url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
+						method: "PATCH",
+            dataType: 'json',
+            data: {
+							room_picker: {
+								start_at: datetimeLocal(info.event.start),
+								end_at: datetimeLocal(info.event.end) 
+							},
+							user_id: <%= current_user.id %>
+            },
+            success: function(data) {
+							calendar.refetchEvents();
+							toastr.success('Update Event Success', '', { closeButton: true, progressBar: true })
+            },
+						error: function (xhr, ajaxOptions, thrownError) {
+							info.revert();
+							toastr.error(xhr.responseJSON.errors, '', { closeButton: true, progressBar: true })
+						}
+        	});
+				}
 			}
 		});
 

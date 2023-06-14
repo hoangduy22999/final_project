@@ -25,6 +25,7 @@
           <th>Start At</th>
           <th>End At</th>
           <th>Rest Day</th>
+          <th>Color</th>
           <th>Status</th>
           <th>Action</th>
       </tr>
@@ -38,6 +39,7 @@
         <td><%= room.start_at.strftime("%I:%M %p") %></td>
         <td><%= room.end_at.strftime("%I:%M %p") %></td>
         <td><%= show_wday(room.rest_day) %></td>
+        <td><div style="width: 100px; background-color: <%= room.color %>"></div></td>
         <td><%= room.status.titleize %></td>
         <td>
             <a class="actionLink mr-3" title="Edit" href="/admin/rooms/<%= room.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>

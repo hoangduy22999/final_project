@@ -1,5 +1,5 @@
 class Api::V1::RoomPickersController < Api::V1::ApplicationApi
-  skip_before_action :authorized, only: %i[index create]
+  skip_before_action :authorized, only: %i[index create destroy update]
   before_action :set_room_picker, only: %i[update destroy]
 
   def index
@@ -17,7 +17,7 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   end
 
   def update
-    service = V1::Api::RoomPickers::CreateService.new(params, {current_user: current_user})
+    service = V1::Api::RoomPickers::UpdateService.new(params, {current_user: current_user, object: @room_picker})
     service.perform
     data = service.data
 
@@ -25,7 +25,7 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   end
 
   def destroy
-    service = V1::Api::RoomPickers::CreateService.new(params, {current_user: current_user})
+    service = V1::Api::RoomPickers::DestroyService.new(params, {current_user: current_user, object: @room_picker})
     service.perform
     data = service.data
 

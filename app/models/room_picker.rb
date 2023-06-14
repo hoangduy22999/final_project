@@ -21,12 +21,24 @@ class RoomPicker < ApplicationRecord
   # validation
   validates :start_at, presence: true, date: { before_or_equal_to: :end_at}
   validates :end_at, presence: true
+  validate :validate_duplicate_time
 
   enum repeat_type: {
-    daily: 0,
-    weekly: 1,
-    monthly: 2,
-    yearly: 3,
-    one_time: 4
+    one_time: 0,
+    daily: 1,
+    weekly: 2,
+    monthly: 3,
+    yearly: 4
   }, _prefix: true
+
+  private
+
+  def validate_duplicate_time
+    return unless RoomPicker.where(room_id: room_id)
+                            .where("(start_at >= ? AND end_at <= ?) OR (start_at >= ? AND end_at <= ?)", start_at, end_at, start_at, end_at)
+                            .where.not(id: id)
+                            .exists?
+
+    errors.add(:base, "Duplicate time in same room")
+  end
 end

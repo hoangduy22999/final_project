@@ -1,4 +1,4 @@
-class V1::Api::LeaveRequests::UpdateService < V1::ApplicationService
+class V1::Api::RoomPickers::UpdateService < V1::ApplicationService
 
   attr_accessor :object
 
@@ -14,12 +14,11 @@ class V1::Api::LeaveRequests::UpdateService < V1::ApplicationService
   private
   
     def update_object
-      @data = object.update(object_params)
-
-      raise Api::V1::ApplicationApi::BadRequest, @data.errors.full_messages.join(", ") unless @data.save
+      @data = object
+      raise Api::V1::ApplicationApi::BadRequest, @data.errors.full_messages.join(", ") unless @data.update(object_params)
     end
 
     def object_params
-      params.require(:room_picker).permit(:room_id, :start_at, :end_at, :repeat_type)
+      params.require(:room_picker).permit(:description, :room_id, :start_at, :end_at, :repeat_type)
     end
 end
