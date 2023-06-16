@@ -15,7 +15,11 @@
 #  index_messages_on_sender_id    (sender_id)
 #
 class Message < ApplicationRecord
+  # callbacks
+  after_save :sended_messages
+
   # relationship
+  
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
 
@@ -24,4 +28,16 @@ class Message < ApplicationRecord
 
   # scope
   scope :user_messages, -> (user_id) { where(sender_id: user_id).or(where(receiver_id: user_id)) }
+
+
+  private
+
+  def sended_messages
+    ActionCable.server.broadcast(
+      "chat_#{room}",
+      {
+        body: content
+      }
+    )
+  end
 end

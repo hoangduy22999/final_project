@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :room_pickers
   resources :chats, only: %i[index]
   resources :room_pickers, only: %i[index]
+  mount ActionCable.server => '/cable'
 
   namespace :admin do
     resources :holidays

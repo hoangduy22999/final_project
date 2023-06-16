@@ -168,6 +168,14 @@ class User < ApplicationRecord
         end
       end
     end
+
+    def login_id(header_token)
+      decode_token = JWT.decode(header_token, ENV.fetch('HMAC_SECRET'), true, { algorithm: 'HS256' }).first
+      return nil unless decode_token['expiry'] && decode_token['expiry'].to_datetime >= DateTime.now
+      decode_token['user_id']
+    rescue JWT::DecodeError
+      nil
+    end
   end
 
   # private methods

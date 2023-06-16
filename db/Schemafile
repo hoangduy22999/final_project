@@ -249,36 +249,32 @@ create_table :action_histories do |t|
 end
 
 create_table :messages do |t|
-  t.bigint 'sender_id'
-  t.bigint 'receiver_id'
+  t.bigint 'user_conversion_id'
   t.string 'content'
+  t.datetime 'read_at'
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
 
-  t.index ['sender_id'], name: 'index_messages_on_sender_id'
-  t.index ['receiver_id'], name: 'index_messages_on_receiver_id'
+  t.index ['user_conversion_id'], name: 'index_messages_on_user_conversion_id'
 end
 
-# create_table :room_messages do |t|
-#   t.integer 'room_type'
+create_table :conversions do |t|
+  t.string 'name'
+  t.integer 'conversation_type', default: 0, null: false
 
-#   t.datetime "created_at", precision: 6, null: false
-#   t.datetime "updated_at", precision: 6, null: false
-# end
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
 
-# create_table :user_room_meassages do |t|
-#   t.bigint 'user_id'
-#   t.bigint 'room_message_id'
-#   t.integer 'status', default: 0
-#   t.datetime 'read_at'
+create_table :user_conversions do |t|
+  t.bigint 'user_id', 
+  t.bigint 'conversion_id', null: false
+  t.integer 'status', default: 0
 
-#   t.datetime "created_at", precision: 6, null: false
-#   t.datetime "updated_at", precision: 6, null: false
-
-#   t.index ['user_id'], name: 'index_user_room_meassages_on_user_id'
-#   t.index ['room_message_id'], name: 'index_user_room_meassages_on_room_message_id'
-# end
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
 
 
 add_foreign_key "districts", "cities", name: "city"
@@ -296,3 +292,8 @@ add_foreign_key "work_experiences", "users", name: 'user'
 add_foreign_key "dependents", "users", name: 'user'
 add_foreign_key "educations", "users", name: 'user'
 add_foreign_key "contracts", "user_departments", name: 'user_department'
+add_foreign_key "room_pickers", "rooms", name: "room"
+add_foreign_key "room_pickers", "users", name: "user"
+add_foreign_key "messages", "user_conversions", name: "user_conversion"
+add_foreign_key "user_conversions", "users", name: "user"
+add_foreign_key "user_conversions", "conversions", name: "conversion"
