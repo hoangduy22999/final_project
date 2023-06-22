@@ -44,6 +44,11 @@ Rails.application.routes.draw do
       get 'leaders', to: 'users#leaders'
       resources :room_pickers, only: [:index, :create, :update, :destroy]
       resources :holidays, only: [:index, :create, :update, :destroy]
+
+      namespace :admin do
+        resources :users, only: [:index]
+        post 'time_sheets/check_import_data', to: 'time_sheets#check_import_data'
+      end
     end
   end
 end

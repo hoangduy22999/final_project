@@ -1,0 +1,19 @@
+<tr class="text-center">
+  <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
+  <td><%= full_name(user) %></td>
+  <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
+  <td><%= user.user_department&.role %></td>
+  <td><%= user.department&.name %></td>
+  <td><%= user.age %></td>
+  <td><%= full_address(user) %></td>
+  <td><%= user.user_department&.start_date&.strftime("%F") %></td>
+  <td><%= user.salary %></td>
+  <td>
+    <div class="text-center">
+      <a href="users/<%= user.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+      <a href="users/<%= user.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
+        <i class="fa-solid fa-trash text-danger"></i>
+      </a>
+    </div>
+  </td>
+</tr>

@@ -1,6 +1,5 @@
 class Api::V1::LeaveRequestsController < Api::V1::ApplicationApi
   before_action :set_leave_request, only: [:update, :destroy]
-  skip_before_action :authorized, only: %i[index create update destroy]
 
   def index
     service = V1::Api::LeaveRequests::IndexService.new(

@@ -1,9 +1,9 @@
 <!-- DataTales Example -->
-<form action="users" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
-  <div class="input-group">
-    <input name="where[full_name_cont]" type="text" value="<%= params[:where].present?  ? params[:where]["full_name_cont"] : ""   %>" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
-    <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-    <%= select_tag "where[department_id_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["department_id_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+<form action="users" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-50" method="get">
+  <div class="input-group row">
+    <input name="where[full_name_cont]" type="text" value="<%= params[:where].present?  ? params[:where]["full_name_cont"] : ""   %>" class="form-control bg-light border-0 small mr-2" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
+    <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-2 col-sm-3", onchange: "this.form.submit();" %>
+    <%= select_tag "where[department_id_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["department_id_eq"] : ""), class: "form-control bg-light border-0 small mr-2", onchange: "this.form.submit();" %>
     <div class="input-group-append">
       <button class="btn btn-primary" type="submit">
         <i class="fas fa-search fa-sm"></i>
@@ -14,41 +14,62 @@
 <table class="table table-hover mt-4">
   <thead>
     <tr class="text-center">
-      <th>Id</th>
-      <th>Name</th>
-      <th>Status</th>
-      <th>Position</th>
-      <th>Department</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Start date</th>
-      <th>Salary</th>
+      <th class="thTable">Id <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Name <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Status <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Position <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Department <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Age <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Address <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Start date <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
+      <th class="thTable">Contract Expired <i class="fas fa-arrow-up d-none"></i><i class="fas fa-arrow-down d-none"></i></th>
       <th class="text-center">Action</th>
     </tr>
   </thead>
-  <tbody>
-    <% @users.each do |user| %>
-      <tr class="text-center">
-        <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
-        <td><%= full_name(user) %></td>
-        <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
-        <td><%= user.user_department&.role %></td>
-        <td><%= user.department&.name %></td>
-        <td><%= user.age %></td>
-        <td><%= full_address(user) %></td>
-        <td><%= user.user_department&.start_date&.strftime("%F") %></td>
-        <td><%= user.salary %></td>
-        <td>
-          <div class="text-center">
-            <a href="users/<%= user.id %>" class="actionLink mr-3" title="Edit"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-            <a href="users/<%= user.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user?" data-method="delete">
-              <i class="fa-solid fa-trash text-danger"></i>
-            </a>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-    <%= render 'partials/blank_table', object: @users %>
+  <tbody id="#userList">
+    <%= render @users %>
   </tbody>
+    <%= render 'partials/blank_table', object: @users %>
 </table>
 <%= will_paginate @users %>
+
+<script>
+  // function reRenderList(objects){
+  //   for(let i=0; i < objects.length; i++){
+
+  //   }
+  // }
+
+  // const token = localStorage.getItem('token');
+  // const thTables = document.getElementsByClassName('thTable');
+  
+  // for(let i = 0; i < thTables.length; i++) {
+  //   thTables[i].addEventListener('click', function() {
+  //     const arrowUp = this.getElementsByClassName('fa-arrow-up')[0]
+  //     const arrowDown = this.getElementsByClassName('fa-arrow-down')[0]
+  //     let orderParams;
+  //     if(arrowUp.classList.contains('d-none') && arrowDown.classList.contains('d-none')) {
+  //       arrowUp.classList.remove('d-none')
+  //       arrowDown.classList.add('d-none')
+  //     } 
+  //     else if(!arrowDown.classList.contains('d-none')) {
+  //       arrowDown.classList.add('d-none')
+  //       arrowUp.classList.add('d-none')
+  //     }
+  //     else {
+  //       arrowDown.classList.remove('d-none')
+  //       arrowUp.classList.add('d-none')
+  //     }
+  //     $.ajax({
+  //       url: '<%=ENV.fetch("BE_HOST") %>/admin/users',
+  //       dataType: 'json',
+  //       data: {
+  //         order: "created_at desc"
+  //       },
+  //       success: function(doc) {
+  //         console.log(doc);
+  //       }
+  //     });
+  //   })
+  // }
+</script>

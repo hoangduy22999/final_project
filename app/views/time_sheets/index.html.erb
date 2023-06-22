@@ -1,8 +1,7 @@
 <div id='calendar' style=""></div>
-<script src="/javascripts/fullcalendar-6.1.8/dist/index.global.min.js" rel="preload"></script>
 <script>
 	$( document ).ready(function() {
-		console.log(localStorage);
+		var token = localStorage.getItem('token');
 		var calendarEl = document.getElementById('calendar');
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -17,6 +16,9 @@
 						$.ajax({
 								url: '<%=ENV.fetch("BE_HOST") %>/api/v1/time_sheets',
 								dataType: 'json',
+								headers: {
+									token: token
+								},
 								data: {
 									where: {
 										start_at_gteq: fetchInfo.startStr,
@@ -35,6 +37,9 @@
 						$.ajax({
 								url: '<%= ENV.fetch("BE_HOST") %>/api/v1/holidays',
 								dataType: 'json',
+								headers: {
+									token: token
+								},
 								data: {
 									where: {
 										start_date_gteq: fetchInfo.startStr,
@@ -52,6 +57,9 @@
 						$.ajax({
 								url: '<%= ENV.fetch("BE_HOST") %>/api/v1/leave_requests',
 								dataType: 'json',
+									headers: {
+									token: token
+								},
 								data: {
 									where: {
 										start_date_gteq: fetchInfo.startStr,

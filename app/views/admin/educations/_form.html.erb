@@ -1,0 +1,30 @@
+  <%= form.fields_for :education, user.education, {class: "form-control"} do |education| %>
+    <div class="row d-flex align-items-center mb-4">
+      <%= education.label :name, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :name, class: "form-control" %>
+      </div>
+
+      <%= education.label :specialization, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :specialization, class: "form-control"  %>
+      </div>
+    </div>
+
+    <div class="row d-flex align-items-center mb-4">
+      <%= education.label :degree, class: "control-label col-sm-1"  %>
+      <div class="col-sm-5">
+      <%= education.text_field :degree, class: "form-control"  %>
+      </div>
+
+      <%= education.label :start_date, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= education.date_field :start_date, class: "form-control"  %>
+      </div>
+
+      <%= education.label :end_date, class: "control-label col-sm-1"  %>
+      <div class="col-sm-2">
+      <%= education.date_field :end_date, class: "form-control"  %>
+      </div>
+    </div>
+  <% end %>

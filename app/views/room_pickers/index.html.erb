@@ -181,6 +181,7 @@
 		const buttonShowUpdateModal = document.getElementById('buttonShowUpdateModal');
 		const updatePickerStartAt = document.getElementById('update_room_picker_start_at');
 		const updatePickerEndAt = document.getElementById('update_room_picker_end_at');
+		const token = localStorage.getItem('token');
 
 		var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
 			initialView: 'timeGridWeek',
@@ -197,8 +198,8 @@
         $.ajax({
             url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
             dataType: 'json',
-						beforeSend: function(request) {
-							request.setRequestHeader("token", '1');
+						headers: {
+							token: token
 						},
             data: {
 							where: {
@@ -222,6 +223,9 @@
 					$.ajax({
             url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
 						method: "DELETE",
+						headers: {
+							token: token
+						},
             dataType: 'json',
             data: {
 							user_id: <%= current_user.id %>
@@ -241,6 +245,9 @@
 					$.ajax({
             url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
 						method: "PATCH",
+						headers: {
+							token: token
+						},
             dataType: 'json',
             data: {
 							room_picker: getFormUpdateData(),
@@ -282,6 +289,9 @@
 					$.ajax({
             url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
 						method: "POST",
+						headers: {
+							token: token
+						},
             dataType: 'json',
             data: {
 							room_picker: getFormData(),
@@ -307,6 +317,9 @@
 					$.ajax({
             url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,
 						method: "PATCH",
+						headers: {
+							token: token
+						},
             dataType: 'json',
             data: {
 							room_picker: {

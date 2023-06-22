@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FinalProject</title>
+    <title>Final Project</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,7 +11,7 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.js" integrity="sha512-i1QYxrZ2eJKNdGkTdSVfokfaXHQEpcjj5CfnWhJ6dQ0X76aG9rIaWvB77GpqFtVp83iRzE/b6e20weGSZpecjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.0.2/list.min.js" integrity="sha512-MT5YyrGWqMGkIbwkVUZEWGrRDjlNx8loukEdFyzLo4s8INKVxnDQy2eFcpmnWGrFwJ+X8mRTQOJpWCayXz7+Og==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
@@ -87,30 +87,9 @@
 
 
 <script>
-  
-  // var collection = document.getElementsByClassName("collapse-item");
-  // var searchText = "<%= page_header %>";
-  // document.getElementById("nav-<%= controller.controller_name %>").classList.add("show");
-  // console.log(document.getElementById("nav-<%= controller.controller_name %>"))
-  // for(i = 0; i < collection.length; i++) {
-  //   element = collection[i]
-  //   if(element.textContent == searchText) {
-  //     element.classList.add("active");
-  //     getParentNode(element, 2).classList.add("show");
-  //     break;
-  //   };
-  // }
-
-  // function getParentNode(element, level = 1) { 
-  //   while (level-- > 0) {
-  //     element = element.parentNode;
-  //     if (!element) return null;
-  //   }
-  //   return element;
-  // }
-  // $(document).ready(function() {
-  //   $('#multiple-checkboxes').multiselect({
-  //     includeSelectAllOption: true,
-  //   });
-  // });
+  <% if current_user %>
+    if (localStorage.getItem("token") == null) {
+      localStorage.setItem("token", "<%= current_user.generate_token %>");
+    }
+  <% end %>
 </script>

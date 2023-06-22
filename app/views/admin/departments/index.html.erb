@@ -1,9 +1,8 @@
 <!-- DataTales Example -->
-<form action="departments" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+<form action="departments" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-25" method="get">
   <div class="input-group">
     <input name="where[full_name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
     <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
-    <%= select_tag "where[name_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["departments_name_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
     <div class="input-group-append">
       <button class="btn btn-primary" type="submit">
         <i class="fas fa-search fa-sm"></i>
@@ -11,8 +10,7 @@
     </div>
   </div>
 </form>
-<div class="table-responsive mt-3">
-  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+  <table class="table table-hover mt-4" id="dataTable" width="100%" cellspacing="0">
       <thead>
           <tr>
               <th>Id</th>
@@ -52,4 +50,3 @@
   </table>
   <%= will_paginate @departments %>
   <%= render 'partials/blank_table', object: @departments %>
-</div>

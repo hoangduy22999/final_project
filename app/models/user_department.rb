@@ -33,6 +33,7 @@ class UserDepartment < ApplicationRecord
   # relationships
   belongs_to :user
   belongs_to :department
+  has_many :contracts
 
   # enums
   enum role: {

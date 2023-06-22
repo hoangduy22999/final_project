@@ -44,10 +44,6 @@ class Api::V1::ApplicationApi < ActionController::API
             meta: { page: page, page_number: total_pages }
   end
 
-  # def current_device
-  #   @current_device ||= Device.find_by(device_token: current_device_id)
-  # end
-
   def create_device_if_not_exists
     raise Unauthorized, I18n.t("common.text.unauthorized") unless current_device_id.present?
     raise Unauthorized, I18n.t("common.text.unauthorized") unless current_client.present?
@@ -74,10 +70,6 @@ class Api::V1::ApplicationApi < ActionController::API
     @current_client ||= Client.find_by(client_type: request.headers["Client-Type"])
   end
 
-  def current_user
-    current_user ||= User.find_by(id: params[:user_id])
-  end
-
   def current_device_id
     @current_device_id_token ||= request.headers["Device-Id-Token"]
   end
@@ -86,11 +78,7 @@ class Api::V1::ApplicationApi < ActionController::API
 
   def logged_id
     header_token = request.headers['token']
-    decode_token = JWT.decode(header_token, ENV.fetch('HMAC_SECRET'), true, { algorithm: 'HS256' }).first
-    return nil unless decode_token['expiry'] && decode_token['expiry'].to_datetime >= DateTime.now
-    decode_token['user_id']
-  rescue JWT::DecodeError
-    nil
+    User.login_id(header_token)
   end
 
   def authorized

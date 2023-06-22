@@ -1,5 +1,4 @@
 class Api::V1::RoomPickersController < Api::V1::ApplicationApi
-  skip_before_action :authorized, only: %i[index create destroy update]
   before_action :set_room_picker, only: %i[update destroy]
 
   def index

@@ -1,6 +1,6 @@
 class ChatChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "chat"
+    stream_from "ChatChannel_#{User.find_by(id: User.login_id(params[:token])).email}"
   end
 
   def unsubscribed

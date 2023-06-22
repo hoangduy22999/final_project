@@ -32,6 +32,7 @@ class Contract < ApplicationRecord
   enum contract_type: {
     employment: 0,
     probation: 1,
-    apprenticeship: 2
+    apprenticeship: 2,
+    freelancer: 3
   }
 end

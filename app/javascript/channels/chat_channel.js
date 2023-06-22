@@ -1,9 +1,9 @@
 // app/javascript/channels/chat_channel.js
 import consumer from "./consumer"
 
-consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
+consumer.subscriptions.create({ channel: "ChatChannel", token: localStorage.getItem("token") }, {
   received(data) {
-    console.log("received data");
+    console.log(data);
   },
 
   appendLine(data) {

@@ -1,10 +1,16 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: %i[show edit update destroy]
+  skip_before_action :authenticate_user!, only: %i[index]
+  skip_before_action :authenticate_admin!, only: %i[index]
 
   def index
     @users = User.includes(:department, district: :city).ransack(params[:where]).result
-                 .order(created_at: :desc)
+                 .order(params[:order] || {created_at: :asc})
                  .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

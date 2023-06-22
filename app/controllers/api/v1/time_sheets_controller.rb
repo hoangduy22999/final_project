@@ -1,5 +1,4 @@
 class Api::V1::TimeSheetsController < Api::V1::ApplicationApi
-  skip_before_action :authorized, only: %i[index create update destroy]
 
   def index
     service = V1::Api::TimeSheets::IndexService.new(params, {current_user: current_user})
