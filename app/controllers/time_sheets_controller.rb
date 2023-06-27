@@ -7,10 +7,7 @@ class TimeSheetsController < ApplicationController
     param_date = params[:year_month] || ""
     param_date = param_date.split("-")
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
-    @data = TimeSheetService.new(
-                                user_id: params[:user_id] || current_user.id,
-                                year_month: time,
-                                ).perfom
+    @time_sheet = current_user.current_keeping_type ? TimeSheet.new(keeping_type: current_user.current_keeping_type)
   end
 
   def create

@@ -119,8 +119,40 @@ class User < ApplicationRecord
     Time.new.change(hour: late_time / 60, min: late_time % 60).strftime('%H:%M') || '00:00'
   end
 
+  def late_times(month)
+    start_date = month.beginning_of_month
+    end_date = month.end_of_month
+    all_minutes = 0
+    while start_date <= end_date
+      late_in_day = late_time(start_date).split(':')
+      all_minutes += (late_in_day.first.to_i * 60 + late_in_day.last.to_i)
+      start_date += 1.days
+    end
+    
+    hours = all_minutes / 60
+    minutes = all_minutes - hours * 60
+    "#{hours < 10 ? ('0' + hours.to_s) : hours}:#{minutes < 10 ? ('0' + minutes.to_s) : minutes}"
+  end
+
+  def present_times(month)
+  end
+
   def leader_department?
     user_department.role_leader?
+  end
+
+  def department_role
+    user_department.role
+  end
+
+  def current_keeping_type
+    time_sheet = time_sheets.where(keeping_time: Date.current)
+
+    return 'check_in' if time_sheet.blank?
+
+    return 'check_out' if time_sheet.count == 1 && time_sheet.first.keeping_type_check_in?
+
+    false
   end
 
   # ransacker
@@ -149,7 +181,9 @@ class User < ApplicationRecord
     JWT.encode payload, ENV.fetch('HMAC_SECRET'), 'HS256'
   end
 
-
+  def user_code
+    "FN" + "0" * (5 - id.to_s.length) + id.to_s 
+  end
 
   # class method
   class << self

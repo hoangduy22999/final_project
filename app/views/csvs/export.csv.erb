@@ -1,4 +1,0 @@
-<%= CSV.generate_line @headers -%>
-<%- @object.each do |object| -%>
-  <%= CSV.generate_line(@method_lines.map {|method_line| object.send(method_line)}) -%>
-<%- end -%>

@@ -1,3 +1,14 @@
+  <div>
+    <% keeping_type = @time_sheet.keeping_type %>
+    <%= form_with(model: @time_sheet, html: { class: "form-horizontal mr-2" }) do |form| %>
+      <%= form.hidden_field :keeping_type, value: keeping_type  %>
+      <div class="row">
+        <%= form.submit keeping_type.humanize, class: "btn btn-#{keeping_type.eql?("check_out") ? 'danger' : 'success'} waves-effect waves-light ml-4",
+                                               disabled: @data[:disabled],
+                                               data: {confirm: 'Are You Sure'} %>
+      </div>
+    <% end %>
+  </div>
 <div id='calendar' style=""></div>
 <script>
 	$( document ).ready(function() {

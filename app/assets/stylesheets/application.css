@@ -118,8 +118,9 @@
     background-color: #04AA6D;
   }
 
-  #tblcsvdata tbody{
+  #tblcsvdata{
     display: inline-block;
     max-height: 700px;
     overflow:auto;
+    width: 700px;
   }

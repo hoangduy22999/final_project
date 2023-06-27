@@ -1,25 +1,24 @@
 <div class="row">
   <div class="col-3">
-    <form action="time_sheets" class="form-horizontal" method="get">
-      <div class="input-group">
-        <input class="form-control mr-2" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
-        <input name ="where[user_id_eq]" list="brow" autocomplete="off" class="form-control" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
+    <form action="/admin/time_sheets" class="form-horizontal" method="get">
+      <div class="input-group d-flex align-items-center">
+        <label><b>Time:</b></label>
+        <input class="form-control mr-2 ml-2" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
+        <label><b>User:</b></label>
+        <input name ="where[user_id_eq]" list="brow" autocomplete="off" class="form-control ml-2" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
         <datalist id="brow">
-          <% User.includes(:department).each do |user|%>
-            <option value="<%= "#{full_name(user)} - #{user.department&.name}" %>" data-value="<%= user.id %>">
-          <% end %>
         </datalist>
       </div>
     </form>
   </div>
   <div class="col-sm-1">
-    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#timeSheetForm" style="width: 100px;">
+    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#newTimeSheetForm" style="width: 100px;">
       <i class="fa-solid fa-plus mr-2 text-gray-400"></i>
       Add
     </button>
   </div>
   <div class="col-sm-4">
-    <button class="btn btn-primary my-2 my-md-0" data-toggle="modal" data-target="#exampleModal" style="width: 160px;">
+    <button class="btn btn-primary my-2 my-md-0" data-toggle="modal" data-target="#exampleModal" style="">
       <i class="fas fa-file-import mr-2 text-gray-400"></i>
       Import CSV
     </button>
@@ -27,44 +26,43 @@
   <%= render 'import_form' %>
 </div>
 
-
+<%= render 'form', time_sheet: @time_sheet %>
 <table class="table table-hover mt-4">
   <thead>
       <tr>
-          <th>User</th>
-          <th>Department</th>
-          <th>Role</th>
-          <th>Date</th>
-          <th>Keeping Type</th>
-          <th>Keeping Time</th>
-          <th>Time Late</th>
-          <th>Action</th>
+          <th class="text-center">#</th>
+          <th class="text-center">User</th>
+          <th class="text-center">Department</th>
+          <th class="text-center">Role</th>
+          <th class="text-center">Month</th>
+          <th class="text-center">Presents Time</th>
+          <th class="text-center">Late Time</th>
+          <th class="text-center">Forgot Keeping</th>
+          <th class="text-center">Action</th>
       </tr>
   </thead>
   <tbody>
-    <% @time_sheets.each.with_index(1) do |time_sheet, index| %>
+    <% @map_timesheet.each.with_index(1) do |user, index| %>
       <tr>
-        <td><%= full_name(time_sheet.user) %></td>
-        <td><%= time_sheet.user.department.name&.humanize %></td>
-        <td><%= time_sheet.user.user_department.role&.humanize  %></td>
-        <td><%= time_sheet.keeping_time&.strftime("%F") %></td>
-        <td><%= time_sheet&.keeping_type&.humanize %></td>
-        <td><%= time_sheet.keeping_time&.strftime("%H:%M") %></td>
-        <td><%= time_late_strftime(time_sheet.time_late) %></td>
+        <td class="text-center"><%= user[:user_code] %></td>
+        <td class="text-center"><%= user[:user_name] %></td>
+        <td class="text-center"><%= user[:department]  %></td>
+        <td class="text-center"><%= user[:role] %></td>
+        <td class="text-center"><%= user[:month] %></td>
+        <td class="text-center"><%= user[:present_times] %></td>
+        <td class="text-center"><%= user[:late_times] %></td>
+        <td class="text-center"><%= user[:forgot_keepings] %></td>
         <td>
           <div class="text-center">
-            <a class="actionLink mr-3" title="Edit" href="time_sheets/<%= time_sheet.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-            <a href="time_sheets/<%= time_sheet.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this time sheet?" data-method="delete">
-              <i class="fa-solid fa-trash text-danger"></i>
-            </a>
+            <a class="actionLink mr-3" title="Show" href="time_sheets/<%=  %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
           </div>
         </td>
       </tr>
     <% end %>
-    <%= will_paginate @time_sheets %>
-    <%= render 'partials/blank_table', object: @time_sheets %>
+    <%= render 'partials/blank_table', object: @users %>
   </tbody>
 </table>
+<%= will_paginate @users %>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -80,18 +78,13 @@
 
         <!-- One "tab" for each step in the form: -->
         <div class="tab"><h2>Choose file:</h2>
-          <p><input id="fileInput" type="file" accept=".csv" placeholder="First name..." oninput="this.className = ''"></p>
+          <input id="fileInput" class="" type="file" accept=".csv" oninput="this.className = ''">
+          <p class="mt-4"><div class="w-25 text-center"><input class="" id="includeHeader" type="checkbox" oninput="this.className = ''" checked> <label for="includeHeader">Include Header</label></div></p>
         </div>
 
         <div class="tab"><h2>Confirm Data:</h2>
-          <br></br>
           <!-- List CSV file data -->
           <table id="tblcsvdata">
-              <thead>
-                    <tr>
-                        <th>Infor</th>
-                    </tr>
-              </thead>
               <tbody>
 
               </tbody>
@@ -125,6 +118,8 @@
 <script>
 var currentTab = 0; // Current tab is set to be the first tab (0)
 var fileParams = [];
+var month = "07-2017"
+var includeHeader = 1;
 showTab(currentTab); // Display the current tab
 
 function showTab(n) {
@@ -148,6 +143,7 @@ function showTab(n) {
   if (n == 1){
     var files = document.querySelector('#fileInput').files;
     if(files.length > 0 ){
+          includeHeader = document.getElementById("includeHeader").checked ? 7 : 0;
           // Selected file
           var file = files[0];
 
@@ -159,36 +155,33 @@ function showTab(n) {
 
           // Load event
           reader.onload = function(event) {
-
-               // Read file data
-               var csvdata = event.target.result;
-
-               // Split by line break to gets rows Array
-               var rowData = csvdata.split('\n');
-
-               // <table > <tbody>
-               var tbodyEl = document.getElementById('tblcsvdata').getElementsByTagName('tbody')[0];
-               tbodyEl.innerHTML = "";
-
-               // Loop on the row Array (change row=0 if you also want to read 1st row)
-               for (var row = 1; row < rowData.length; row++) {
-
-                    // Insert a row at the end of table
-                    var newRow = tbodyEl.insertRow();
-
-                    // Split by comma (,) to get column Array
-                    rowColData = rowData[row].split(',');
-                    fileParams.push(rowColData);
-                    // Loop on the row column Array
-                    for (var col = 0; col < rowColData.length; col++) {
-
-                        // Insert a cell at the end of the row
-                        var newCell = newRow.insertCell();
-                        newCell.innerHTML = rowColData[col];
-
+            // Read file data
+            var csvdata = event.target.result;
+            // Split by line break to gets rows Array
+            var rowData = csvdata.split('\n');
+            // <table > <tbody>
+            var tbodyEl = document.getElementById('tblcsvdata').getElementsByTagName('tbody')[0];
+            tbodyEl.innerHTML = "";
+            // Loop on the row Array (change row=0 if you also want to read 1st row)
+            month = rowData[2].split(',')[2] + "-" + rowData[3].split(',')[2];
+            for (var row = includeHeader; row < rowData.length; row++) {
+                // Insert a row at the end of table
+                var newRow = tbodyEl.insertRow();
+                // Split by comma (,) to get column Array
+                rowColData = rowData[row].split(',');
+                if(rowColData[0] === "") { continue; }
+                console.log(rowColData);
+                fileParams.push(rowColData);
+                // Loop on the row column Array
+                for (var col = 0; col < 65; col++) {
+                    if(rowColData[col] !== undefined){
+                      // Insert a cell at the end of the row
+                      var newCell = newRow.insertCell();
+                      newCell.innerHTML = ( rowColData[col] || "empty" ) + "|";
                     }
+                }
 
-               }
+            }
           };
 
      }else{
@@ -205,7 +198,8 @@ function showTab(n) {
         token: token
       },
       data: {
-        time_sheets: fileParams
+        time_sheets: fileParams,
+        month: month
       },
       success: function(doc) {
         successCallback(doc.data);
@@ -266,4 +260,12 @@ function fixStepIndicator(n) {
   //... and adds the "active" class to the current step:
   x[n].className += " active";
 }
+
+
+document.getElementById("newForm").addEventListener("submit", function (event){
+  event.preventDefault();
+
+  console.log(event);
+  document.getElementById("closeForm").click();
+})
 </script>

@@ -7,10 +7,22 @@ class Admin::TimeSheetsController < Admin::BaseController
     where = params[:where] || {}
     param_date = where.present? ? where["year_month"]&.split("-") : ""
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
-    @time_sheets = TimeSheet.includes(:user, :department).where(keeping_time: time.all_month, user: {status: 'active'})
-                            .ransack(where).result
-                            .order(keeping_time: :desc)
-                            .paginate(page: params[:page]).per_page(15)
+    @users = User.ransack(where).result
+                 .order(id: :asc)
+                 .paginate(page: params[:page] || 1)
+                 .per_page(params[:per_page] || 15)
+    time_sheets = V2::TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
+    department_info = V2::DepartmentService.new({user_ids: @users.pluck(:id)}).perform
+    @map_timesheet = @users.map do |user|
+      {
+        user_code: user.user_code,
+        user_name: user.full_name,
+        month: time.strftime("%m/%Y")
+      }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {})
+       .merge(department_info.find{|department| department[:user_id].eql?(user.id)} || {})
+    end
+    
+    @time_sheet = TimeSheet.new
   end
 
   def create
