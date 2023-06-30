@@ -35,6 +35,13 @@ class Api::V1::ApplicationApi < ActionController::API
             serializer: serializer
   end
 
+  def render_success_with_json(data)
+    render status: 200,
+            json: data, 
+            adapter: :json,
+            root: 'data'
+  end
+
   def render_index(data, serializer, page = 1, total_pages = 9999)
     render status: 200,
             json: data,

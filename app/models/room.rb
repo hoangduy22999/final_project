@@ -52,6 +52,17 @@ class Room < ApplicationRecord
     "yellow":"#ffff00","yellowgreen":"#9acd32"
   }
 
+  def text_color
+    hex = color
+    hex = Room::COLOR[hex.to_sym] unless hex.start_with?('#')
+    rgb = hex.match(/^#(..)(..)(..)$/).captures.map(&:hex)
+    if rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114 > 186
+      'black'
+    else
+      'white'
+    end
+  end
+
 
   # prive method
   private

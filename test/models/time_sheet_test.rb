@@ -4,13 +4,13 @@
 #
 # Table name: time_sheets
 #
-#  id           :bigint           not null, primary key
-#  change_by    :integer          default("user")
-#  keeping_time :datetime
-#  keeping_type :integer          not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  user_id      :bigint           not null
+#  id         :bigint           not null, primary key
+#  change_by  :integer          default("user")
+#  end_at     :datetime
+#  start_at   :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint           not null
 #
 # Foreign Keys
 #

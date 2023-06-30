@@ -2,9 +2,19 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   before_action :set_room_picker, only: %i[update destroy]
 
   def index
-    room_pickers = RoomPicker.includes(:user, :room).ransack(params[:where]).result.order(start_at: :desc)
+    service = V1::Api::RoomPickers::IndexService.new(params, {current_user: current_user})
+    service.perform
+    data = service.data
 
-    render_index(room_pickers, RoomPickers::IndexSerializer, params[:page] || 1, room_pickers.count || 0)
+    render_index(data, RoomPickers::RepeatSerializer)
+  end
+
+  def repeat
+    service = V1::Api::RoomPickers::RepeatService.new(params, {current_user: current_user})
+    service.perform
+    data = service.data
+
+    render_index(data, RoomPickers::RepeatSerializer)
   end
 
   def create
@@ -34,7 +44,11 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   private
 
   def set_room_picker
-    @room_picker = RoomPicker.find(params[:id])
+    @room_picker = RoomPicker.find_by(params[:id])
+
+    raise NotFound unless @room_picker
+
+    raise Unauthorized unless @room_picker.user_id.eql?(current_user.id)
   end
 
   def room_picker_params

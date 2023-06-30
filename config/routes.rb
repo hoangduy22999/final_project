@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :holidays
     resources :time_sheets
+    get 'time_sheets/users/:id', to: 'time_sheets#users'
     resources :answers
     resources :departments
     resources :users
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
       resources :time_sheets, only: [:index, :create]
       get 'leaders', to: 'users#leaders'
       resources :room_pickers, only: [:index, :create, :update, :destroy]
+      get 'repeat_room_pickers', to: 'room_pickers#repeat'
       resources :holidays, only: [:index, :create, :update, :destroy]
 
       namespace :admin do

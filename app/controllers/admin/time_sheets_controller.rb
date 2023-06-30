@@ -11,8 +11,8 @@ class Admin::TimeSheetsController < Admin::BaseController
                  .order(id: :asc)
                  .paginate(page: params[:page] || 1)
                  .per_page(params[:per_page] || 15)
-    time_sheets = V2::TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
-    department_info = V2::DepartmentService.new({user_ids: @users.pluck(:id)}).perform
+    time_sheets = TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
+    department_info = DepartmentService.new({user_ids: @users.pluck(:id)}).perform
     @map_timesheet = @users.map do |user|
       {
         user_code: user.user_code,
@@ -60,6 +60,11 @@ class Admin::TimeSheetsController < Admin::BaseController
 
   def new
     @time_sheet = TimeSheet.new
+  end
+
+  def users
+    @time_sheets = TimeSheet.where(user_id: params[:id])
+    @user = User.find_by(id: params[:id])
   end
 
   private

@@ -1,4 +1,4 @@
-class V2::DepartmentService
+class DepartmentService
   attr_reader :user_ids
 
   def initialize(params = {})

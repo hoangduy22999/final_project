@@ -40,6 +40,12 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-4" for="room_picker_repeat">From This Time:</label>
+					<div class="col-sm-4 align-items-center">
+						<input class="" type="checkbox" name="room_picker[repeat]" id="room_picker_repeat">
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
 					<label class="control-label col-sm-2" for="room_picker_start_at">Start:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control" type="datetime-local" name="room_picker[start_at]" id="room_picker_start_at">
@@ -103,6 +109,12 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
+					<label class="control-label col-sm-4" for="update_room_picker_repeat">From This Time:</label>
+					<div class="col-sm-4">
+						<input class="updatePickerInput" type="checkbox" name="room_picker[repeat]" id="update_room_picker_repeat">
+					</div>
+      	</div>
+				<div class="row d-flex align-items-center mb-4">
 					<label class="control-label col-sm-2" for="update_room_picker_start_at">Start:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control updatePickerInput" type="datetime-local" name="room_picker[start_at]" id="update_room_picker_start_at">
@@ -145,7 +157,8 @@
 								repeat_type: document.getElementById('room_picker_repeat_type').value,
 								room_id: document.getElementById('room_picker_room_id').value,
 								start_at: document.getElementById('room_picker_start_at').value,
-								end_at: document.getElementById('room_picker_end_at').value
+								end_at: document.getElementById('room_picker_end_at').value,
+								repeat: document.getElementById('update_room_picker_repeat').value
 							}
 		}
 
@@ -155,7 +168,8 @@
 								repeat_type: document.getElementById('update_room_picker_repeat_type').value,
 								room_id: document.getElementById('update_room_picker_room_id').value,
 								start_at: document.getElementById('update_room_picker_start_at').value,
-								end_at: document.getElementById('update_room_picker_end_at').value
+								end_at: document.getElementById('update_room_picker_end_at').value,
+								repeat: document.getElementById('update_room_picker_repeat').value
 			}
 		}
 
@@ -171,6 +185,7 @@
 			document.getElementById('update_room_picker_room_id').value = event.room_id;
 			document.getElementById('update_room_picker_start_at').value = datetimeLocal(time.start);
 			document.getElementById('update_room_picker_end_at').value = datetimeLocal(time.end);
+			document.getElementById('update_room_picker_repeat').checked = event.repeat;
 		}
 
 		const buttonShowModal = document.getElementById('buttonShowModal');
@@ -194,31 +209,57 @@
     	droppable: true,
 
 			eventMaxStack: 2,
- 			events: function(fetchInfo, successCallback, failureCallback) {
-        $.ajax({
-            url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
-            dataType: 'json',
-						headers: {
-							token: token
-						},
-            data: {
-							where: {
-								start_at_gteq: fetchInfo.startStr,
-								end_at_lteq: fetchInfo.endStr
+			eventSources: [
+				{ 
+					events: function(fetchInfo, successCallback, failureCallback) {
+					$.ajax({
+							url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
+							dataType: 'json',
+							headers: {
+								token: token
+							},
+							data: {
+								where: {
+									start_at_gteq: fetchInfo.startStr,
+									end_at_lteq: fetchInfo.endStr
+								}
+							},
+							success: function(doc) {
+								successCallback(doc.data);
 							}
-            },
-            success: function(doc) {
-							successCallback(doc.data);
-            }
-        });
-    	},
+					});
+				}
+				},
+				{ 
+					events: function(fetchInfo, successCallback, failureCallback) {
+					$.ajax({
+							url: '<%=ENV.fetch("BE_HOST") %>/api/v1/repeat_room_pickers',
+							dataType: 'json',
+							headers: {
+								token: token
+							},
+							data: {
+								where: {
+									start_at_gteq: fetchInfo.startStr,
+									end_at_lteq: fetchInfo.endStr
+								}
+							},
+							success: function(doc) {
+								successCallback(doc.data);
+							}
+					});
+				}
+				}
+			],
 			eventClick: function(info) {
 				let deletePickerButton = removeListener("removePicker")
 				let eventId = info.event._def.publicId
 
-				disableForm(info.event._def.extendedProps.user_id == <%= current_user.id %>)
+				disableForm(info.event._def.extendedProps.editable)
 
+				console.log(info)
 				setFormUpdateData(info.event._def.extendedProps, info.event);
+				
 				deletePickerButton.addEventListener("click", function(){
 					$.ajax({
             url: `<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers/${eventId}`,

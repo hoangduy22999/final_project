@@ -180,11 +180,11 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "time_sheets", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.datetime "keeping_time"
-    t.integer "keeping_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "change_by", default: 0
+    t.datetime "start_at"
+    t.datetime "end_at"
   end
 
   create_table "user_departments", force: :cascade do |t|
@@ -253,6 +253,8 @@ ActiveRecord::Schema.define(version: 0) do
   add_foreign_key "leave_requests", "users", column: "approve_by", name: "approve_by"
   add_foreign_key "leave_requests", "users", name: "user"
   add_foreign_key "questions", "users", name: "user"
+  add_foreign_key "room_pickers", "rooms", name: "room"
+  add_foreign_key "room_pickers", "users", name: "user"
   add_foreign_key "time_sheets", "users", name: "user"
   add_foreign_key "user_departments", "departments", name: "department"
   add_foreign_key "user_departments", "users", name: "user"

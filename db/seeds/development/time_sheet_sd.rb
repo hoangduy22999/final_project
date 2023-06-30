@@ -5,19 +5,18 @@ debug_print __FILE__
 print_log('INSERT TIMESHEET')
 
 now = Time.zone.now
-skip_users = TimeSheet.where(keeping_time: ((now - 60.days)..now)).pluck(:user_id).uniq
+skip_users = TimeSheet.where(start_at: ((now - 60.days)..now)).pluck(:user_id).uniq
 
-User.where.not(id: skip_users).pluck(:id).each do |user_id|
-  60.times do |time|
+attributes = User.where.not(id: skip_users).pluck(:id).map do |user_id|
+  (0..60).map do |time|
     tmp_day = now - time.days
-    checkin_time = tmp_day.change(hour: 8)
-    checkout_time = tmp_day.change(hour: 18)
-    2.times do |i|
-      TimeSheet.create({
-                         user_id: user_id,
-                         keeping_type: i,
-                         keeping_time: (i.zero? ? checkin_time : checkout_time) + rand(-30..30).minutes
-                       })
-    end
+    checkin_time = tmp_day.change(hour: rand(7..9), minutes: rand(0..59))
+    checkout_time = tmp_day.change(hour: rand(16..18), minutes: rand(0..59))
+
+    TimeSheet.create!({
+      start_at: checkin_time,
+      end_at: checkout_time,
+      user_id: user_id
+    })
   end
 end
