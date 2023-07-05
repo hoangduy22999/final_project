@@ -10,6 +10,7 @@
 #  birthday                    :datetime         not null
 #  current_sign_in_at          :datetime
 #  current_sign_in_ip          :string(255)
+#  deleted_at                  :datetime
 #  email                       :string           default(""), not null
 #  encrypted_password          :string           default(""), not null
 #  first_name                  :string
@@ -48,6 +49,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  # soft delete
+  acts_as_paranoid
 
   # uploader
   mount_uploader :avatar, AvatarUploader
@@ -132,9 +136,6 @@ class User < ApplicationRecord
     hours = all_minutes / 60
     minutes = all_minutes - hours * 60
     "#{hours < 10 ? ('0' + hours.to_s) : hours}:#{minutes < 10 ? ('0' + minutes.to_s) : minutes}"
-  end
-
-  def present_times(month)
   end
 
   def leader_department?

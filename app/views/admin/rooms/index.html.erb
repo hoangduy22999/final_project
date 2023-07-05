@@ -1,54 +1,41 @@
 <div class="row">
-  <div class="col-1">
-    <form action="time_sheets" class="form-horizontal" method="get">
+  <div class="col-sm-4">
+    <form action="rooms" class="" method="get">
       <div class="input-group">
+        <input name="where[name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Content" aria-label="Search" aria-describedby="basic-addon2"
+        value="<%= params[:where][:name_cont] if params[:where].present? %>">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
       </div>
     </form>
   </div>
   <div class="col-sm-1">
-    <%= link_to new_admin_room_path do %>
-      <button class="btn btn-primary" href="/leave_requests/new" style="width: 100px;">
-        <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
+      <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#roomForm" style="width: 100px;">
+        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
         Add
       </button>
-    <% end %>
   </div>
 </div>
-
+<%= render 'form', room: Room.new %>
 
 <table class="table table-hover mt-4">
-  <thead>
+  <thead class="text-center">
       <tr>
           <th>Name</th>
           <th>Description</th>
-          <th>Capacity</th>
-          <th>Start At</th>
-          <th>End At</th>
-          <th>Rest Day</th>
-          <th>Color</th>
-          <th>Status</th>
+          <th >Capacity</th>
+          <th >Start At</th>
+          <th >End At</th>
+          <th >Color</th>
+          <th >Status</th>
           <th>Action</th>
       </tr>
   </thead>
   <tbody>
-    <% @rooms.each.with_index(1) do |room, index| %>
-      <tr>
-        <td><%= room.name %></td>
-        <td><%= room.description %></td>
-        <td><%= room.capacity  %></td>
-        <td><%= room.start_at.strftime("%I:%M %p") %></td>
-        <td><%= room.end_at.strftime("%I:%M %p") %></td>
-        <td><%= show_wday(room.rest_day) %></td>
-        <td><div style="width: 100px; background-color: <%= room.color %>"></div></td>
-        <td><%= room.status.titleize %></td>
-        <td>
-            <a class="actionLink mr-3" title="Edit" href="/admin/rooms/<%= room.id %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-            <a href="/admin/rooms/<%= room.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this room?" data-method="delete">
-              <i class="fa-solid fa-trash text-danger"></i>
-            </a>
-        </td>
-      </tr>
-    <% end %>
+    <%= render @rooms %>
     <%= will_paginate @rooms %>
     <%= render 'partials/blank_table', object: @rooms %>
   </tbody>

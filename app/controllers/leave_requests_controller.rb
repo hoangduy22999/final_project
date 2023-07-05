@@ -28,7 +28,6 @@ class LeaveRequestsController < ApplicationController
   def show; end
 
   def update
-    return redirect_to leave_requests_path, alert: "Can't update approve or reject leave request" unless @leave_request.status_pending?
     if @leave_request.update(leave_request_params)
       redirect_to leave_request_path(@leave_request), notice: "Leave Request has been update successfully"
     else
@@ -68,6 +67,8 @@ class LeaveRequestsController < ApplicationController
 
   def set_leave_request
     @leave_request = LeaveRequest.find(params[:id])
+
+    permission_denied_request unless can? :read, @leave_request
   end
 
   def leave_request_params

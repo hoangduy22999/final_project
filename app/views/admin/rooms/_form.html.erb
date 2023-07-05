@@ -1,63 +1,64 @@
-<%= form_with(model: [:admin, room], html: { class: "form-horizontal" }) do |form| %>
-  <div class="row justify-content-center">
-    <div class="col-sm-10">
-      <i><b>Room Setting</b></i>
-      <hr class="hr" />
-      <div class="row d-flex align-items-center mb-4">
-        <%= form.label "Name:", class: "control-label col-sm-1" %>
-        <div class="col-sm-5 align-items-center">
-          <%= form.text_field :name, class: "form-control" %>
+<!-- Logout Modal-->
+<div class="modal fade" id="<%= room.id ?  "updateRoom#{room.id}" : "roomForm" %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-4">
+          <%= form_with(model: [:admin, room], html: { class: "form-horizontal" }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><%= room.id ? "Update Room" : "Add Room" %></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="row d-flex align-items-center">
+                <%= form.label "Name:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.text_field :name, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Description:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.text_field :description, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Capacity:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.number_field :capacity, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Status:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.select :status, status_room_options, {}, { class: "form-control" } %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Start:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.time_field :start_at, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "End:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.time_field :end_at, class: "form-control" %>
+              </div>
+              <div class="row d-flex align-items-center">
+                <%= form.label "Color:", class: "control-label" %>
+              </div>
+              <div class="row d-flex align-items-center mb-3">
+                <%= form.color_field :color, class: "form-control" %>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+            </div>
+          <% end %>
         </div>
-        <%= form.label "Description:", class: "control-label col-sm-1" %>
-        <div class="col-sm-5">
-          <%= form.text_field :description, class: "form-control" %>
-        </div>
-      </div>
-
-      <div class="row d-flex align-items-center mb-4">
-        <%= form.label "start_at:", class: "control-label col-sm-1" %>
-        <div class="col-sm-2 align-items-center">
-          <%= form.time_field :start_at, { class: "form-control", step: "900" } %>
-        </div>
-        <%= form.label "end_at:", class: "control-label col-sm-1" %>
-        <div class="col-sm-2">
-          <%= form.time_field :end_at, { class: "form-control", step: "900" } %>
-        </div>
-
-        <%= form.label "rest_days:", class: "control-label col-sm-1" %>
-        <div class="col-sm-5 align-items-center">
-          <%= form.select :rest_day, days_of_week_for_select(room), {}, { class: "form-control", id: "multiple-checkboxes", multiple: "multiple" } %>  
-        </div>
-      </div>
-
-      <div class="row d-flex align-items-center mb-4">
-        <%= form.label "status:", class: "control-label col-sm-1" %>
-        <div class="col-sm-2 align-items-center">
-          <%= form.select :status, status_room_options, {}, { class: "form-control"} %>
-        </div>
-
-        <%= form.label "capacity:", class: "control-label col-sm-1" %>
-        <div class="col-sm-2 align-items-center">
-          <%= form.number_field :capacity, class: "form-control" %>
-        </div>
-
-        <%= form.label "color:", class: "control-label col-sm-1" %>
-        <div class="col-sm-2 align-items-center">
-          <%= form.color_field :color, class: "form-control" %>
-        </div>
-      </div>
-
-      <div class="row">
-        <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
-      </div>
     </div>
-  </div>
-<% end %>
-
-<script>
-  $(document).ready(function() {
-    $('#multiple-checkboxes').multiselect({
-      includeSelectAllOption: true,
-    });
-  });
-</script>
+</div>

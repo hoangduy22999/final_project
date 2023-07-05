@@ -13,7 +13,7 @@ class Admin::TimeSheetsController < Admin::BaseController
                  .per_page(params[:per_page] || 15)
     time_sheets = TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
     department_info = DepartmentService.new({user_ids: @users.pluck(:id)}).perform
-    @map_timesheet = @users.map do |user|
+    @map_time_sheets = @users.map do |user|
       {
         user_code: user.user_code,
         user_name: user.full_name,

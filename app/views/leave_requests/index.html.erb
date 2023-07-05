@@ -55,7 +55,7 @@
         </td>
       </tr>
     <% end %>
-    <%= will_paginate @leave_requests %>
     <%= render 'partials/blank_table', object: @leave_requests %>
   </tbody>
 </table>
+<%= will_paginate @leave_requests %>

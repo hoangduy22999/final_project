@@ -1,13 +1,13 @@
 <h3><b>Question:</b></h3> <h3><b><%= @question.content %></b></h3>
 <%= "#{@question.created_at&.strftime("%F")} - #{@question.user.full_name}" %>
-</br>
-</br>
-</br>
+<br>
+<br>
+<br>
 <h5><b>Answer:</b></h5>
 <% @question.answers.each do |answer| %>
   <h5><b><%= "#{answer.content}" %></b></h5><%= "#{answer.created_at&.strftime("%F")} - #{answer.user.full_name}" %>
-  </br>
-  </br>
+  <br>
+  <br>
 <% end %>
-</br></br></br>
+<br><br><br>
 <%= render "form", answer: @answer, question: @question %>

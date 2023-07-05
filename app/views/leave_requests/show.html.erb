@@ -1,1 +1,26 @@
 <%= render 'form', leave_request: @leave_request %>
+<br>
+<br>
+<div class="row justify-content-center">
+  <div class="col-sm-10">
+    <i><b>History</b></i>
+    <hr class="hr" />
+    <div>
+      <% @leave_request.action_histories.order(created_at: :desc).each do |action_history| %>
+        <b><%= action_history.user.full_name %></b>
+        <%= action_history.action_type + " at: " + action_history.created_at.strftime('%I:%M%p %m/%d/%Y') %>
+        <%= %>
+        <br>
+        <div class="ml-4">
+          <% action_history.changed_value.each do |key, value| %>
+            <b><%= key %>:</b>
+            <%= "#{value.first || 'empty'} => #{value.last || 'empty'}" %>
+            <br>
+          <% end %>
+        </div>
+        --------------------------------------------------------------------------------
+        <br>
+      <% end %>
+    </div>
+  </div>
+</div>

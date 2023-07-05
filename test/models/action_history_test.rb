@@ -4,9 +4,7 @@
 #
 #  id            :bigint           not null, primary key
 #  action_type   :integer
-#  after_value   :string
-#  column_name   :string
-#  pre_value     :string
+#  changed_value :json
 #  resource_type :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

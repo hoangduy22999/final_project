@@ -20,11 +20,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "action_type"
     t.string "resource_id"
     t.string "resource_type"
-    t.string "pre_value"
-    t.string "after_value"
-    t.string "column_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.json "changed_value", default: {}
   end
 
   create_table "answers", force: :cascade do |t|
@@ -199,6 +197,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["user_id"], name: "index_user_departments_on_user_id"
   end
 
+  create_table "user_leave_times", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "leave_type", default: 0, null: false
+    t.float "leave_max", default: 0.0, null: false
+    t.float "leave_taken", default: 0.0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -225,6 +232,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "reset_passwomessagerd_token"
+    t.datetime "deleted_at", precision: 6
     t.index ["district_id"], name: "index_users_on_district_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

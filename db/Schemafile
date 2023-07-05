@@ -33,6 +33,7 @@ create_table :users do |t|
   
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
+  t.datetime "deleted_at", precision: 6, null: true
 
   t.index ["email"], name: "index_users_on_email"
   t.index ["role"], name: "index_users_on_role"
@@ -240,9 +241,18 @@ create_table :action_histories do |t|
   t.integer 'action_type'
   t.string 'resource_id'
   t.string 'resource_type'
-  t.string 'pre_value'
-  t.string 'after_value'
-  t.string 'column_name'
+  t.json 'changed_value', default: {}
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table "user_leave_times" do |t|
+  t.bigint "user_id", null: false
+  t.integer "leave_type", null: false, default: 0
+  t.float "leave_max", null: false, default: 0.0
+  t.float "leave_taken", null: false, default: 0.0
+
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

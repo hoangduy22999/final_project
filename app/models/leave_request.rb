@@ -30,11 +30,13 @@ class LeaveRequest < ApplicationRecord
 
   # callbacks
   after_create :send_mail_for_leader
+  before_commit :store_activity, on: %i(update create)
 
   # validates
   validates :end_date, :leave_type, presence: true
   validates :start_date, presence: true, date: { before_or_equal_to: :end_date }
   validate :approve_by_leader, :request_one_date
+  validate :denie_request_not_pending, on: :update
 
   # relationshipuser
   belongs_to :user
@@ -100,17 +102,25 @@ class LeaveRequest < ApplicationRecord
   end
 
   def request_one_date
+    return if start_date.nil? || end_date.nil?
     return if start_date.all_day.cover?(end_date)
 
     errors.add(:base, "Only request in one day")
   end
 
   def time_dulicate
+    return if start_date.nil? || end_date.nil?
     range_time = (start_date..end_date)
     return if LeaveRequest.where(start_date: range_time).or(LeaveRequest.where(end_date: range_time))
                           .where.not(id: id).blank?
 
     errors.add(:base, "Have present request in this time")
+  end
+
+  def denie_request_not_pending
+    # return if status_pending?
+
+    # errors.add(:base, "Can't update approve or reject leave request")
   end
 
   def send_mail_for_leader
@@ -125,5 +135,13 @@ class LeaveRequest < ApplicationRecord
                             })
                       .created
                       .deliver_later
+  end
+
+  def store_activity
+    action_histories.create!({
+      user_id: user_id,
+      action_type: id_previously_changed? ? "create" : "update",
+      changed_value: previous_changes 
+    })
   end
 end
