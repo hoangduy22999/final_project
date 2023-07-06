@@ -23,7 +23,10 @@ Rails.application.routes.draw do
     get 'time_sheets/users/:id', to: 'time_sheets#users'
     resources :answers
     resources :departments
+    resources :user_departments
+    patch :update_multi_user_department, to: 'user_departments#update_multi'
     resources :users
+    resources :contracts
     resources :rooms
   end
 

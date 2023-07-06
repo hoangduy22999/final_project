@@ -2,20 +2,22 @@
 #
 # Table name: contracts
 #
-#  id                 :bigint           not null, primary key
-#  base_salary        :integer
-#  contract_type      :integer
-#  description        :string
-#  end_date           :date
-#  payment_form       :integer
-#  start_date         :date
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  user_department_id :bigint
+#  id            :bigint           not null, primary key
+#  base_salary   :integer
+#  contract_type :integer
+#  deleted_at    :datetime
+#  description   :string
+#  end_date      :date
+#  payment_form  :integer
+#  start_date    :date
+#  status        :integer          default("active"), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint
 #
 # Foreign Keys
 #
-#  user_department  (user_department_id => user_departments.id)
+#  user  (user_id => users.id)
 #
 require "test_helper"
 

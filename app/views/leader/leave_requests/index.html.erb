@@ -1,15 +1,20 @@
-<div class="row mb-4">
-  <div class="col-sm-6">
+<div class="row">
+  <div class="col-sm-7">
     <form action="leave_requests" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
       <div class="input-group">
-        <input name ="where[user_id_eq]" autocomplete="off" list="brow" class="form-control mr-4" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
+        <input name ="where[user_id_eq]" autocomplete="off" placeholder="Search user" list="brow" class="form-control mr-4" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
         <datalist id="brow">
           <% current_user.employees.each do |user|%>
-            <option value="<%= "#{full_name(user)}" %>" data-value="<%= user.id %>">
-          <% end %>
+              <option value="<%= "#{full_name(user)}" %>" data-value="<%= user.id %>">
+            <% end %>
         </datalist>
         <%= select_tag "where[leave_type_eq]",  options_for_select(leave_type_options, params[:where].present?  ? params[:where]["leave_type_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
         <input class="form-control" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
+        <div class="input-group-append ml-2">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
       </div>
     </form>
   </div>

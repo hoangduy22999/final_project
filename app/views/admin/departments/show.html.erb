@@ -1,1 +1,165 @@
-<%= render 'form', department: @department %>
+
+<div class="p-4">
+  <%= form_with(model: [:admin, @department], html: { class: "form-horizontal" }) do |form| %>
+    <div class="row d-flex align-items-center mb-4">
+      <%= form.label "name:", class: "control-label col-sm-1" %>
+      <div class="col-sm-3">
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+    <i><b>Members</b></i><button class="ml-2 btn btn-success"><i class="fa-solid fa-plus"></i></button>
+    <br>
+    <table class="table table-hover mt-4">
+      <thead>
+        <tr class="text-center">
+          <th class="thTable">Id</th>
+          <th class="thTable">Name</th>
+          <th class="thTable">Status</th>
+          <th class="thTable">Position</th>
+          <th class="thTable">Department</th>
+          <th class="thTable">Age</th>
+          <th class="thTable">Address</th>
+          <th class="thTable">Start date</th>
+          <th class="thTable">Action</th>
+        </tr>
+      </thead>
+      <tbody id="#userList">
+        <% @users.each do |user| %>
+          <tr class="text-center">
+            <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
+            <td><%= full_name(user) %></td>
+            <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
+            <td><%= user.user_department&.role %></td>
+            <td><%= user.department&.name %></td>
+            <td><%= user.age %></td>
+            <td><%= full_address(user) %></td>
+            <td><%= user.user_department&.start_date&.strftime("%F") %></td>
+            <td>
+              <div class="text-center">
+                <a class="editModal" id="editModal<%= user.id %>" value="<%= user.id %>" data-user-role="<%= user.user_department&.role %>"  data-toggle="modal" data-target="#editMultiModal" class="actionLink" title="Edit Role"><i class="fa-regular mr-2 fa-pen-to-square text-success"></i></a>
+                <a class="moveModal" id="moveModel<%= user.id %>" value="<%= user.id %>" data-toggle="modal" data-target="#moveMultiModal" class="actionLink" title="Move User"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i></a>
+                <a href="/admin/user_departments/<%= @user_departments.find{|ud| ud[:department_id].eql?(@department.id) && ud[:user_id].eql?(user.id)}[:id] %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this user from department?" data-method="delete">
+                  <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+        <%= render 'partials/blank_table', object: @users %>
+    </table>
+    <div class="row">
+      <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+    </div>
+  <% end %>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="moveMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moveMultiModalLabel">Move Department</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: admin_update_multi_user_department_path, method: 'patch', html: { class: "ml-4 d-inline" }) do |form| %>
+          <%= form.hidden_field :user_department_ids, name: "user_department_ids", id: "user_department_ids" %>
+          <%= form.select :target_department, department_options_without(@department), {}, { class: "form-control" } %>
+          <span class="actionMultiLeave d-none"><b id="itemsSelected">Items Selected</b></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= form.submit "Save", class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMultiModalLabel">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: "/admin/update_multi_user_department", method: 'patch', html: { class: "ml-4 d-inline text-center" }) do |form| %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "editRole" %>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: @department.id %>
+          <div class="row">
+            <div class="col-sm-2">
+              <%= form.label "User:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :user_id, user_options(@department), {}, { class: "form-control" } %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-2">
+              <%= form.label "Role:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= form.submit 'Save', class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteMultiModalLabel">Remove</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: admin_update_multi_user_department_path, method: 'patch', html: {class: "ml-4 d-inline"}) do |form| %>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: @department.id %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "deleteMember" %>
+          <span class="actionMultiLeave d-none"><b id="itemsSelected">Items Selected</b></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= form.submit 'Remove', class: "btn btn-danger" %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  var editModals = document.getElementsByClassName("editModal")
+  var userIdElement = document.getElementById('user_id')
+  var userRoleElement = document.getElementById('role')
+  userIdElement.onchange = function (){ 
+    userRoleElement.value = document.getElementById(`editModal${userIdElement.value}`).getAttribute('data-user-role');
+  }
+  for (var i = 0; i < editModals.length; i++){
+    let element = editModals[i]
+    element.onclick = function() {
+      let userId = element.getAttribute('value');
+      let role = element.getAttribute('data-user-role');
+      userIdElement.value = userId;
+      userRoleElement.value = role
+    }
+  }
+</script>

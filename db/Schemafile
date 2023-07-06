@@ -224,7 +224,7 @@ create_table :meetings do |t|
 end
 
 create_table :contracts do |t|
-  t.bigint 'user_department_id'
+  t.bigint 'user_id'
   t.integer 'base_salary'
   t.integer 'contract_type'
   t.integer 'payment_form'
@@ -234,6 +234,9 @@ create_table :contracts do |t|
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
+
+  t.integer 'status', default: 0, null: false
+  t.datetime 'deleted_at', precision: 6, null: true
 end
 
 create_table :action_histories do |t|
@@ -272,6 +275,6 @@ add_foreign_key "leave_requests", "users", column: "approve_by", name: "approve_
 add_foreign_key "work_experiences", "users", name: 'user'
 add_foreign_key "dependents", "users", name: 'user'
 add_foreign_key "educations", "users", name: 'user'
-add_foreign_key "contracts", "user_departments", name: 'user_department'
+add_foreign_key "contracts", "users", name: 'user'
 add_foreign_key "room_pickers", "rooms", name: "room"
 add_foreign_key "room_pickers", "users", name: "user"

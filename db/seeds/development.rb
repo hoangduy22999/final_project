@@ -15,3 +15,5 @@ include SeedPreLoad
 # load_seed('room_picker_sd', 'development')
 load_seed('question_sd', 'development')
 load_seed('answer_sd', 'development')
+load_seed('contract_sd', 'development')
+load_seed('user_leave_time_sd', 'development')

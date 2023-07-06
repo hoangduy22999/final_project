@@ -1,19 +1,34 @@
 class Admin::DepartmentsController < Admin::BaseController
   before_action :set_department, only: %i[show edit update destroy]
   def index
-    @departments = Department.includes(:users, :manager, user_departments: :user).all.paginate(page: params[:page])
+    @departments = Department.includes(:users, :manager, user_departments: :user)
+                          .ransack(params[:where]).result
+                          .order(created_at: :desc)
+                          .paginate(page: params[:page] || 1)
+                          .per_page(params[:per_page] || 15)
+    @user_departments = UserDepartment.includes(:user).where(department: @departments).map do |user_department|
+      {
+        department_id: user_department.department_id,
+        full_name: user_department.user.full_name + ' - ' + user_department.user.user_code,
+        role: user_department.role
+      }
+    end                      
   end
 
   def new
     @department = Department.new
   end
 
-  def show; end
+  def show
+    @users = @department.users
+    @user_departments = @department.user_departments.map {|ud| { id: ud.id, user_id: ud.user_id, role: ud.role, department_id: ud.department_id } }
+    @user_not_have_departments = User.where.not(id: UserDepartment.pluck(:user_id).uniq)
+  end
 
   def update
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to departments_path, notice: 'Time Sheet was successfully updated.' }
+        format.html { redirect_to admin_departments_path, notice: 'Department was successfully updated.' }
         format.json { render :show, status: :ok, location: @department }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -26,7 +41,7 @@ class Admin::DepartmentsController < Admin::BaseController
     @department = Department.new(department_params)
     respond_to do |format|
       if @department.save
-        format.html { redirect_to departments_path, notice: 'Department was successfully created.' }
+        format.html { redirect_to admin_departments_path, notice: 'Department was successfully created.' }
         format.json { render :show, status: :created, location: @department }
       else
         flash.now[:error] = @department.errors.full_messages.first
@@ -40,7 +55,7 @@ class Admin::DepartmentsController < Admin::BaseController
     @department.destroy
 
     respond_to do |format|
-      format.html { redirect_to departments_path, notice: 'Department was successfully destroyed.' }
+      format.html { redirect_to admin_departments_path, notice: 'Department was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

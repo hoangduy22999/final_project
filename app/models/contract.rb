@@ -2,27 +2,31 @@
 #
 # Table name: contracts
 #
-#  id                 :bigint           not null, primary key
-#  base_salary        :integer
-#  contract_type      :integer
-#  description        :string
-#  end_date           :date
-#  payment_form       :integer
-#  start_date         :date
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  user_department_id :bigint
+#  id            :bigint           not null, primary key
+#  base_salary   :integer
+#  contract_type :integer
+#  deleted_at    :datetime
+#  description   :string
+#  end_date      :date
+#  payment_form  :integer
+#  start_date    :date
+#  status        :integer          default("active"), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint
 #
 # Foreign Keys
 #
-#  user_department  (user_department_id => user_departments.id)
+#  user  (user_id => users.id)
 #
 class Contract < ApplicationRecord
-  # relationship
-  belongs_to :user_department
-  has_one :user, through: :user_department
+  # callbacks
+  before_save :experied_date
 
-  # enum
+  # relationships
+  belongs_to :user
+
+  # enums
   enum payment_form: {
     pending: 0,
     approved: 1,
@@ -34,5 +38,17 @@ class Contract < ApplicationRecord
     probation: 1,
     apprenticeship: 2,
     freelancer: 3
-  }
+  }, _prefix: true
+
+  enum status: {
+    active: 0,
+    inactive: 1
+  }, _prefix: true
+
+  private
+
+  def experied_date
+    return if end_date >= Date.today || status_inactive?
+    status = Contract.statuses["active"]
+  end
 end

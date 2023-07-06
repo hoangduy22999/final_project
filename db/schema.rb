@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "contracts", force: :cascade do |t|
-    t.bigint "user_department_id"
     t.integer "base_salary"
     t.integer "contract_type"
     t.integer "payment_form"
@@ -52,6 +51,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "deleted_at", precision: 6
+    t.bigint "user_id"
   end
 
   create_table "departments", force: :cascade do |t|
@@ -253,7 +255,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_foreign_key "answers", "questions", name: "question"
   add_foreign_key "answers", "users", name: "user"
-  add_foreign_key "contracts", "user_departments", name: "user_department"
+  add_foreign_key "contracts", "users", name: "user"
   add_foreign_key "departments", "users", column: "manager_id", name: "user"
   add_foreign_key "dependents", "users", name: "user"
   add_foreign_key "districts", "cities", name: "city"

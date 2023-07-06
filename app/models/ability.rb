@@ -15,6 +15,7 @@ class Ability
     else
       can :manage, User, id: user.id
       can :manage, LeaveRequest, user_id: user.id
+      can :manage, Contract, user_department_id: user.user_department.id
     end
 
     # Define abilities for the user here. For example:
