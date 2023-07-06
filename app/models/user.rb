@@ -140,7 +140,7 @@ class User < ApplicationRecord
   end
 
   def leader_department?
-    user_department.role_leader?
+    user_department&.role_leader?
   end
 
   def department_role

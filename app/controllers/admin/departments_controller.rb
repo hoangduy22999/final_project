@@ -3,9 +3,9 @@ class Admin::DepartmentsController < Admin::BaseController
   def index
     @departments = Department.includes(:users, :manager, user_departments: :user)
                           .ransack(params[:where]).result
-                          .order(created_at: :desc)
+                          .order(created_at: :asc)
                           .paginate(page: params[:page] || 1)
-                          .per_page(params[:per_page] || 15)
+                          .per_page(params[:per_page] || 10)
     @user_departments = UserDepartment.includes(:user).where(department: @departments).map do |user_department|
       {
         department_id: user_department.department_id,

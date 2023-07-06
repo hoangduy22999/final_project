@@ -7,7 +7,7 @@
         <%= form.text_field :name, class: "form-control" %>
       </div>
     </div>
-    <i><b>Members</b></i><button class="ml-2 btn btn-success"><i class="fa-solid fa-plus"></i></button>
+    <i><b>Members</b></i><a class="ml-2 btn btn-success" id="addUsers" data-toggle="modal" data-target="#addMultiModal"  title="Add Modal"><i class="fa-solid fa-plus"></i></a>
     <br>
     <table class="table table-hover mt-4">
       <thead>
@@ -57,7 +57,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="moveMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="moveMultiModalLabel">Move Department</h5>
@@ -67,9 +67,25 @@
       </div>
       <div class="modal-body">
         <%= form_with(url: admin_update_multi_user_department_path, method: 'patch', html: { class: "ml-4 d-inline" }) do |form| %>
-          <%= form.hidden_field :user_department_ids, name: "user_department_ids", id: "user_department_ids" %>
-          <%= form.select :target_department, department_options_without(@department), {}, { class: "form-control" } %>
-          <span class="actionMultiLeave d-none"><b id="itemsSelected">Items Selected</b></span>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: @department.id %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "moveDepartment" %>
+          <div class="row">
+            <div class="col-sm-2">
+              <%= form.label "User:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :move_user_id, user_options(@department), {}, { class: "form-control" } %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-4">
+              <%= form.label "Target Department:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :target_department, department_options_without(@department), {}, { class: "form-control" } %>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -122,37 +138,87 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="deleteMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="addMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteMultiModalLabel">Remove</h5>
+        <h5 class="modal-title" id="addMultiModalLabel">Add</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <%= form_with(url: admin_update_multi_user_department_path, method: 'patch', html: {class: "ml-4 d-inline"}) do |form| %>
+        <%= form_with(url: "/admin/update_multi_user_department", method: 'patch', html: { class: "ml-4 d-inline text-center", onsubmit: "addUserIds()" }) do |form| %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "addMulti" %>
           <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: @department.id %>
-          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "deleteMember" %>
-          <span class="actionMultiLeave d-none"><b id="itemsSelected">Items Selected</b></span>
+          <%= form.hidden_field :user_ids, name: "user_ids" %>
+          <table class="table table-hover mt-4">
+            <thead class='text-center'>
+                <tr>
+                    <th scope="col"><input class="addAllUser" type="checkbox" id="addAllUser" onchange="selectAllUser(this)"></th>
+                    <th>User Name</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody id="addUserTable" class='text-center'>
+            </tbody>
+          </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <%= form.submit 'Remove', class: "btn btn-danger" %>
+        <%= form.submit 'Save', class: 'btn btn-primary' %>
       </div>
-    <% end %>
+      <% end %>
     </div>
   </div>
 </div>
-
 <script>
   var editModals = document.getElementsByClassName("editModal")
+  var moveModals = document.getElementsByClassName("moveModal")
   var userIdElement = document.getElementById('user_id')
+  var userElement = document.getElementById('move_user_id')
   var userRoleElement = document.getElementById('role')
+  var addUsers = document.getElementById('addUsers')
+  var token = localStorage.getItem('token')
+  var addUserTable = document.getElementById('addUserTable')
+
+  addUsers.onclick = function() {
+    $.ajax({
+								url: '<%=ENV.fetch("BE_HOST") %>/api/v1/admin/user_departments/not_have_department',
+								dataType: 'json',
+								headers: {
+									token: token
+								},
+								success: function(doc) {
+                  let users = doc.data
+                  addUserTable.innerHTML = ""
+                  if (users.length == 0){
+                    addUserTable.innerHTML = "Not have any users"
+                  }
+                  for (var i = 0; i < users.length; i++) {
+                    var row = addUserTable.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var checkbox = document.createElement("INPUT");
+                    checkbox.setAttribute("type", "checkbox");
+                    checkbox.setAttribute("value", users[i]["user_id"]);
+                    checkbox.setAttribute("name", 'addUserCheckbox');
+                    checkbox.classList.add("addUserCheckbox");
+                    cell1.appendChild(checkbox);
+                    cell2.innerHTML = users[i]["user_name"];
+                    cell3.innerHTML = users[i]["user_age"];
+                  }
+									console.log(doc.data);
+                  
+								}
+						});
+  }
+
   userIdElement.onchange = function (){ 
     userRoleElement.value = document.getElementById(`editModal${userIdElement.value}`).getAttribute('data-user-role');
   }
+
   for (var i = 0; i < editModals.length; i++){
     let element = editModals[i]
     element.onclick = function() {
@@ -161,5 +227,47 @@
       userIdElement.value = userId;
       userRoleElement.value = role
     }
+  }
+
+  for (var i = 0; i < moveModals.length; i++){
+    let element = moveModals[i]
+    element.onclick = function() {
+      let userId = element.getAttribute('value');
+      userElement.value = userId;
+    }
+  }
+
+  function addUserIds(){
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    let userIds = []
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked) {
+        userIds.push(elements[i].value)
+      }
+    }
+    document.getElementById("user_ids").value = userIds
+  }
+
+  function selectAllUser(element){
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    if(elements.length == 0){
+      return;
+    }
+    for(let i = 0; i < elements.length; i++) {
+      elements[i].checked = element.checked
+    }
+  }
+
+  function checkedInput() {
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    if(elements.length == 0){
+      return;
+    }
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked == true) {
+        return true;
+      }
+    }
+    return false;
   }
 </script>

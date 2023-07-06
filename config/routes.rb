@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :users, only: [:index]
         post 'time_sheets/check_import_data', to: 'time_sheets#check_import_data'
+        get 'user_departments/not_have_department', to: 'user_departments#not_have_department'
       end
     end
   end
