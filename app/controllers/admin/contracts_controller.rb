@@ -3,7 +3,7 @@ class Admin::ContractsController < Admin::BaseController
   before_action :set_contract, only: %i(show update destroy)
 
   def index
-    @contracts = Contract.ransack(params[:where]).result
+    @contracts = Contract.ransack(params[:where].compact).result
                           .order(status: :desc, created_at: :desc)
                           .paginate(page: params[:page] || 1)
                           .per_page(params[:per_page] || 15)

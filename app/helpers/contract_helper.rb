@@ -6,8 +6,8 @@ module ContractHelper
   end
 
   def contract_type_options
-    Contract.contract_types.keys.each_with_object([['-- Choose Type --', '']]) do |type, object|
-      object << [type.titleize, type]
+    Contract.contract_types.keys.each_with_object([["-- #{I18n.t('form_selects.contract_type')} --", '']]) do |type, object|
+      object << [I18n.t("contracts.contract_types.#{type}"), type]
     end
   end
 end

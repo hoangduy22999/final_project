@@ -2,7 +2,7 @@
   <div class="col-sm-4">
     <form action="rooms" class="" method="get">
       <div class="input-group">
-        <input name="where[name_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2"
+        <input name="where[name_cont]" type="text" class="form-control bg-light border-0 small mr-2" placeholder="<%= t('form_texts.name') %>" aria-label="Search" aria-describedby="basic-addon2"
         value="<%= params[:where][:name_cont] if params[:where].present? %>">
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
@@ -13,25 +13,24 @@
     </form>
   </div>
   <div class="col-sm-1">
-      <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#roomForm" style="width: 100px;">
+      <a class="btn btn-primary" href="/admin/rooms/new">
         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-        Add
-      </button>
+        <%= t('form_buttons.add') %>
+      </a>
   </div>
 </div>
-<%= render 'form', room: Room.new %>
 
 <table class="table table-hover mt-4">
   <thead class="text-center">
       <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th >Capacity</th>
-          <th >Start At</th>
-          <th >End At</th>
-          <th >Color</th>
-          <th >Status</th>
-          <th>Action</th>
+          <th><%= t('rooms.table.name')%></th>
+          <th><%= t('rooms.table.description')%></th>
+          <th><%= t('rooms.table.capacity')%></th>
+          <th><%= t('rooms.table.start_at')%></th>
+          <th><%= t('rooms.table.end_at')%></th>
+          <th><%= t('rooms.table.color')%></th>
+          <th><%= t('rooms.table.status')%></th>
+          <th><%= t('rooms.table.action')%></th>
       </tr>
   </thead>
   <tbody>

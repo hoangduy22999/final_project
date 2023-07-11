@@ -1,64 +1,52 @@
 <!-- Logout Modal-->
-<div class="modal fade" id="<%= room.id ?  "updateRoom#{room.id}" : "roomForm" %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content p-4">
-          <%= form_with(model: [:admin, room], html: { class: "form-horizontal" }) do |form| %>
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><%= room.id ? "Update Room" : "Add Room" %></h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-              <div class="row d-flex align-items-center">
-                <%= form.label "Name:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.text_field :name, class: "form-control" %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "Description:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.text_field :description, class: "form-control" %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "Capacity:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.number_field :capacity, class: "form-control" %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "Status:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.select :status, status_room_options, {}, { class: "form-control" } %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "Start:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.time_field :start_at, class: "form-control" %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "End:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.time_field :end_at, class: "form-control" %>
-              </div>
-              <div class="row d-flex align-items-center">
-                <%= form.label "Color:", class: "control-label" %>
-              </div>
-              <div class="row d-flex align-items-center mb-3">
-                <%= form.color_field :color, class: "form-control" %>
-              </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
-            </div>
-          <% end %>
+<div class="row">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <%= form_with(model: [:admin, room], html: { class: "form-horizontal" }) do |form| %>
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><%= I18n.t(room.id ? 'rooms.update_title' : 'rooms.add_title')  %></h5>
+      </div>
+      <div class="modal-body">
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'rooms.form_inputs.name'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.text_field :name, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'rooms.form_inputs.description'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.text_field :description, class: "form-control" %>
+          </div>
         </div>
-    </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'rooms.form_inputs.start_at'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.time_field :start_at, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'rooms.form_inputs.end_at'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.time_field :end_at, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'rooms.form_inputs.color'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.color_field :color, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'rooms.form_inputs.status'}", class: "control-label col-sm-1" %>
+          <div class="col-sm-5">
+            <%= form.select :status, status_room_options, {}, { class: "form-control" } %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <%= link_to I18n.t('form_buttons.cancel'), admin_rooms_path, class: 'btn btn-secondary' %>
+          <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -15,6 +15,7 @@
 #  user  (user_id => users.id)
 #
 class Question < ApplicationRecord
+  # Relationship
   belongs_to :user
   has_many :answers, dependent: :destroy
 end

@@ -20,6 +20,9 @@ class UserLeaveTime < ApplicationRecord
     paid: 0,
     unpaid: 1
   }, _prefix: true
+  
+  # ransacker for enums
+  ransacker :leave_type, formatter: proc { |key| leave_types[key] }
 
   # function
   def leave_remain

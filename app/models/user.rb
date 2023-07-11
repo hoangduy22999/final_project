@@ -160,6 +160,8 @@ class User < ApplicationRecord
 
   # ransacker
   ransacker :status, formatter: proc { |key| statuses[key] }
+  ransacker :gender, formatter: proc { |key| genders[key] }
+  ransacker :role, formatter: proc { |key| roles[key] }
   ransacker :full_name do
     Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")
   end

@@ -16,7 +16,7 @@
   <div class="col-sm-6">
     <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#questionForm" style="width: 100px;">
       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-      Add
+      <%= t('form_buttons.add') %>
     </button>
   </div>
   <%= render 'form', question: Question.new %>

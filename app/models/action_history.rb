@@ -21,4 +21,7 @@ class ActionHistory < ApplicationRecord
     create: 0,
     update: 1
   }, _prefix: true
+
+  # ransacker for enums
+  ransacker :action_type, formatter: proc { |key| action_types[key] }
 end

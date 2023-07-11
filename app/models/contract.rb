@@ -37,13 +37,19 @@ class Contract < ApplicationRecord
     employment: 0,
     probation: 1,
     apprenticeship: 2,
-    freelancer: 3
+    freelancer: 3,
+    other: 4
   }, _prefix: true
 
   enum status: {
     active: 0,
     inactive: 1
   }, _prefix: true
+
+  # ransackers
+  ransacker :status, formatter: proc { |key| statuses[key] }
+  ransacker :payment_form, formatter: proc { |key| payment_forms[key] }
+  ransacker :contract_type, formatter: proc { |key| contract_types[key] }
 
   private
 

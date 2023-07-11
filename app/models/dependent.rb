@@ -22,4 +22,7 @@ class Dependent < ApplicationRecord
 
   # enum
   enum relationship: { father: 0, mother: 1, brother: 2, sister: 3, wife: 4, husband: 5, son: 6, daughter: 7, other: 8}
+
+  # ransacker for enums
+  ransacker :relationship, formatter: proc { |key| relationships[key] }
 end

@@ -160,7 +160,8 @@
   <% end %>
 
   <div class="row">
-    <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+    <%= link_to I18n.t('form_buttons.cancel'), admin_rooms_path, class: 'btn btn-secondary' %>
+    <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
   </div>
 <% end %>
 

@@ -1,6 +1,6 @@
 module RoomHelper
   def status_room_options
-    Room.statuses.keys.each_with_object([['-- Choose Status --', '']]) do |status, object|
+    Room.statuses.keys.each_with_object([["-- #{I18n.t 'form_selects.status'} --", '']]) do |status, object|
       object << [status.titleize, status]
     end
   end

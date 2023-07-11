@@ -97,8 +97,41 @@ vi:
     dashboard_name: Chấm công
   holidays:
     dashboard_name: Ngày nghỉ
+    add_title: Thêm ngày nghỉ
+    update_title: Sửa ngày nghỉ
+    table:
+      name: Tên
+      status: Trạng thái
+      date: Ngày
+      description: Mô tả
+      action: Thao tác
+    form_inputs:
+      name: Tên
+      status: Trạng thái
+      date: Ngày
+      description: Mô tả
   rooms:
     dashboard_name: Phòng họp
+    add_title: Thêm phòng họp
+    update_title: Sửa phòng họp
+    table:
+      name: Tên
+      description: Mô tả
+      capacity: Sức chứa
+      start_at: Bắt đầu
+      end_at: Kết thúc
+      color: Màu sắc
+      status: Trạng thái
+      action: Thao tác
+    form_inputs:
+      name: Tên
+      description: Mô tả
+      capacity: Sức chứa
+      start_at: Bắt đầu
+      end_at: Kết thúc
+      color: Màu sắc
+      status: Trạng thái
+      action: Thao tác
   questions:
     dashboard_name: Trợ giúp
   answers:
@@ -119,11 +152,30 @@ vi:
     confirm_password: Xác nhận mật khẩu
     password: Mật khẩu
     language: Ngôn ngữ
+  contracts:
+    dashboard_name: Hợp đồng
+    contract_types:
+      employment: Nhân viên
+      probation: Thử việc
+      apprenticeship: Học nghề
+      freelancer: Tự do
+      other: Khác
   headers:
     dropdown:
       profile: Cá nhân
       setting: Cài đặt
       logout: Đăng xuất
+  form_buttons:
+    save: Lưu
+    cancel: Hủy bỏ
+    add: Thêm
+  form_texts:
+    name: Tên
+    edit: Sửa
+    remove: Xóa
+  form_selects:
+    status: Trạng thái
+    contract_type: Loại hợp đồng
   activerecord:
     errors:
       models:

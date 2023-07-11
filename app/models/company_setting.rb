@@ -22,6 +22,9 @@ class CompanySetting < ApplicationRecord
     inactive: 1
   }, _prefix: true
 
+  # ransackers for enum
+  ransacker :status, formatter: proc { |key| statuses[key] }
+
   private
 
   def experied_date

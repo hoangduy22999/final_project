@@ -23,12 +23,13 @@ class RoomPicker < ApplicationRecord
   belongs_to :user
   belongs_to :room
 
-  # validation
+  # validations
   validates :start_at, presence: true, date: { before_or_equal_to: :end_at}
   validates :end_at, presence: true
   validate :validate_duplicate_time
   validate :validate_past_time, on: :create
 
+  # enums
   enum repeat_type: {
     one_time: 0,
     daily: 1,
@@ -36,6 +37,9 @@ class RoomPicker < ApplicationRecord
     monthly: 3,
     yearly: 4
   }, _prefix: true
+
+  # ransacker for enums
+  ransacker :repeat_type, formatter: proc { |key| reapeat_types[key] }
 
   private
 

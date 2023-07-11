@@ -17,6 +17,7 @@
 #  user      (user_id => users.id)
 #
 class Answer < ApplicationRecord
+  # relationship
   belongs_to :question
   belongs_to :user
 end

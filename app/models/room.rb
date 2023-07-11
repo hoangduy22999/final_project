@@ -63,6 +63,8 @@ class Room < ApplicationRecord
     end
   end
 
+  # ransacker for enums
+  ransacker :status, formatter: proc { |key| statuses[key] }
 
   # prive method
   private

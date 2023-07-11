@@ -118,6 +118,8 @@ class TimeSheet < ApplicationRecord
     end
   end
 
+  ransacker :change_by, formatter: proc { |key| change_bys[key] }
+
   private
 
   def only_check_same_day

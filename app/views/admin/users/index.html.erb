@@ -3,10 +3,10 @@
   <div class="col-sm-6">
     <form action="users" class="" method="get">
       <div class="input-group row">
-        <input name="where[full_name_cont]" type="text" value="<%= params[:where].present?  ? params[:where]["full_name_cont"] : ""   %>" class="form-control bg-light border-0 small mr-2" placeholder="Name" aria-label="Search" aria-describedby="basic-addon2">
+        <input name="where[full_name_cont]" type="text" value="<%= params[:where].present?  ? params[:where]["full_name_cont"] : ""   %>" class="form-control bg-light border-0 small mr-2" placeholder="<%= t('form_texts.name') %>" aria-label="Search" aria-describedby="basic-addon2">
         <%= select_tag "where[status_eq]",  options_for_select(status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-2 col-sm-3", onchange: "this.form.submit();" %>
         <%= select_tag "where[department_id_eq]",  options_for_select(department_options, params[:where].present?  ? params[:where]["department_id_eq"] : ""), class: "form-control bg-light border-0 small mr-1", onchange: "this.form.submit();" %>
-        <div class="input-group-append">
+        <div class="input-group-append ml-1">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
           </button>
@@ -15,10 +15,10 @@
     </form>
   </div>
   <div class="col-sm-1">
-    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="/new">
+    <a class="btn btn-primary" href="/admin/users/new">
       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-      Add
-    </button>
+      <%= t('form_buttons.add') %>
+    </a>
   </div>
 </div>
 <table class="table table-hover mt-4">

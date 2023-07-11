@@ -73,6 +73,7 @@ class LeaveRequest < ApplicationRecord
   # ransacker
   ransacker :status, formatter: proc { |key| statuses[key] }
   ransacker :leave_type, formatter: proc { |key| leave_types[key] }
+  ransacker :reason, formatter: proc { |key| reasons[key] }
 
   # function
   def references
