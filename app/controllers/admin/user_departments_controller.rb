@@ -48,7 +48,7 @@ class Admin::UserDepartmentsController < Admin::BaseController
     if @user_department.destroy
       return_hash = { notice: "User destroy successfully"}
     else
-      return_hash = { alert: @user_department.errors.full_messages.firs}
+      return_hash = { alert: @user_department.errors.full_messages.first}
     end
     redirect_to admin_department_path(department), return_hash
   end

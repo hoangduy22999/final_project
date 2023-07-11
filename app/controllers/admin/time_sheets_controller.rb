@@ -15,10 +15,11 @@ class Admin::TimeSheetsController < Admin::BaseController
     department_info = DepartmentService.new({user_ids: @users.pluck(:id)}).perform
     @map_time_sheets = @users.map do |user|
       {
+        user_id: user.id,
         user_code: user.user_code,
         user_name: user.full_name,
         month: time.strftime("%m/%Y")
-      }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {})
+      }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {present_times: 0, late_times: 0,  forgot_keepings: 0})
        .merge(department_info.find{|department| department[:user_id].eql?(user.id)} || {})
     end
     
@@ -62,9 +63,15 @@ class Admin::TimeSheetsController < Admin::BaseController
     @time_sheet = TimeSheet.new
   end
 
-  def users
+  def user
     @time_sheets = TimeSheet.where(user_id: params[:id])
+                            .ransack(params[:where]).result
     @user = User.find_by(id: params[:id])
+  end
+
+  def users
+    @time_sheets = TimeSheet.ransack(params[:where]).result
+    @user = @time_sheets&.first&.user
   end
 
   private
@@ -73,13 +80,6 @@ class Admin::TimeSheetsController < Admin::BaseController
   end
 
   def time_sheet_params
-    attributes = params.require(:time_sheet).permit(:keeping_date, :keeping_time, :user, :keeping_type)
-    time = ''
-    unless attributes[:keeping_date].blank? || attributes[:keeping_time].blank?
-      time = Time.parse(attributes[:keeping_date]).in_time_zone + Time.parse(attributes[:keeping_time]).seconds_since_midnight.seconds
-    end
-    user_name = attributes[:user].split('-').first&.strip
-    user_id = User.ransack(full_name_eq: user_name).result.first&.id
-    { keeping_type: attributes[:keeping_type], user_id: user_id, keeping_time: time }
+    attributes = params.require(:time_sheet).permit(:user_id, :start_at, :end_at)
   end
 end

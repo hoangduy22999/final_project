@@ -1,4 +1,4 @@
-<%= form_with(model: [:leader, leave_request], html: { class: "d-inline " }) do |form| %>
+<%= form_with(url: "/leader/leave_requests/#{leave_request.id}", method: 'patch', html: { class: "d-inline " }) do |form| %>
   <%= form.hidden_field :status, value: status %>
   <%= form.submit status.titleize, class: "btn btn-#{status.eql?("approve") ? 'success' : 'danger'} waves-effect waves-light ml-4 actionOneLeave" %>
 <% end %>

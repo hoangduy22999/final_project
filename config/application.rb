@@ -24,6 +24,9 @@ module FinalProject
     # config autoload
     config.autoload_paths << Rails.root.join('app/services')
 
+    config.i18n.available_locales = [:vi, :en]
+    config.i18n.default_locale = :vi
+
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'

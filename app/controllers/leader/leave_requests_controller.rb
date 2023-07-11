@@ -64,7 +64,7 @@ class Leader::LeaveRequestsController < Leader::BaseController
   end
 
   def leave_request_param
-    params.require(:leave_request).permit(:status)["status"].eql?("approve") ? {status: "approved"} : {status: "rejected"}
+    params["status"].eql?("approve") ? {status: "approved"} : {status: "rejected"}
   end
 
   def leave_requests_param

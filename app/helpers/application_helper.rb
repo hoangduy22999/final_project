@@ -7,6 +7,7 @@ module ApplicationHelper
   include RoomHelper
   include ContractHelper
   include UserDepartmentHelper
+  include SettingHelper
 
   def toastr_flash
     flash.each_with_object([]) do |(type, message), flash_messages|
@@ -27,8 +28,7 @@ module ApplicationHelper
   end
 
   def page_header
-    action = controller.action_name
-    "#{action.eql?('index') ? 'List' : action} #{controller.controller_name}".titleize
+    I18n.t "#{controller.controller_name}.dashboard_name"
   end
 
   def strftime_custom(date)

@@ -25,7 +25,7 @@ class Admin::ContractsController < Admin::BaseController
   def set_contract
     @contract = Contract.find(params[:id])
 
-    permission_denied_request unless can? :read, @contract
+    permission_denied_response unless can? :read, @contract
   end
 
   def contract_params

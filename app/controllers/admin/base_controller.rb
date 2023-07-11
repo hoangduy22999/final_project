@@ -6,6 +6,6 @@ class Admin::BaseController < ApplicationController
   def authenticate_admin!
     return if current_user.role_admin?
 
-    redirect_to root_path, alert: 'You are not allowed to this action'
+    permission_denied_response
   end
 end

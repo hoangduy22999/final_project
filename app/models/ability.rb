@@ -12,6 +12,10 @@ class Ability
 
     if user.role_admin?
       can :manage, :all
+    elsif user.role_user? && user&.user_department&.role_leader?
+      can :manage, LeaveRequest, approve_by: user.id
+      can :manage, UserDepartment, department: user.department
+      can :manage, User, department: user.department
     else
       can :manage, User, id: user.id
       can :manage, LeaveRequest, user_id: user.id

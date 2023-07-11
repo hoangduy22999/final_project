@@ -5,28 +5,29 @@
 # Table name: users
 #
 #  id                          :bigint           not null, primary key
-#  address                     :string           not null
+#  address                     :string
 #  avatar                      :string
-#  birthday                    :datetime         not null
+#  birthday                    :datetime
 #  current_sign_in_at          :datetime
 #  current_sign_in_ip          :string(255)
 #  deleted_at                  :datetime
-#  email                       :string           default(""), not null
+#  email                       :string           default("")
 #  encrypted_password          :string           default(""), not null
 #  first_name                  :string
-#  gender                      :integer          default("male"), not null
+#  gender                      :integer          default("male")
 #  last_name                   :string
 #  last_sign_in_at             :datetime
 #  last_sign_in_ip             :string(255)
-#  phone                       :string           not null
+#  phone                       :string
+#  preferred_locale            :string           default("vi")
 #  remember_created_at         :datetime
 #  reset_passwomessagerd_token :string
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string(255)
-#  role                        :integer          default("user"), not null
+#  role                        :integer          default("user")
 #  salary                      :integer
 #  sign_in_count               :integer          default(0)
-#  status                      :integer          default("active"), not null
+#  status                      :integer          default("active")
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #  city_id                     :bigint
@@ -59,8 +60,8 @@ class User < ApplicationRecord
   # validates
   validates :phone, length: { in: 10..13 }
   # validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
-  validates :address, :birthday, presence: true
-  validate :raise_change_email
+  validates :address, :birthday, :status, :gender, :role, presence: true
+  validate :raise_change_email, :validate_preferred_locale
 
   # relationships
   belongs_to :district
@@ -222,5 +223,11 @@ class User < ApplicationRecord
     return if new_record? || !email_changed?
 
     errors.add(:email, "Cannot change your email")
+  end
+
+  def validate_preferred_locale
+    return if CompanySetting.status_active.first.allow_languages.include?(preferred_locale)
+
+    erros.add(:preferred_locale, I18n.t("activerecord.errors.models.user.attributes.preferred_locale.invalid"))
   end
 end

@@ -30,4 +30,102 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  users:
+    dashboard_name: User
+    table:
+      id: Id
+      name: Name
+      status: Status
+      position: Position
+      department: Department
+      age: Age
+      address: Address
+      start_date: Start date
+      leave_time: Leave time
+      contract_expired: Contract Expired
+      action: Action
+    selects:
+      choose_status: Status
+      choose_department: Department
+      search_name: Name
+      choose_role: Role
+      choose_user_role: Role
+      choose_gender: Gender
+      choose_relation: Relationship
+      choose_city: City
+      choose_district: District
+      choose_user: User
+    form_inputs:
+      first_name: Firt name
+      last_name: Last name
+      email: Email
+      phone: Phone
+      birthday: Birthday
+      city: City
+      district: District
+      gender: Gender
+      role: Role
+      avatar: Avatar
+      information:
+        title: Basic Information
+      department:
+        title: Department
+        name: Name
+        role: Role
+      education:
+        title: Education
+        name: Name
+        specialization: Specialization
+        degree: Degree
+        start_date: Start date
+        end_date: End date
+      dependent:
+        title: Dependent
+        name: Name
+        address: Address
+        relationship: Relationship
+        birthday: Birthday
+        phone: Phone
+    reset_preferred_locale:
+      updated: Language successful updated
+    reset_password:
+      updated: Password successful updated
+      failed: Password wrong or invalid confirmation
+  departments:
+    dashboard_name: Department
+  time_sheets:
+    dashboard_name: Time Sheet
+  holidays:
+    dashboard_name: Holiday
+  rooms:
+    dashboard_name: Room
+  questions:
+    dashboard_name: Question
+  answers:
+    dashboard_name: Question
+  leave_requests:
+    dashboard_name: Leave request
+  room_pickers:
+    dashboard_name: Room Picker
+  passwords:
+    dashboard_name: Setting Password
+  settings:
+    dashboard_name: Settings
+    password_title: Password Information
+    language_title: Language Information
+    current_language: Language
+    current_password: Old password
+    new_password: New password
+    confirm_password: Confirm password
+    password: Password
+    language: Language
+  headers:
+    dropdown:
+      profile: Profile
+      setting: Setting
+      logout: Log out
+  active_controller:
+    errors:
+      role:
+        admin:
+          permission_denied: You not have permission to this action

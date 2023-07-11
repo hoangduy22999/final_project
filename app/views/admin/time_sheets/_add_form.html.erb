@@ -1,0 +1,37 @@
+<%= form_with(model: [:admin, time_sheet], html: { class: "form-horizontal", name: "newTimeSheetFormLabel", id: "newForm" }) do |form| %>
+  <div class="row justify-content-center">
+    <div class="col-sm-10">
+      <div class="row d-flex align-items-center mb-4">
+        User:
+        <div class="col-sm-12 mt-2">
+          <%= form.text_field :user, value: time_sheet&.user&.full_name, class: "form-control"%>
+        </div>
+      </div>
+      
+      <div class="row d-flex align-items-center mb-4">
+        Department:
+        <div class="col-sm-12 mt-2">
+          <%= form.text_field :deparment, value: time_sheet&.user&.department&.name, class: "form-control"%>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        Keeping time:
+        <div class="col-sm-12 mt-2">
+          <%= form.datetime_field :start_at, class: "form-control"%>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        Keeping type:
+        <div class="col-sm-12 mt-2">
+          <%= form.datetime_field :end_at, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button id="closeForm" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <%= form.submit "Save", class: "btn btn-primary col-sm-2" %>
+  </div>
+<% end %>

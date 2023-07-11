@@ -6,43 +6,43 @@ module UserHelper
   end
 
   def department_options
-    Department.all.each_with_object([['-- Choose Deparment --', '']]) do |department, object|
+    Department.all.each_with_object([["-- #{I18n.t 'users.selects.choose_department'} --", '']]) do |department, object|
       object << [department&.name&.titleize, department.id]
     end
   end
 
   def status_options
-    User.statuses.keys.each_with_object([['-- Choose Status --', '']]) do |status, object|
+    User.statuses.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_status'} --", '']]) do |status, object|
       object << [status.titleize, status]
     end
   end
 
   def role_options
-    UserDepartment.roles.keys.each_with_object([['-- Choose Role --', '']]) do |role, object|
+    UserDepartment.roles.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_role'} --", '']]) do |role, object|
       object << [role.titleize, role]
     end
   end
 
   def user_role_options
-    User.roles.keys.each_with_object([['-- Choose Status --', '']]) do |status, object|
+    User.roles.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_user_role'} --", '']]) do |status, object|
       object << [status.titleize, status]
     end
   end
 
   def gender_options
-    User.genders.keys.each_with_object([['-- Choose Gender --', '']]) do |gender, object|
+    User.genders.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_gender'} --", '']]) do |gender, object|
       object << [gender.titleize, gender]
     end
   end
 
   def city_options
-    City.all.order(name: :asc).each_with_object([['-- Choose City --', '']]) do |city, object|
+    City.all.order(name: :asc).each_with_object([["-- #{I18n.t 'users.selects.choose_city'} --", '']]) do |city, object|
       object << [city.name, city.id]
     end
   end
 
   def default_district_options(user)
-    district_options = [["-- Choose District --", ""]]
+    district_options = [["-- #{I18n.t 'users.selects.choose_district'} --", ""]]
     user.new_record? ? district_options :  district_options << [user.district&.name, user.district&.id]
   end
 
@@ -70,7 +70,7 @@ module UserHelper
   end
 
   def user_relationship_options
-    Dependent.relationships.keys.each_with_object([['-- Choose Relation --', '']]) do |relation, object|
+    Dependent.relationships.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_relation'} --", '']]) do |relation, object|
       object << [relation.titleize, relation]
     end
   end

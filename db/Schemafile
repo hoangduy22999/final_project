@@ -3,12 +3,12 @@
 create_table :users do |t|
   t.string 'first_name'
   t.string 'last_name'
-  t.string :email,              null: false, default: ""
-  t.datetime "birthday", null: false
+  t.string :email, null: true, default: ""
+  t.datetime "birthday", null: true
   t.string :encrypted_password, null: false, default: ""
   t.string "reset_password_token", limit: 255
-  t.integer "role", null: false, default: 0
-  t.integer 'gender', null: false, default: 0
+  t.integer "role", null: true, default: 0
+  t.integer 'gender', null: true, default: 0
   t.datetime "reset_password_sent_at", precision: 6
   t.datetime "remember_created_at", precision: 6
   t.integer "sign_in_count", default: 0
@@ -16,13 +16,14 @@ create_table :users do |t|
   t.datetime "last_sign_in_at", precision: 6
   t.string "current_sign_in_ip", limit: 255
   t.string "last_sign_in_ip", limit: 255
-  t.integer 'status', null: false, default: 1
+  t.integer 'status', null: true, default: 1
   t.bigint 'district_id', null: true
   t.bigint 'city_id', null: true
-  t.string 'address', null: false
-  t.string 'phone', null: false
+  t.string 'address', null: true
+  t.string 'phone', null: true
   t.string 'avatar', null: true
   t.integer 'salary', null: true
+  t.string 'preferred_locale', default: 'vi'
 
   ## Recoverable
   t.string   :reset_passwomessagerd_token
@@ -256,6 +257,27 @@ create_table "user_leave_times" do |t|
   t.float "leave_max", null: false, default: 0.0
   t.float "leave_taken", null: false, default: 0.0
 
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table "company_settings" do |t|
+  t.time "check_in", null: false, default: "08:00:00"
+  t.time "check_out", null: false, default: "07:00:00"
+  t.string "allow_languages", null: false, default: 0, array: true, default: []
+  t.integer "status", default: 0
+  t.datetime "apply_from", null: false
+  t.datetime "apply_to", null: false
+
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", precision: 6, null: false
+end
+
+create_table "languages" do |t|
+  t.string "code", null: false
+  t.string "name", null: false
+  t.string "native_name", null: false
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

@@ -1,7 +1,5 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: %i[show edit update destroy]
-  skip_before_action :authenticate_user!, only: %i[index]
-  skip_before_action :authenticate_admin!, only: %i[index]
 
   def index
     @users = User.includes(:department, district: :city).ransack(params[:where]).result

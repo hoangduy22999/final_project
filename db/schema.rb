@@ -42,6 +42,17 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["name"], name: "index_cities_on_name"
   end
 
+  create_table "company_settings", force: :cascade do |t|
+    t.time "check_in", default: "2000-01-01 08:00:00", null: false
+    t.time "check_out", default: "2000-01-01 07:00:00", null: false
+    t.string "allow_languages", default: [], null: false, array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
+    t.datetime "apply_from", null: false
+    t.datetime "apply_to", null: false
+  end
+
   create_table "contracts", force: :cascade do |t|
     t.integer "base_salary"
     t.integer "contract_type"
@@ -105,6 +116,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.date "end_date"
     t.text "description"
     t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "code", null: false
+    t.string "name", null: false
+    t.string "native_name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -211,12 +230,12 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "email", default: "", null: false
-    t.datetime "birthday", null: false
+    t.string "email", default: ""
+    t.datetime "birthday"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token", limit: 255
-    t.integer "role", default: 0, null: false
-    t.integer "gender", default: 0, null: false
+    t.integer "role", default: 0
+    t.integer "gender", default: 0
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0
@@ -224,17 +243,18 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "last_sign_in_at", precision: 6
     t.string "current_sign_in_ip", limit: 255
     t.string "last_sign_in_ip", limit: 255
-    t.integer "status", default: 1, null: false
+    t.integer "status", default: 1
     t.bigint "district_id"
     t.bigint "city_id"
-    t.string "address", null: false
-    t.string "phone", null: false
+    t.string "address"
+    t.string "phone"
     t.string "avatar"
     t.integer "salary"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "reset_passwomessagerd_token"
     t.datetime "deleted_at", precision: 6
+    t.string "preferred_locale", default: "vi"
     t.index ["district_id"], name: "index_users_on_district_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -68,7 +68,7 @@ class LeaveRequestsController < ApplicationController
   def set_leave_request
     @leave_request = LeaveRequest.find(params[:id])
 
-    permission_denied_request unless can? :read, @leave_request
+    permission_denied_response unless can? :manage, @leave_request
   end
 
   def leave_request_params

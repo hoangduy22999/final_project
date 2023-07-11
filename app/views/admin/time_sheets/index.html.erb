@@ -55,9 +55,10 @@
         <td ><%= user[:present_times] %></td>
         <td ><%= user[:late_times] %></td>
         <td ><%= user[:forgot_keepings] %></td>
+        <% this_month = user[:month].to_datetime %>
         <td>
           <div >
-            <a class="actionLink mr-3" title="Show" href="users/<%= user[:user_id] %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
+            <%= link_to '<i class="fa-regular fa-pen-to-square text-success"></i>'.html_safe, admin_time_sheet_users_path(where: {user_id_eq: user[:user_id], start_at_gteq: this_month.beginning_of_month, start_at_gteq: this_month.end_of_month}), class: "actionLink mr-3" %>
           </div>
         </td>
       </tr>
