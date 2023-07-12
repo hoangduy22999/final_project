@@ -228,7 +228,7 @@ class User < ApplicationRecord
   end
 
   def validate_preferred_locale
-    return if CompanySetting.status_active.first.allow_languages.include?(preferred_locale)
+    return if CompanySetting.current_setting.allow_languages.include?(preferred_locale)
 
     erros.add(:preferred_locale, I18n.t("activerecord.errors.models.user.attributes.preferred_locale.invalid"))
   end

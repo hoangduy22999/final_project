@@ -40,13 +40,13 @@ class Admin::UserDepartmentsController < Admin::BaseController
     else
     end
 
-    redirect_to admin_department_path(Department.find(params[:department_id])), return_hash
+    redirect_to   (Department.find(params[:department_id])), return_hash
   end
 
   def destroy
     department = @user_department.department
     if @user_department.destroy
-      return_hash = { notice: "User destroy successfully"}
+      return_hash = { notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('user_departments.dashboard_name').downcase)}
     else
       return_hash = { alert: @user_department.errors.full_messages.first}
     end

@@ -22,9 +22,9 @@ class Admin::HolidaysController < Admin::BaseController
     @holiday = Holiday.new(holiday_params)
     respond_to do |format|
       if cannot? :create, @holiday
-        format.html { redirect_to admin_holidays_path(@holiday), alert: "Permission denied" }
+        format.html { redirect_to admin_holidays_path(@holiday), alert: I18n.t('active_controller.errors.role.admin.permission_denied') }
       elsif @holiday.save
-        format.html { redirect_to admin_holidays_path(@holiday), notice: 'Holiday was successfully created.' }
+        format.html { redirect_to admin_holidays_path(@holiday), notice: I18n.t('active_controller.messages.created', object_name: I18n.t('holidays.dashboard_name').downcase) }
       else
         format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
       end
@@ -34,7 +34,7 @@ class Admin::HolidaysController < Admin::BaseController
   def update
     respond_to do |format|
       if @holiday.update(holiday_params)
-        format.html { redirect_to admin_holidays_path(@holiday), notice: 'Holiday was successfully updated.' }
+        format.html { redirect_to admin_holidays_path(@holiday), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('holidays.dashboard_name').downcase) }
       else
         format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
       end
@@ -45,7 +45,7 @@ class Admin::HolidaysController < Admin::BaseController
     @holiday.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_holidays_path, notice: 'Holiday was successfully destroyed.' }
+      format.html { redirect_to admin_holidays_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('users.dashboard_name').downcase) }
       format.json { head :no_content }
     end
   end

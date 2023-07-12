@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
     respond_to do |format|
       if @question.save
-        format.html { redirect_to questions_path, notice: 'Question was successfully created.' }
+        format.html { redirect_to questions_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('questions.dashboard_name').downcase) }
       else
         format.html { redirect_to questions_path, alert: @question.errors.full_messages.first }
       end
@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
     @question.destroy
 
     respond_to do |format|
-      format.html { redirect_to questions_path, notice: 'Question was successfully destroyed.' }
+      format.html { redirect_to questions_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('questions.dashboard_name').downcase) }
     end
   end
 

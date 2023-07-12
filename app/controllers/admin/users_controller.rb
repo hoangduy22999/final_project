@@ -24,7 +24,7 @@ class Admin::UsersController < Admin::BaseController
     respond_to do |format|
       if @user.save
         WelcomMailer.with(email: @user.email, password: password, full_name: @user.full_name).create.deliver_later
-        format.html { redirect_to admin_users_url(@user), notice: 'User was successfully created.' }
+        format.html { redirect_to admin_users_url(@user), notice: I18n.t('active_controller.messages.created', object_name: I18n.t('users.dashboard_name').downcase) }
         format.json { render :show, status: :created, location: @user }
       else
         flash.now[:error] = @user.errors.full_messages.first
@@ -43,7 +43,7 @@ class Admin::UsersController < Admin::BaseController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to admin_user_path(@user), notice: 'User was successfully updated.' }
+        format.html { redirect_to admin_user_path(@user), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('users.dashboard_name').downcase) }
         format.json { render :show, status: :ok, location: @user }
       else
         flash.now[:error] = @user.errors.full_messages.first
@@ -57,7 +57,7 @@ class Admin::UsersController < Admin::BaseController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_users_path, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to admin_users_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('users.dashboard_name').downcase) }
       format.json { head :no_content }
     end
   end

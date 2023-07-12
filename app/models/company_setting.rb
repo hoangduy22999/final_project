@@ -2,19 +2,23 @@
 #
 # Table name: company_settings
 #
-#  id              :bigint           not null, primary key
-#  allow_languages :string           default([]), not null, is an Array
-#  apply_from      :datetime         not null
-#  apply_to        :datetime         not null
-#  check_in        :time             default(Sat, 01 Jan 2000 15:00:00.000000000 +07 +07:00), not null
-#  check_out       :time             default(Sat, 01 Jan 2000 14:00:00.000000000 +07 +07:00), not null
-#  status          :integer          default("active")
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                  :bigint           not null, primary key
+#  allow_languages     :string           default([]), is an Array
+#  allow_late_time     :float            default(0.0)
+#  apply_from          :datetime
+#  apply_to            :datetime
+#  check_in_afternoon  :string
+#  check_in_morning    :string
+#  check_out_afternoon :string
+#  check_out_morning   :string
+#  status              :integer          default("active")
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 class CompanySetting < ApplicationRecord
   # callbacks
   before_save :experied_date
+  after_commit :only_one_setting
   
   # enum
   enum status: {
@@ -25,10 +29,27 @@ class CompanySetting < ApplicationRecord
   # ransackers for enum
   ransacker :status, formatter: proc { |key| statuses[key] }
 
+  class << self
+    def current_setting
+      status_active.first ||order(apply_to: :desc).first
+    end
+
+    def current_time_settings
+      setting = current_setting
+      [setting.check_in_morning, setting.check_out_morning, setting.check_in_afternoon, setting.check_out_afternoon].map {|setting| TimeSheet.timefstr(setting)}
+    end
+  end
+
   private
 
   def experied_date
     return if apply_to >= Date.today || status_inactive?
-    status = CompanySetting.statuses["active"]
+    status = CompanySetting.statuses["inactive"]
+  end
+
+  def only_one_setting
+    return if CompanySetting.status_active.count == 1
+
+    errors.add(:status, I18n.t('activerecord.errors.models.company_setting.attributes.status.active_taken'))
   end
 end

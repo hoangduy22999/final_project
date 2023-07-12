@@ -13,7 +13,7 @@ class TimeSheetsController < ApplicationController
   def create
     @time_sheet = current_user.time_sheets.new(time_sheet_params.merge(keeping_time: Time.now))
     if @time_sheet.save
-      redirect_to time_sheets_path, notice: "#{@time_sheet.keeping_type} has been create successfully"
+      redirect_to time_sheets_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('time_sheets.dashboard_name').downcase)
     else
       redirect_to time_sheets_path, alert: @time_sheet.errors.full_messages.first
     end

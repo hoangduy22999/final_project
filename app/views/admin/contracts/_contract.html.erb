@@ -6,8 +6,8 @@
   <td><%= salary_decorator(contract.base_salary) %></td>
   <td><%= contract.description %></td>
   <td>
-    <a class="actionLink mr-3" title="Edit" href=""><i class="fa-regular fa-pen-to-square text-success"></i></a>
-    <a href="contracts/<%= contract.id %>" class="actionLink" title="Remove" data-confirm="Are you want to delete this Holiday?" data-method="delete">
+    <a class="actionLink mr-3" title="<%= t('form_texts.edit') %>" href=""><i class="fa-regular fa-pen-to-square text-success"></i></a>
+    <a href="contracts/<%= contract.id %>" class="actionLink" title="<%= t('form_texts.remove') %>" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("contracts.dashboard_name").downcase) %>" data-method="delete">
       <i class="fa-solid fa-trash text-danger"></i>
     </a>
     <%= render 'form', contract: contract %>

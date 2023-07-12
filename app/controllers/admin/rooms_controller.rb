@@ -14,7 +14,7 @@ class Admin::RoomsController < Admin::BaseController
   def create
     @room = Room.new(room_params)
     if @room.save
-      redirect_to admin_rooms_path, notice: "Room has been create successfully"
+      redirect_to admin_rooms_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('rooms.dashboard_name').downcase)
     else
       redirect_to new_admin_room_path(@room), alert: @room.errors.full_messages.first
     end
@@ -24,7 +24,7 @@ class Admin::RoomsController < Admin::BaseController
 
   def update
     if @room.update(room_params)
-      redirect_to admin_room_path(@room), notice: "Room has been updated successfully"
+      redirect_to admin_room_path(@room), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('rooms.dashboard_name').downcase)
     else
       redirect_to admin_rooms_path, alert: @room.errors.full_messages.first
     end
@@ -32,7 +32,7 @@ class Admin::RoomsController < Admin::BaseController
 
   def destroy
     if @room.destroy
-      redirect_to admin_rooms_path, notice: "Room has been deleted successfully"
+      redirect_to admin_rooms_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('rooms.dashboard_name').downcase)
     else
       redirect_to admin_rooms_path, alert: @room.errors.full_messages.first
     end

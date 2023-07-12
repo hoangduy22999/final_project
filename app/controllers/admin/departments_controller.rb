@@ -20,15 +20,14 @@ class Admin::DepartmentsController < Admin::BaseController
   end
 
   def show
-    @users = @department.users
+    @users = @department.users.uniq
     @user_departments = @department.user_departments.map {|ud| { id: ud.id, user_id: ud.user_id, role: ud.role, department_id: ud.department_id } }
-    @user_not_have_departments = User.where.not(id: UserDepartment.pluck(:user_id).uniq)
   end
 
   def update
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to admin_departments_path, notice: 'Department was successfully updated.' }
+        format.html { redirect_to admin_departments_path, notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('departments.dashboard_name').downcase) }
         format.json { render :show, status: :ok, location: @department }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -41,7 +40,7 @@ class Admin::DepartmentsController < Admin::BaseController
     @department = Department.new(department_params)
     respond_to do |format|
       if @department.save
-        format.html { redirect_to admin_departments_path, notice: 'Department was successfully created.' }
+        format.html { redirect_to admin_departments_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('departments.dashboard_name').downcase) }
         format.json { render :show, status: :created, location: @department }
       else
         flash.now[:error] = @department.errors.full_messages.first
@@ -55,7 +54,7 @@ class Admin::DepartmentsController < Admin::BaseController
     @department.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_departments_path, notice: 'Department was successfully destroyed.' }
+      format.html { redirect_to admin_departments_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('departments.dashboard_name').downcase) }
       format.json { head :no_content }
     end
   end

@@ -99,23 +99,24 @@ class LeaveRequest < ApplicationRecord
   def approve_by_leader
     return if User.find_by(id: approve_by)&.leader_department?
 
-    errors.add(:base, "Only leader department can be approved")
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.approve_by_leader"))
   end
 
   def request_one_date
     return if start_date.nil? || end_date.nil?
     return if start_date.all_day.cover?(end_date)
 
-    errors.add(:base, "Only request in one day")
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.request_one_date"))
   end
 
   def time_dulicate
     return if start_date.nil? || end_date.nil?
     range_time = (start_date..end_date)
     return if LeaveRequest.where(start_date: range_time).or(LeaveRequest.where(end_date: range_time))
-                          .where.not(id: id).blank?
+                          .where.not(id: id)
+                          .blank?
 
-    errors.add(:base, "Have present request in this time")
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.time_dulicate"))
   end
 
   def denie_request_not_pending

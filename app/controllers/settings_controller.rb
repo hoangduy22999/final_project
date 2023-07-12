@@ -4,13 +4,13 @@ class SettingsController < ApplicationController
   def index; end
 
   def reset_password
-    data_params = password_params
     if current_user.valid_password?(password_params['current_password']) && current_user.update(password_params.tap do |p|
                                                                                                   p.delete('current_password')
                                                                                                 end)
+      sign_in(current_user, :bypass => true)
       return_hash = { notice: I18n.t("users.reset_password.updated")}
     else
-      return_hash = { notice: I18n.t("users.reset_password.failed") }
+      return_hash = { alert: I18n.t("users.reset_password.failed") }
     end
     redirect_to settings_path, return_hash
   end

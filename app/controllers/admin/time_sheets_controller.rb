@@ -29,7 +29,7 @@ class Admin::TimeSheetsController < Admin::BaseController
   def create
     @time_sheet = TimeSheet.change_by_admin.new(time_sheet_params)
     if @time_sheet.save
-      redirect_to admin_time_sheets_path, notice: "Time Sheet has been create successfully"
+      redirect_to admin_time_sheets_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('time_sheets.dashboard_name').downcase)
     else
       redirect_to admin_time_sheets_path, alert: @time_sheet.errors.full_messages.first
     end
@@ -41,7 +41,7 @@ class Admin::TimeSheetsController < Admin::BaseController
     respond_to do |format|
       format.html do
         redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]),
-                    notice: 'Time Sheet was successfully destroyed.'
+                    notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('time_sheets.dashboard_name').downcase)
       end
       format.json { head :no_content }
     end
@@ -50,7 +50,7 @@ class Admin::TimeSheetsController < Admin::BaseController
   def update
     respond_to do |format|
       if @time_sheet.update(time_sheet_params.merge(change_by: 'admin'))
-        format.html { redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), notice: 'Time Sheet was successfully updated.' }
+        format.html { redirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('time_sheets.dashboard_name').downcase) }
       else
         format.html { edirect_to admin_time_sheets_path(year: params[:year], month: params[:month]), alert: @time_sheet.errors.full_messages.first  }
       end

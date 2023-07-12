@@ -10,4 +10,6 @@
 #  updated_at  :datetime         not null
 #
 class Language < ApplicationRecord
+  # scopes
+  scope :current_setting_languages, ->{where(code: CompanySetting.current_setting.allow_languages)}
 end

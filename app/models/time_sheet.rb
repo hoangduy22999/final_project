@@ -54,67 +54,66 @@ class TimeSheet < ApplicationRecord
 
   class << self
     def present_time(check_in, check_out)
+      check_in_morning, check_out_morning, check_in_afternoon, check_out_afternoon = CompanySetting.current_time_settings
+
       return [0, 0] if check_in.nil? || check_out.nil?
 
-      check_in_hour, check_in_min, check_in_second = check_in.split(':').map(&:to_i)
-      check_out_hour, check_out_min, check_out_second = check_out.split(':').map(&:to_i)
+      check_in = timefstr(check_in)
+      check_out = timefstr(check_out)
 
-      return [0, 0] if check_in_hour >= CHECK_OUT_AFTERNOON_TIME
-
-      check_in_datetime = DateTime.new.change(hour: check_in_hour, min: check_in_min, sec: check_in_second)
-      check_out_datetime = DateTime.new.change(hour: check_out_hour, min: check_out_min, sec: check_out_second)
-
-      return [0, 0] if check_in_datetime >= check_out_datetime
+      return [0, 0] if check_in >= check_out_afternoon || check_in >= check_out || check_out <= check_in_morning
       
-      check_in = check_in_hour < CHECK_IN_MORNING_TIME ? "#{CHECK_IN_MORNING_TIME}:00:00" : 
-                                                         (( check_in_hour == CHECK_OUT_MORNING_TIME && check_in_hour <= CHECK_IN_AFTERNOON_TIME) ? "#{CHECK_IN_AFTERNOON_TIME}:00:00" : check_in)
-      check_out = check_out_hour >= CHECK_OUT_AFTERNOON_TIME ? "#{CHECK_OUT_AFTERNOON_TIME}:00:00" :
-                                                          ((check_out_hour == CHECK_OUT_MORNING_TIME && check_out_hour <= CHECK_IN_AFTERNOON_TIME) ? "#{CHECK_OUT_MORNING_TIME}:00:00" : check_out)
+      now = Time.now
+      late_times = 0
+      check_in = case check_in
+      when now.beginning_of_day..check_in_morning
+        check_in_morning
+      when check_in_morning..check_out_morning
+        late_times = diff_in_minutes(check_in_morning, check_in)
+        check_in
+      when check_in_afternoon..check_out_afternoon
+        late_times = diff_in_minutes(check_in_afternoon, check_in)
+        check_in
+      when check_out_morning..check_in_afternoon
+        check_in_afternoon
+      else
+        check_out
+      end
 
-      rest_time = ( check_in_hour < CHECK_OUT_MORNING_TIME && check_out_hour >= CHECK_IN_AFTERNOON_TIME ) ? 60 : 0
-      present_time = diff_time(check_in, check_out) - rest_time
-      [present_time, late_time(check_in, check_out)]
+      soon_times = 0
+      check_out = case check_out
+      when check_in_morning..check_out_morning
+        soon_times = diff_in_minutes(check_out, check_out_morning)
+        check_out
+      when check_in_afternoon..check_out_afternoon
+        soon_times = diff_in_minutes(check_out, check_out_afternoon)
+        check_out
+      when check_out_morning..check_in_afternoon
+        check_out_morning
+      when check_out_afternoon..now.end_of_day
+        check_out_afternoon
+      else
+        check_out
+      end
+
+      rest_time = (check_in <= check_out_morning && check_out >= check_in_afternoon) ? diff_in_minutes(check_out_morning, check_in_afternoon) : 0
+      present_time = diff_in_minutes(check_in, check_out) - rest_time
+      [present_time, late_times + soon_times]
     end
 
-
-    def late_time(check_in, check_out)
-      check_in_hour, check_in_min, check_in_second = check_in.split(':').map(&:to_i)
-      check_out_hour, check_out_min, check_oucheck_in_latet_second = check_out.split(':').map(&:to_i)
-
-      check_in_late = case check_in_hour
-                      when 0..(CHECK_IN_MORNING_TIME - 1), CHECK_OUT_MORNING_TIME
-                        0
-                      when CHECK_IN_MORNING_TIME..(CHECK_OUT_MORNING_TIME - 1)
-                        diff_time("#{CHECK_IN_MORNING_TIME}:00:00", check_in)
-                      when CHECK_IN_AFTERNOON_TIME..(CHECK_OUT_AFTERNOON_TIME - 1)
-                        diff_time("#{CHECK_IN_AFTERNOON_TIME}:00:00", check_in)
-                      else
-                        0
-                      end
-      
-      check_out_soon = case check_out_hour
-                       when CHECK_OUT_AFTERNOON_TIME..23, CHECK_OUT_MORNING_TIME
-                         0
-                       when CHECK_IN_MORNING_TIME..(CHECK_OUT_MORNING_TIME - 1)
-                        diff_time(check_out, "#{CHECK_OUT_MORNING_TIME}:00:00")
-                       when CHECK_IN_AFTERNOON_TIME..(CHECK_OUT_AFTERNOON_TIME - 1)
-                        diff_time(check_out, "#{CHECK_OUT_AFTERNOON_TIME}:00:00")
-                       else
-                         0
-                       end
-      
-      check_in_late + check_out_soon
-    end
-
-    def diff_time(check_in, check_out)
-      diff = DateTime.strptime(check_out, '%H:%M:%S') - DateTime.strptime(check_in, '%H:%M:%S')
-      diff_in_minutes = (diff * 24 * 60).to_i
+    def diff_in_minutes(from_time, to_time)
+      ((to_time - from_time) / 60).to_i
     end
 
     def strftime_format(all_minutes)
       hours = all_minutes / 60 || 0
       minutes = all_minutes - hours * 60 || 0
       "#{hours < 10 ? ('0' + hours.to_s) : hours}:#{minutes < 10 ? ('0' + minutes.to_s) : minutes}"
+    end
+    
+    def timefstr(str)
+      time = str.split(':')
+      Time.zone.now.change(hour: time[0], minute: time[1], seconds: time[2] || 0)
     end
   end
 

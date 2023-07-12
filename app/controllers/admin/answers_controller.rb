@@ -13,11 +13,11 @@ class Admin::AnswersController < Admin::BaseController
     @answer = current_user.answers.new(answer_params)
     respond_to do |format|
       if @answer.save
-        format.html { redirect_to new_answer_path(@answer.question), notice: 'Answer was successfully created.' }
+        format.html { redirect_to new_answer_path(@answer.question), notice: I18n.t('active_controller.messages.created', object_name: I18n.t('questions.dashboard_name').downcase) }
         format.json { render :show, status: :created, location: @answer }
       else
         flash.now[:error] = @answer.errors.full_messages.first
-        format.html { redirect_to new_answer_path(@answer.question), alert: "Answer wasn't successfully created." }
+        format.html { redirect_to new_answer_path(@answer.question), alert: I18n.t('active_controller.messages.not_created', object_name: I18n.t('questions.dashboard_name').downcase) }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
     end

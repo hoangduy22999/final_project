@@ -43,14 +43,17 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "company_settings", force: :cascade do |t|
-    t.time "check_in", default: "2000-01-01 08:00:00", null: false
-    t.time "check_out", default: "2000-01-01 07:00:00", null: false
-    t.string "allow_languages", default: [], null: false, array: true
+    t.string "allow_languages", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
-    t.datetime "apply_from", null: false
-    t.datetime "apply_to", null: false
+    t.datetime "apply_from"
+    t.datetime "apply_to"
+    t.string "check_in_morning"
+    t.string "check_out_afternoon"
+    t.string "check_in_afternoon"
+    t.string "check_out_morning"
+    t.float "allow_late_time", default: 0.0
   end
 
   create_table "contracts", force: :cascade do |t|

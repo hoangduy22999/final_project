@@ -15,7 +15,7 @@ class LeaveRequestsController < ApplicationController
   def create
     @leave_request = current_user.leave_requests.new(leave_request_params.merge(created_by: current_user.id))
     if @leave_request.save
-      redirect_to leave_requests_path, notice: "Leave Request has been create successfully"
+      redirect_to leave_requests_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('leave_requests.dashboard_name').downcase)
     else
       redirect_to new_leave_request_path, alert: @leave_request.errors.full_messages.first
     end
@@ -29,21 +29,20 @@ class LeaveRequestsController < ApplicationController
 
   def update
     if @leave_request.update(leave_request_params)
-      redirect_to leave_request_path(@leave_request), notice: "Leave Request has been update successfully"
+      redirect_to leave_request_path(@leave_request), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('leave_requests.dashboard_name').downcase)
     else
       redirect_to leave_request_path(@leave_request), alert: @leave_request.errors.full_messages.first
     end
   end
 
   def destroy
-    return redirect_to leave_requests_path, alert: "Can't remove approve or reject leave request" unless @leave_request.status_pending?
+    return redirect_to leave_requests_path, alert: I18n.t('active_controller.errors.leave_requests.cannot_remove_not_pending') unless @leave_request.status_pending?
 
     @leave_request.destroy
 
     respond_to do |format|
       format.html do
-        redirect_to leave_requests_path,
-                    notice: 'Leave Request was successfully destroyed.'
+        redirect_to leave_requests_path, notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('leave_requests.dashboard_name').downcase)
       end
       format.json { head :no_content }
     end

@@ -93,6 +93,15 @@ vi:
       failed: Mật khẩu sai hoặc chưa xác nhận
   departments:
     dashboard_name: Phòng ban
+    table:
+      id: Mã
+      name: Tên
+      status: Trạng thái
+      leader: Trưởng phòng
+      sub_leader: Phó phòng
+      member: Nhân viên
+      start_date: Ngày bắt đầu
+      action: Thao tác
   time_sheets:
     dashboard_name: Chấm công
   holidays:
@@ -160,6 +169,16 @@ vi:
       apprenticeship: Học nghề
       freelancer: Tự do
       other: Khác
+    table:
+      name: Tên
+      description: Mô tả
+      type: Loại hợp đồng
+      status: Trạng thái
+      date: Thời gian
+      salary: Lương cơ bản
+      action: Thao tác
+  user_departments:
+    dashboard_name: Nhân viên
   headers:
     dropdown:
       profile: Cá nhân
@@ -173,11 +192,14 @@ vi:
     name: Tên
     edit: Sửa
     remove: Xóa
+    confirm_remove: Bạn có chắc muốn xóa %{object_name} này?
   form_selects:
     status: Trạng thái
     contract_type: Loại hợp đồng
   activerecord:
     errors:
+      messages:
+        record_invalid: Bản ghi không hợp lệ
       models:
         user:
           attributes:
@@ -201,6 +223,16 @@ vi:
               required: không được trống
             preferred_locale:
               invalid: không hợp lệ
+        company_setting:
+          attributes:
+            status:
+              active_taken: Có cài đặt khác đang hoạt động
+        leave_request:
+          attributes:
+            base:
+              approve_by_leader: Chỉ leader mới có quyền chấp nhận
+              request_one_date: Phải xin phép trong 1 ngày
+              time_dulicate: Đã có xin phép khác trong khoảng thời gian này
     attributes:
       user:
         confirmation_sent_at: Xác nhận gửi lúc
@@ -231,6 +263,21 @@ vi:
       role:
         admin:
           permission_denied: Bạn không có quyền thực hiện hành động này
+      leave_requests:
+        cannot_remove_not_pending: Không thể xóa xin phép đã chấp thuận hoặc từ chối
+    messages:
+      created: Tạo %{object_name} thành công
+      updated: Cập nhật %{object_name} thành công
+      removed: Xóa %{object_name} thành công
+      not_created: Tạo %{object_name} không thành công
+      not_updated: Cập nhật %{object_name} không thành công
+      not_removed: Xóa %{object_name} không thành công
+      special_action: Đã %{action_name} %{object_name} thành công
+      not_special_action: Chưa %{action_name} %{object_name} thành công
+  actions:
+    create: Tạo
+    update: Sửa
+    remove: Xóa
   devise:
     confirmations:
       confirmed: Xác nhận tài khoản thành công! Bạn hiện đang đăng nhập.

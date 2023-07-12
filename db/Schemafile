@@ -263,12 +263,14 @@ create_table "user_leave_times" do |t|
 end
 
 create_table "company_settings" do |t|
-  t.time "check_in", null: false
-  t.time "check_out", null: false
-  t.string "allow_languages", null: false, default: 0, array: true, default: []
+  t.string "check_in_morning"
+  t.string "check_out_afternoon"
+  t.string "check_in_afternoon"
+  t.string "check_out_morning"
+  t.string "allow_languages", default: 0, array: true, default: []
   t.integer "status", default: 0
-  t.datetime "apply_from", null: false
-  t.datetime "apply_to", null: false
+  t.datetime "apply_from"
+  t.datetime "apply_to"
   t.float "allow_late_time", default: 0.0
 
   t.datetime "created_at", precision: 6, null: false

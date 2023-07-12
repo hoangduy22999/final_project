@@ -165,8 +165,8 @@
           </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <%= form.submit 'Save', class: 'btn btn-primary' %>
+        <%= link_to I18n.t('form_buttons.cancel'), admin_holidays_path, class: 'btn btn-secondary' %>
+        <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
       </div>
       <% end %>
     </div>

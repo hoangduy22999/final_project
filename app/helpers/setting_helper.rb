@@ -2,8 +2,8 @@
 
 module SettingHelper
   def language_options
-    CompanySetting.status_active.first.allow_languages.each_with_object([]) do |language, object|
-      object << [language, language]
+    Language.current_setting_languages.each_with_object([]) do |language, object|
+      object << [language.name, language.code]
     end
   end
 end
