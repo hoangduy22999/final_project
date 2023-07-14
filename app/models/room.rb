@@ -78,6 +78,6 @@ class Room < ApplicationRecord
   def white_color
     return if !color.eql?('#ffffff')
 
-    errors.add(:color, "Color can't be white")
+    errors.add(:base, I18n.t("activerecord.errors.models.room.attributes.color.cannot_be_white"))
   end
 end

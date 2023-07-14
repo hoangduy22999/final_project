@@ -24,12 +24,12 @@
         <div class="row d-flex align-items-center mb-4">
           <%= form.label "#{I18n.t 'holidays.form_inputs.start_at'}", class: "control-label col-sm-1" %>
           <div class="col-sm-5">
-            <%= form.time_field :start_at, class: "form-control" %>
+            <%= form.date_field :start_date, class: "form-control" %>
           </div>
 
           <%= form.label "#{I18n.t 'holidays.form_inputs.end_at'}", class: "control-label col-sm-1" %>
           <div class="col-sm-5">
-            <%= form.time_field :end_at, class: "form-control" %>
+            <%= form.date_field :end_date, class: "form-control" %>
           </div>
         </div>
 

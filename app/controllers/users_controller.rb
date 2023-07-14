@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def update_profile
     respond_to do |format|
       if current_user.update(user_params)
-        format.html { redirect_to profile_path, notice: I18n.t('active_controller.messages.created', object_name: I18n.t('users.dashboard_name').downcase) }
+        format.html { redirect_to profile_path, notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('users.profile_name').downcase) }
       else
         format.html { redirect_to profile_path, alert: current_user.errors.full_messages.first  }
       end

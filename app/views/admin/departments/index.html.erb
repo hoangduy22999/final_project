@@ -54,11 +54,15 @@
               <%= ufn %><br>
             <% end %>
             <div class="collapse" id="collapseMember<%= department.id %>">
-              <% user_full_names[2..].each do |ufn| %>
+              <% (user_full_names[2..] || []).each do |ufn| %>
                 <%= ufn %><br>
               <% end %>
             </div>
-            <a data-toggle="collapse" href="#collapseMember<%= department.id %>" role="button" aria-expanded="false" aria-controls="collapseMember<%= department.id %>" onClick="moreInfo(this)">See more</a>
+            <% if user_full_names.count > 2 %>
+              <a data-toggle="collapse" href="#collapseMember<%= department.id %>" role="button" aria-expanded="false" aria-controls="collapseMember<%= department.id %>" onClick="moreInfo(this)">
+                <%= t('departments.table.see_more') %>
+              </a>
+            <% end %>
           </td>
           </td>
           <td><%=  department.created_at&.strftime("%F") %></td>
@@ -80,9 +84,9 @@
 <script>
   function moreInfo(element) {
     if (element.getAttribute('aria-expanded').toLowerCase() === 'true'){
-      element.innerHTML = "See more"
+      element.innerHTML = "<%= t('departments.table.see_more') %>"
     } else {
-      element.innerHTML = "See less"
+      element.innerHTML = "<%= t('departments.table.see_less') %>"
     }
   }
 </script>

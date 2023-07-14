@@ -2,8 +2,8 @@
 <br>
 <br>
 <div class="row justify-content-center">
-  <div class="col-sm-10">
-    <i><b>History</b></i>
+  <div class="col-sm-8">
+    <i><b><%= t('histories.dashboard_name') %></b></i>
     <hr class="hr" />
     <div>
       <% @leave_request.action_histories.order(created_at: :desc).each do |action_history| %>

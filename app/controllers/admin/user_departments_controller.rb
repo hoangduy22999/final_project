@@ -12,45 +12,55 @@ class Admin::UserDepartmentsController < Admin::BaseController
     when 'editRole'
       user_department = UserDepartment.find_by(user_id: params[:user_id], department_id: params[:department_id])
       if user_department.nil?
-        return_hash = { alert: 'Please select a user'}
+        return_hash = { alert: I18n.t('active_controller.errors.department.select_user')}
       elsif user_department.update(role: params[:role].blank? ? "member" : params[:role])
-        return_hash = { notice: "Role updated successfully"}
+        return_hash = { notice: I18n.t('active_controller.messages.created', object_name: I18n.t('roles.dashboard_name').downcase)}
       else
         return_hash = { alert: user_department.errors.full_messages.first}
       end
     when 'moveDepartment'
       user_department = UserDepartment.find_by(department_id: params[:department_id], user_id: params[:move_user_id])
       if user_department.nil?
-        return_hash = { alert: 'Please select a user'}
+        return_hash = {alert: I18n.t('active_controller.errors.department.select_user')}
+      elsif user_department.user.status_inactive?
+        return_hash = {alert: I18n.t('active_controller.errors.user_inactive')}
       elsif user_department.update(department_id: params[:target_department].blank? ? params[:department_id] : params[:target_department])
-        return_hash = { notice: "Department updated successfully"}
+        return_hash = {notice: I18n.t('active_controller.messages.created', object_name: I18n.t('departments.dashboard_name').downcase)}
       else
-        return_hash = { alert: user_department.errors.full_messages.first}
+        return_hash = {alert: user_department.errors.full_messages.first}
       end
     when 'addMulti'
-      users = User.where(id: params[:user_ids])
-      users = users.map { |user| {user_id: user.id, department_id: params[:department_id]}}
-      if params[:user_ids].blank?
-        return_hash = { alert: 'Please select a user'}
-      elsif UserDepartment.create(users)
-        return_hash = { notice: "User added successfully"}
+      users = params[:users].split(',')
+      if users.blank?
+        return_hash = { alert: I18n.t('active_controller.errors.department.select_user')}
       else
-        return_hash = { alert: "Something went wrong"}
+        users.each.with_index do |user, index|
+          user_id, duration, start_date = user.split('|').map(&:to_i)
+          year, month, day = start_date.split('-').map(&:to_i)
+          start_date = Date.new(year, month, day)
+          ud = UserDepartment.find_or_initialize_by(user_id: user_id)
+          if ud.user.status_inactive?
+            return redirect_to admin_department_path(id: params[:department_id]), { alert: I18n.t('active_controller.errors.user_inactive')}
+          elsif !ud.update({role: "member", department_id: params[:department_id], start_date: start_date}.merge(duration <= 24 ? {end_date: start_date + duration.months} : {}))
+            return redirect_to admin_department_path(id: params[:department_id]), { alert: ud.errors.full_messages.first}
+          end
+        end
+        return_hash = { notice: I18n.t('active_controller.messages.added_member')}
       end
     else
     end
-
-    redirect_to   (Department.find(params[:department_id])), return_hash
+    redirect_to admin_department_path(id: params[:department_id]), return_hash
   end
 
   def destroy
-    department = @user_department.department
+    department_id = @user_department.department.id
     if @user_department.destroy
       return_hash = { notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('user_departments.dashboard_name').downcase)}
     else
       return_hash = { alert: @user_department.errors.full_messages.first}
     end
-    redirect_to admin_department_path(department), return_hash
+
+    redirect_to admin_department_path(id: department_id), return_hash
   end
 
   private

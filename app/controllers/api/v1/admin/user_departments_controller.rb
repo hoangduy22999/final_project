@@ -1,6 +1,6 @@
 class Api::V1::Admin::UserDepartmentsController < Api::V1::Admin::AdminsController
   def not_have_department
-    data = User.where.not(id: UserDepartment.all.pluck(:user_id)).map do |user|
+    data = User.status_active.where.not(id: UserDepartment.all.pluck(:user_id)).map do |user|
       {
         user_id: user.id,
         user_name: user.full_name,

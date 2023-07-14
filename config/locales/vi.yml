@@ -32,6 +32,7 @@
 vi:
   users:
     dashboard_name: Nhân viên
+    profile_name: Thông tin cá nhân
     table:
       id: Mã
       name: Tên
@@ -55,6 +56,7 @@ vi:
       choose_city: Thành phố
       choose_district: Huyện
       choose_user: Nhân viên
+      choose_leader: Trưởng phòng
     form_inputs:
       first_name: Họ
       last_name: Tên
@@ -66,6 +68,7 @@ vi:
       gender: Giới tính
       role: Quyền
       avatar: Ảnh đại diện
+      address: Địa chỉ
       information:
         title: Thông tin cơ bản
       department:
@@ -102,8 +105,51 @@ vi:
       member: Nhân viên
       start_date: Ngày bắt đầu
       action: Thao tác
+      see_more: Nhiều hơn
+      see_less: Ít hơn
+      member_table:
+        id: Mã
+        name: Tên
+        status: Trạng thái
+        position: Vị trí
+        department: Phòng ban
+        age: Tuổi
+        address: Địa chỉ
+        start_date: Ngày bắt đầu
+        end_date: Ngày kết thúc
+        action: Thao tác
+        members: Nhân viên
+        move_department: Chuyển phòng ban
+        target_department: Phòng chuyển đến
+        duration: Thời hạn
+        duration_options:
+         one_month: 1 tháng
+         three_month: 3 tháng
+         six_month: 6 tháng
+         one_year: 1 năm
+         two_year: 2 năm
+         more_than_two_year: Hơn 2 năm
   time_sheets:
     dashboard_name: Chấm công
+    table:
+      id: Mã nhân viên
+      user: Nhân viên
+      department: Phòng ban
+      role: Quyền
+      month: Tháng
+      present_time: Thời gian làm việc
+      late_time: Đi muộn
+      forgot_keeping: Quên chấm công
+      action: Thao tác
+    import_data:
+      choose_file: Chọn file
+      confirm_data: Xác nhận dữ liệu
+      duplicate_confirm: Kiểm tra trùng lặp
+      include_header: Chứa phần đầu
+    form_inputs:
+      user: Nhân viên
+      start_at: Thời gian vào
+      end_at: Thời gian về
   holidays:
     dashboard_name: Ngày nghỉ
     add_title: Thêm ngày nghỉ
@@ -147,6 +193,63 @@ vi:
     dashboard_name: Trợ giúp
   leave_requests:
     dashboard_name: Xin phép
+    selects:
+      leave_type: Kiểu
+      reason: Lý do
+    leave_types:
+      late: Đi muộn
+      paid_leave: Nghỉ phép có lương
+      unpaid_leave: Nghỉ phép không lương
+      over_time: Làm thêm giờ
+      compensatory_leave: Nghỉ bù
+      forgot_keeping: Quên chấm công
+      other: Khác
+    table:
+      id: Mã
+      name: Tên
+      status: Trạng thái
+      user: Nhân viên
+      department: Phòng ban
+      type: Kiểu
+      time: Thời gian
+      reason: Lý do
+      date: Ngày
+      action: Thao tác
+    form_inputs:
+      leave_type: Kiểu
+      reason: Lý do
+      department: Phòng ban
+      envidence: Bằng chứng
+      user: Nhân viên
+      start_time: Bắt đâù
+      end_time: Kết thúc
+      total_time: Tổng thời gian
+      approve_by: Người duyệt
+      message: Lời nhắn
+    time_range_options:
+      today: Hôm nay
+      yesterday: Hôm qua
+      this_week: Tuần này
+      last_week: Tuần trước
+      this_month: Tháng này
+      last_month: Tháng trước
+      this_year: Năm nay
+      last_year: Năm trước
+      all: Tất cả
+    reasons:
+      injury_or_illness: Bệnh tật hoặc chấn thương
+      medical_appointments: Khám bệnh
+      family_emergencies: Việc gia đình
+      home_emergencies: Việc nhà
+      religious_reasons: Lý do tôn giáo
+      other_work_commitments: Khác
+    statuses:
+      pending: Chờ duyệt
+      approved: Đã duyệt
+      rejected: Từ chối
+    actions:
+     approve: Duyệt
+     rejecte: Từ chối
   room_pickers:
     dashboard_name: Đặt phòng họp
   passwords:
@@ -179,23 +282,40 @@ vi:
       action: Thao tác
   user_departments:
     dashboard_name: Nhân viên
+  roles:
+    dashboard_name: Quyền
+  histories:
+    dashboard_name: Lịch sử
   headers:
     dropdown:
       profile: Cá nhân
       setting: Cài đặt
       logout: Đăng xuất
+    alert:
+      alert_center: Trung tâm thông báo
+      show_all: Hiển thị tất cả
   form_buttons:
     save: Lưu
     cancel: Hủy bỏ
     add: Thêm
+    log_out: Đăng xuất
+    previous: Trước
+    nexts: Tiếp theo
   form_texts:
     name: Tên
     edit: Sửa
     remove: Xóa
+    add: Thêm
     confirm_remove: Bạn có chắc muốn xóa %{object_name} này?
+    confirm_log_out: Chọn '%{button_name}' nếu bạn sẵn sang kết thúc phiên đăng nhập
+    log_out_question: Đăng xuất?
+    no_object: Không có bản ghi nào
+    detail: Chi tiết
   form_selects:
     status: Trạng thái
     contract_type: Loại hợp đồng
+    choose_time: Khoảng thời gian
+    choose_type: Kiểu
   activerecord:
     errors:
       messages:
@@ -207,6 +327,7 @@ vi:
               invalid: không hợp lệ
               blank: không được trống
               taken: không được trùng lặp
+              cannot_change_email: Không được thay đổi email
             role:
               blank: không được trống
             status:
@@ -233,6 +354,18 @@ vi:
               approve_by_leader: Chỉ leader mới có quyền chấp nhận
               request_one_date: Phải xin phép trong 1 ngày
               time_dulicate: Đã có xin phép khác trong khoảng thời gian này
+        user_department:
+          attributes:
+            role:
+              leader_taken: Không được có quá 1 trưởng phòng
+        time_sheet:
+          attributes:
+            date:
+              only_one_day: Chỉ được xin phép trong 1 ngày
+        room:
+          attributes:
+            color:
+              cannot_be_white: Không được chọn màu trắng
     attributes:
       user:
         confirmation_sent_at: Xác nhận gửi lúc
@@ -260,11 +393,15 @@ vi:
         updated_at: Được cập nhật lúc
   active_controller:
     errors:
+      user_inactive: Hãy chọn user đang hoạt động
       role:
         admin:
           permission_denied: Bạn không có quyền thực hiện hành động này
       leave_requests:
         cannot_remove_not_pending: Không thể xóa xin phép đã chấp thuận hoặc từ chối
+      department:
+        select_user: Hãy chọn 1 nhân viên
+        something_wrong: Có gì đó không đúng
     messages:
       created: Tạo %{object_name} thành công
       updated: Cập nhật %{object_name} thành công
@@ -274,6 +411,7 @@ vi:
       not_removed: Xóa %{object_name} không thành công
       special_action: Đã %{action_name} %{object_name} thành công
       not_special_action: Chưa %{action_name} %{object_name} thành công
+      added_member: Thêm nhân viên thành công
   actions:
     create: Tạo
     update: Sửa

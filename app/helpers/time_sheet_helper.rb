@@ -19,7 +19,7 @@ module TimeSheetHelper
   end
 
   def check_type_options
-    TimeSheet.keeping_types.keys.each_with_object([['-- Choose Type --', '']]) do |type, object|
+    TimeSheet.keeping_types.keys.each_with_object([["-- #{I18n.t("form_selects.choose_type")} --", '']]) do |type, object|
       object << [type.titleize, type]
     end
   end

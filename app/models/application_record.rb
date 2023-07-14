@@ -8,6 +8,6 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.human_enum_name(enum_field, enum_value)
-    I18n.t("#{model_name.i18n_key}.#{enum_field.to_s.pluralize}.#{enum_value}")
+    I18n.t("#{model_name.collection}.#{enum_field.to_s.pluralize}.#{enum_value}")
   end
 end

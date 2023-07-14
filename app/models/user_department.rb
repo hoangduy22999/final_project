@@ -29,6 +29,8 @@ class UserDepartment < ApplicationRecord
 
   # validates
   validates :end_date, date: { after_or_equal_to: :start_date }, unless: -> { end_date.blank? }
+  validates :user_id, uniqueness: true
+  validate :less_than_one_leader
 
   # relationships
   belongs_to :user
@@ -49,5 +51,11 @@ class UserDepartment < ApplicationRecord
 
   def set_startdate
     self.start_date = Date.current
+  end
+
+  def less_than_one_leader
+    return if !role_leader? || department.user_departments.role_leader.count <= 1
+
+    errors.add(:base, I18n.t('activerecord.errors.models.user_department.attributes.role.leader_taken'))
   end
 end

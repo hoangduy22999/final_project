@@ -224,7 +224,7 @@ class User < ApplicationRecord
   def raise_change_email
     return if new_record? || !email_changed?
 
-    errors.add(:email, "Cannot change your email")
+    errors.add(:email, I18n.t("activerecord.errors.models.user.attributes.email.cannot_change_email"))
   end
 
   def validate_preferred_locale

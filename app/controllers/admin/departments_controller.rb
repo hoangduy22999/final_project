@@ -20,7 +20,7 @@ class Admin::DepartmentsController < Admin::BaseController
   end
 
   def show
-    @users = @department.users.uniq
+    @users = @department.users.joins(:user_department).order("user_departments.role asc").uniq
     @user_departments = @department.user_departments.map {|ud| { id: ud.id, user_id: ud.user_id, role: ud.role, department_id: ud.department_id } }
   end
 

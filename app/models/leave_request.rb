@@ -57,7 +57,7 @@ class LeaveRequest < ApplicationRecord
     unpaid_leave: 2,
     over_time: 3,
     compensatory_leave: 4,
-    forgot_kepping: 5,
+    forgot_keeping: 5,
     other: 6
   }, _prefix: true
 

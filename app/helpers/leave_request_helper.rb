@@ -1,14 +1,14 @@
 module LeaveRequestHelper
   def leader_options
-    UserDepartment.includes(:user, :department).role_leader.each_with_object([['-- Choose Leader --', '']]) do |leader, object|
+    UserDepartment.includes(:user, :department).role_leader.each_with_object([["-- #{I18n.t('users.selects.choose_leader')} --", '']]) do |leader, object|
       user = leader.user
       object << [user.full_name + " - " + leader.department.name, user.id]
     end
   end
 
   def leave_type_options
-    LeaveRequest.leave_types.keys.each_with_object([['-- Choose Type --', '']]) do |leave_type, object|
-      object << [leave_type.titleize, leave_type]
+    LeaveRequest.leave_types.keys.each_with_object([["-- #{I18n.t('leave_requests.selects.leave_type')} --", '']]) do |leave_type, object|
+      object << [LeaveRequest.human_enum_name(:leave_type, leave_type), leave_type]
     end
   end
 
@@ -18,16 +18,16 @@ module LeaveRequestHelper
 
 
   def time_range_options
-    [
-      [ 'Today', 'today' ],
-      [ 'Yesterday', 'yesterday' ],
-      [ 'This Week', 'this_week' ],
-      [ 'Last Week', 'last_week' ],
-      ['This Month', 'this_month'],
-      ['Last Month', 'last_month'],
-      ['This Year', 'this_year'],
-      ['Last Year', 'last_year'],
-      ['All', 'all']
+    [ ["-- #{I18n.t('form_selects.choose_time')} --", ''],
+      [ I18n.t('leave_requests.time_range_options.today'), 'today' ],
+      [ I18n.t('leave_requests.time_range_options.yesterday'), 'yesterday' ],
+      [ I18n.t('leave_requests.time_range_options.this_week'), 'this_week' ],
+      [ I18n.t('leave_requests.time_range_options.last_week'), 'last_week' ],
+      [ I18n.t('leave_requests.time_range_options.this_month'), 'this_month'],
+      [ I18n.t('leave_requests.time_range_options.last_month'), 'last_month'],
+      [ I18n.t('leave_requests.time_range_options.this_year'), 'this_year'],
+      [ I18n.t('leave_requests.time_range_options.last_year'), 'last_year'],
+      [ I18n.t('leave_requests.time_range_options.all'), 'all']
     ]
   end
 
@@ -55,14 +55,14 @@ module LeaveRequestHelper
     when "last_year"
       {start_date_gteq: Time.now.last_year.beginning_of_year, end_date_lteq: Time.now.last_year.end_of_year}
     else
-      {start_date_gteq: Time.now.beginning_of_day, end_date_lteq: Time.now.end_of_day}
+      {}
     end
     )
   end
 
   def reason_options
-    LeaveRequest.reasons.keys.each_with_object([['-- Choose Reason --', '']]) do |reason, object|
-      object << [reason.titleize, reason]
+    LeaveRequest.reasons.keys.each_with_object([["-- #{I18n.t('leave_requests.selects.reason')} --", '']]) do |reason, object|
+      object << [LeaveRequest.human_enum_name(:reason, reason), reason]
     end
   end
 end

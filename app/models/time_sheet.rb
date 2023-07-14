@@ -124,6 +124,6 @@ class TimeSheet < ApplicationRecord
   def only_check_same_day
     return if start_at.nil? || end_at.nil? || start_at.all_day.cover?(end_at)
 
-    errors.add(:end_at, 'must be in the same day with start_at')
+    errors.add(:base, I18n.t("activerecord.errors.models.time_sheet.attributes.date.only_one_day"))
   end
 end
