@@ -8,7 +8,11 @@ class Leader::LeaveRequestsController < Leader::BaseController
                                   .paginate(page: params[:page] || 1, per_page: params[:per_page] || PER_PAGE_BIG)
   end
 
-  def show; end
+  def show
+    if notification = Notification.find_by(id: params[:notification_id])
+      notification.update(is_readed: 1)
+    end
+  end
 
   def update
     respond_to do |format|

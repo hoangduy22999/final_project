@@ -18,3 +18,4 @@ include SeedPreLoad
 # load_seed('contract_sd', 'development')
 # load_seed('user_leave_time_sd', 'development')
 # load_seed('language_sd', 'development')
+load_seed('notification_sd', 'development')

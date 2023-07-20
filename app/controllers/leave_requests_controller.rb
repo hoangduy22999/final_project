@@ -25,7 +25,11 @@ class LeaveRequestsController < ApplicationController
     @leave_request = LeaveRequest.new
   end
 
-  def show; end
+  def show
+    if notification = Notification.find_by(id: params[:notification_id])
+      notification.update(is_readed: 1)
+    end
+  end
 
   def update
     if @leave_request.update(leave_request_params)

@@ -168,6 +168,18 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "recipient_id", null: false
+    t.string "message", null: false
+    t.integer "resource_id"
+    t.string "resource_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_readed", default: false, null: false
+    t.integer "action_type", default: 0, null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "content", null: false

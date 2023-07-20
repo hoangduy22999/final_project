@@ -1,0 +1,83 @@
+<%= form_with(model: leave_request, html: { class: "form-horizontal" }) do |form| %>
+  <div class="row justify-content-center">
+    <div class="col-sm-8">
+      <i><b><%= t('leave_requests.dashboard_name') %></b></i>
+      <hr class="hr" />
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.user'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5 align-items-center">
+          <%= form.text_field :name, value: current_user.full_name, class: "form-control" , disabled: true %>
+        </div>
+        <%= form.label I18n.t('leave_requests.form_inputs.department'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.text_field :deparment, value: current_user.department.name, class: "form-control" , disabled: true %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.leave_type'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.select :leave_type, leave_type_options, {}, { class: "form-control", disabled: true } %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.reason'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.select :reason, reason_options, {}, { class: "form-control", disabled: true } %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.start_time'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.datetime_field :start_date, class: "form-control", disabled: true %>
+        </div>
+
+        <%= form.label I18n.t('leave_requests.form_inputs.end_time'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.datetime_field :end_date, class: "form-control", disabled: true %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.approve_by'), class: "control-label col-sm-1" %>
+        <div class="col-sm-5">
+          <%= form.select :approve_by, leader_options, {}, { class: "form-control", disabled: true } %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.envidence'), class: "control-label col-sm-1" %>
+        <div class="col-sm-4" id="imageDiv">
+          <%= image_tag leave_request.envidence? ? leave_request.envidence_url : "", id: 'formImage', style: 'width: 420px;'%>
+        </div>
+      </div>
+
+
+      <div class="row d-flex align-items-center mb-4">
+        <%= form.label I18n.t('leave_requests.form_inputs.message'), class: "control-label col-sm-1" %>
+        <div class="col-sm-11 align-items-center">
+          <%= form.text_area :message, class: "form-control", disabled: true %>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center mb-4">
+
+      </div>
+      <% if leave_request.status_pending? %>
+        <div class="row">
+          <%= render "button", leave_request: leave_request, status: "approve" %>
+          <%= render "button", leave_request: leave_request, status: "rejecte" %>
+        </div>
+      <% else %>
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label I18n.t('leave_requests.form_inputs.status'), class: "control-label col-sm-1" %>
+          <div class="col-sm-11 align-items-center">
+            <%= form.select :status, leave_status_options, {}, { class: "form-control", disabled: true } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

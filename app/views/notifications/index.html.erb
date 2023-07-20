@@ -1,0 +1,24 @@
+<div class="">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <div class="box shadow-sm rounded bg-white mb-3">
+          <div class="box-title border-bottom p-3">
+              <h6 class="m-0"><%= t('notifications.dashboard_name') %></h6>
+          </div>
+          <div class="box-body p-0">
+            <% @notifications.each do |notification| %>
+              <% case notification.resource_type %>
+              <% when LeaveRequest.model_name %>
+                <%= render 'leave_notification', {notification: notification} %>
+              <% end %>
+            <% end %>
+          </div>
+      </div>
+      <%= will_paginate @notification %>
+    </div>
+  </div>
+</div>
+
+
+
