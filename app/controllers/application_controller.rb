@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
   before_action :set_locale
+  before_action :set_cookies_user
 
   def permission_denied_response
     redirect_to root_path, alert: I18n.t('active_controller.errors.role.admin.permission_denied')
@@ -28,5 +29,9 @@ class ApplicationController < ActionController::Base
 
   def beginning_month
     current_time.beginning_of_month
+  end
+
+  def set_cookies_user
+    cookies[:token] = current_user&.generate_token
   end
 end

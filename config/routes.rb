@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     devise_for :users, skip: [:registrations]
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
     root to: 'time_sheets#index'
+    mount ActionCable.server => '/cable'
     get 'profile', to: 'users#profile'
     patch 'profile', to: 'users#update_profile'
     get 'settings', to: 'settings#index'
@@ -15,9 +16,8 @@ Rails.application.routes.draw do
     resources :leave_requests
     get 'csvs/export', to: 'csvs#export', defaults: { format: :csv }
     resources :room_pickers
-    resources :chats, only: %i[index]
     resources :room_pickers, only: %i[index]
-    mount ActionCable.server => '/cable'
+    resources :notifications, only: %i[index show]
 
     namespace :admin do
       resources :holidays
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     end
 
     namespace :leader do
-      resources :leave_requests, only: %i[index update]
+      resources :leave_requests, only: %i[index update show]
       patch :update_multi_requests, to: 'leave_requests#update_multi'
     end
 

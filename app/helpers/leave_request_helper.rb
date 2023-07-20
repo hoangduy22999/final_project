@@ -16,6 +16,12 @@ module LeaveRequestHelper
     User.where(id: current_user.department.user_departments.pluck(:user_id))
   end
 
+  def leave_status_options
+    LeaveRequest.statuses.keys.each_with_object([["-- #{I18n.t 'users.selects.choose_status'} --", '']]) do |status, object|
+      object << [LeaveRequest.human_enum_name(:status, status), status]
+    end
+  end
+
 
   def time_range_options
     [ ["-- #{I18n.t('form_selects.choose_time')} --", ''],

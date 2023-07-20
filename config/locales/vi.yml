@@ -226,6 +226,7 @@ vi:
       total_time: Tổng thời gian
       approve_by: Người duyệt
       message: Lời nhắn
+      status: Trạng thái
     time_range_options:
       today: Hôm nay
       yesterday: Hôm qua
@@ -286,6 +287,23 @@ vi:
     dashboard_name: Quyền
   histories:
     dashboard_name: Lịch sử
+  notifications:
+    dashboard_name: Thông báo
+    new_leave_request: Bạn có xin phép mới cần duyệt
+    second: Giây
+    minutes: Phút
+    hour: Giờ
+    day: Ngày
+    month: Tháng
+    sended_time_ago: Trước
+    leave_requests:
+      created: Bạn có xin phép mới cần duyệt 
+      updated: Xin phép %{leave_type} vừa được %{action} bởi %{leader_name}
+      show_detail: Chi tiết
+      create_list_title: Đã tạo 1 xin phép %{leave_type} với lý do là %{reason_name}
+      update_list_title: Xin phép %{leave_type} vào lúc %{time} %{action_type} bởi %{leader_name} 
+      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
+      update_in_header: Xin phép vào lúc %{time} %{action_type}
   headers:
     dropdown:
       profile: Cá nhân
@@ -294,6 +312,7 @@ vi:
     alert:
       alert_center: Trung tâm thông báo
       show_all: Hiển thị tất cả
+      no_notification: Không có thông báo nào
   form_buttons:
     save: Lưu
     cancel: Hủy bỏ

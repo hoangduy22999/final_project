@@ -1,0 +1,33 @@
+<% notifications = current_user.recipient_notifications.order(created_at: :desc).first(Notification::MAX_COUNT_DISPLAY) %>
+<% unreaded_count = current_user.recipient_notifications.unreaded_notifications.count %>
+<!-- Nav Item - Alerts -->
+<li class="nav-item dropdown no-arrow mx-1">
+    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <span id="headerNotificationCount"  class="badge badge-danger badge-counter"><%= unreaded_count == 0 ? "" : unreaded_count %></span>
+    </a>
+    <!-- Dropdown - Alerts -->
+    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+        aria-labelledby="alertsDropdown">
+        <h6 class="dropdown-header">
+            <%= t('headers.alert.alert_center') %>
+        </h6>
+        <div id="listNotificationInHeader">
+          <% notifications.each do |notification| %>
+            <% case notification.resource_type %>
+            <% when LeaveRequest.model_name %>
+              <%= render 'partials/leave_notification', notification: notification %>
+            <% end %>
+          <% end %>
+        </div>
+        <% if unreaded_count > Notification::MAX_COUNT_DISPLAY %>
+          <a class="dropdown-item text-center small text-gray-500" href="/notifications"><%= t('headers.alert.show_all') %></a>
+        <% elsif notifications.count == 0 %>
+          <span class="dropdown-item text-center small text-gray-500"><%= t('headers.alert.no_notification') %></span>
+        <% end %>
+    </div>
+</li>
+
+<div class="topbar-divider d-none d-sm-block"></div>

@@ -25,12 +25,17 @@
 #  user        (user_id => users.id)
 #
 class LeaveRequest < ApplicationRecord
+  # cont
+  I18N_MESSAGES = {created: "notifications.leave_requests.created", updated: "notifications.leave_requests.updated"}
+
   # uploader
   mount_uploader :envidence, AvatarUploader
 
   # callbacks
   after_create :send_mail_for_leader
   before_commit :store_activity, on: %i(update create)
+  before_commit :create_leave_notification, on: :create
+  before_commit :update_leave_notification, on: :update
 
   # validates
   validates :end_date, :leave_type, presence: true
@@ -43,6 +48,7 @@ class LeaveRequest < ApplicationRecord
   belongs_to :approve_user, class_name: 'User', foreign_key: 'approve_by'
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by'
   has_many :action_histories, as: :resource, dependent: :destroy
+  has_many :notifications, as: :resource, dependent: :destroy
 
   # enum
   enum status: {
@@ -137,6 +143,23 @@ class LeaveRequest < ApplicationRecord
                             })
                       .created
                       .deliver_later
+  end
+
+  def create_leave_notification
+    notifications.create!({
+      message: LeaveRequest::I18N_MESSAGES[:created],
+      recipient_id: approve_by,
+      sender_id: user_id
+    })
+  end
+
+  def update_leave_notification
+    notifications.create!({
+      message: LeaveRequest::I18N_MESSAGES[:updated],
+      recipient_id: user_id,
+      sender_id: approve_by,
+      action_type: Notification.action_types[:updated]
+    })
   end
 
   def store_activity

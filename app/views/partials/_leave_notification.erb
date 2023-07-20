@@ -1,0 +1,21 @@
+<a class="dropdown-item d-flex align-items-center" href="<%= notification.action_type_created? ? 
+																														 leader_leave_request_path(id: notification.resource.id, notification_id: notification.id) :
+																														 leave_request_path(id: notification.resource.id, notification_id: notification.id) %>">
+    <div class="mr-3">
+        <div class="icon-circle bg-success">
+            <i class="fas fa-code-pull-request"></i>
+        </div>
+    </div>
+    <div>
+        <div class="small text-gray-500"><%= notification.created_at.strftime("%T %B %e, %Y") %></div>
+          <span class="<%= notification.is_readed ? "" : "font-weight-bold" %>">
+            <% if notification.action_type_created? %>
+                <%= t("notifications.leave_requests.create_in_header", user_name: notification.sender.full_name, 
+                                                                	object_name: t("#{notification.resource.model_name.collection}.dashboard_name").downcase) %>
+						<% else %>
+							<%= t("notifications.leave_requests.update_in_header", action_type: notification.resource.human_enum_name(:status).downcase,
+																																		 time: notification.resource.leave_request_time) %>
+						<% end %>
+          </span>
+    </div>
+</a>

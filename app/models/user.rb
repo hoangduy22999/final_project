@@ -80,6 +80,7 @@ class User < ApplicationRecord
   has_many :room_pickers, dependent: :destroy
   has_many :contracts
   has_many :user_leave_times
+  has_many :recipient_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :nullify
 
   # nested attributes
   accepts_nested_attributes_for :user_department, :education, :dependent, allow_destroy: true

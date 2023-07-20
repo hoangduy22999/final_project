@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: notifications
+#
+#  id            :bigint           not null, primary key
+#  action_type   :integer          default("created"), not null
+#  is_readed     :boolean          default(FALSE), not null
+#  message       :string           not null
+#  resource_type :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  recipient_id  :integer          not null
+#  resource_id   :integer
+#  sender_id     :integer          not null
+#
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: {}
+# column: value
+#
+two: {}
+# column: value

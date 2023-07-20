@@ -45,6 +45,7 @@
         <div>
         <%= render "button", leave_request: leave_request, status: "approve" %>
         <%= render "button", leave_request: leave_request, status: "rejecte" %>
+        <%= link_to I18n.t('notifications.leave_requests.show_detail'), leader_leave_request_path(id: leave_request.id, notification: leave_request.notifications.action_type_created.first), {class: ""}  %>
         </div>
       </td>
     </tr>
