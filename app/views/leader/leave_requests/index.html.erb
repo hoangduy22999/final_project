@@ -1,6 +1,6 @@
 <div class="row mb-4">
-  <div class="col-sm-7">
-    <form action="leave_requests" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-75" method="get">
+  <div class="col-sm-8">
+    <form action="leave_requests" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="get">
       <div class="input-group">
         <input name ="where[user_id_eq]" autocomplete="off" placeholder="<%= t('users.dashboard_name') %>" list="brow" class="form-control mr-4" value="<%= params[:where] ? params[:where]["user_id_eq"] : "" %>" onchange="this.form.submit();">
         <datalist id="brow">
@@ -9,6 +9,7 @@
             <% end %>
         </datalist>
         <%= select_tag "where[leave_type_eq]",  options_for_select(leave_type_options, params[:where].present?  ? params[:where]["leave_type_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
+        <%= select_tag "where[status_eq]",  options_for_select(leave_status_options, params[:where].present?  ? params[:where]["status_eq"] : ""), class: "form-control bg-light border-0 small mr-4", onchange: "this.form.submit();" %>
         <input class="form-control" type="month" id="start" name="where[year_month]" min="2018-03" value="<%= current_select_month_ransack %>" onchange="this.form.submit();">
         <div class="input-group-append ml-2">
           <button class="btn btn-primary" type="submit">
@@ -23,7 +24,11 @@
 <table class="table table-hover mt-4">
   <thead>
     <tr class="text-center">
-      <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange="selectAll(this)"></th>
+      <th scope="col">
+        <% if @leave_requests.any? { |leave| leave.status_pending? } %>
+          <input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange="selectAll(this)">
+        <% end %>
+      </th>
       <th scope="col"><%= t('leave_requests.table.user') %></th>
       <th scope="col"><%= t('leave_requests.table.department') %></th>
       <th scope="col"><%= t('leave_requests.table.type') %></th>
@@ -35,7 +40,10 @@
   <tbody>
     <% @leave_requests.each do |leave_request| %>
     <tr class="text-center leaveRequestTr">
-      <td class=""><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange="selectMulti()"></td>
+     
+      <td class="">
+        <% if leave_request.status_pending? %><input class="checkMultiLeave" type="checkbox" value="<%= leave_request.id %>" onchange="selectMulti()"><% end %>
+      </td>
       <td><%= leave_request.user.full_name %></td>
       <td><%= role_department(leave_request.user).titleize %></td>
       <td><%= leave_request.human_enum_name(:leave_type) %></td>
@@ -43,8 +51,10 @@
       <td><%= leave_request.human_enum_name(:reason) %></td>
       <td>
         <div>
-        <%= render "button", leave_request: leave_request, status: "approve" %>
-        <%= render "button", leave_request: leave_request, status: "rejecte" %>
+        <% if leave_request.status_pending? %>
+          <%= render "button", leave_request: leave_request, status: "approve" %>
+          <%= render "button", leave_request: leave_request, status: "rejecte" %>
+        <% end %>
         <%= link_to I18n.t('notifications.leave_requests.show_detail'), leader_leave_request_path(id: leave_request.id, notification: leave_request.notifications.action_type_created.first), {class: ""}  %>
         </div>
       </td>

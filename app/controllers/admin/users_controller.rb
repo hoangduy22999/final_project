@@ -35,6 +35,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
+    @contracts = @user.contracts
     @user.build_user_department unless @user.user_department.present?
     @user.build_education unless @user.education.present?
     @user.build_dependent unless @user.dependent.present?
@@ -43,7 +44,7 @@ class Admin::UsersController < Admin::BaseController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to admin_user_path(@user), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('users.dashboard_name').downcase) }
+        format.html { redirect_to admin_user_path(id: @user.id), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('users.dashboard_name').downcase) }
         format.json { render :show, status: :ok, location: @user }
       else
         flash.now[:error] = @user.errors.full_messages.first

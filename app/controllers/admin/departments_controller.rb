@@ -27,7 +27,7 @@ class Admin::DepartmentsController < Admin::BaseController
   def update
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to admin_departments_path, notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('departments.dashboard_name').downcase) }
+        format.html { redirect_to admin_department_path(id: @department.id), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('departments.dashboard_name').downcase) }
         format.json { render :show, status: :ok, location: @department }
       else
         format.html { render :edit, status: :unprocessable_entity }

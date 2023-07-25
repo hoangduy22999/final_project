@@ -27,8 +27,9 @@ Rails.application.routes.draw do
       resources :departments
       resources :user_departments
       patch :update_multi_user_department, to: 'user_departments#update_multi'
-      resources :users
-      resources :contracts
+      resources :users do
+        resources :contracts
+      end
       resources :rooms
     end
 

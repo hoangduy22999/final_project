@@ -10,6 +10,5 @@
     <a href="contracts/<%= contract.id %>" class="actionLink" title="<%= t('form_texts.remove') %>" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("contracts.dashboard_name").downcase) %>" data-method="delete">
       <i class="fa-solid fa-trash text-danger"></i>
     </a>
-    <%= render 'form', contract: contract %>
   </td>
 </tr>

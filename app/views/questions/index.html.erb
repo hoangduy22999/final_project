@@ -1,10 +1,9 @@
 <!-- DataTales Example -->
 <div class="row">
-  <div class="col-sm-6">
-    <form action="answers" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search w-50" method="get">
+  <div class="col-sm-4">
+    <form action="questions" class="" method="get">
       <div class="input-group">
-        <input name="where[content_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="Content" aria-label="Search" aria-describedby="basic-addon2"
-        value="<%= params[:where][:content_cont] if params[:where].present? %>">
+        <input name="where[content_cont]" type="text" class="form-control bg-light border-0 small mr-4" placeholder="<%= t('form_texts.content') %>" aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
@@ -13,28 +12,26 @@
       </div>
     </form>
   </div>
-  <div class="col-sm-6">
-    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#questionForm" style="width: 100px;">
-      <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+  <div class="col-sm-1">
+    <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#questionForm">
+      <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
       <%= t('form_buttons.add') %>
     </button>
   </div>
-  <%= render 'form', question: Question.new %>
 </div>
+<%= render 'form', question: Question.new %>
 <table class="table table-hover mt-4">
   <thead>
     <tr class="text-center">
-      <th scope="col"><input class="checkAllLeave" type="checkbox" id="checkAllLeave" onchange=""></th>
-      <th scope="col">Id</th>
-      <th scope="col">Content</th>
-      <th scope="col">Answers</th>
-      <th scope="col" class="text-center">Action</th>
+      <th scope="col-md-1"><%= t('questions.table.id') %></th>
+      <th scope="col-md-6"><%= t('questions.table.content') %></th>
+      <th scope="col-md-3"><%= t('questions.table.answers') %></th>
+      <th scope="col-md-2" class="text-center"><%= t('questions.table.action') %></th>
     </tr>
   </thead>
   <tbody>
     <% @questions.each do |question| %>
       <tr class="text-center leaveRequestTr">
-        <td class=""><input class="checkMultiLeave" type="checkbox" value="" onchange=""></td>
         <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
         <td><%= question.content %></td>
         <td class="">
@@ -42,7 +39,7 @@
         </td>
         <td>
           <div class="text-center">
-            <a href="questions/<%= question.id %>" class="actionLink" title="Remove" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("questions.dashboard_name").downcase) %>" data-method="delete">
+            <a href="questions/<%= question.id %>" class="actionLink" title="<%= t('form_texts.remove') %>" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("questions.dashboard_name").downcase) %>" data-method="delete">
               <i class="fa-solid fa-trash text-danger"></i>
             </a>
           </div>

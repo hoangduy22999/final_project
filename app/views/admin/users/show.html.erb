@@ -1,3 +1,61 @@
-<div class="p-5">
-  <%= render "form", user: @user %>
+<!-- Tabs navs -->
+<ul class="nav nav-tabs mb-3 " id="ex-with-icons" role="tablist">
+  <li class="nav-item nav-link-setting show active" role="presentation">
+    <button class="nav-link" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
+      aria-controls="ex-with-icons-tabs-1" aria-selected="true" onclick="showTable(this)"><i class="fas fa-chart-pie fa-fw me-2"></i><%= t('users.information') %></button>
+  </li>
+  <li class="nav-item nav-link-setting" role="presentation">
+    <button class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
+      aria-controls="ex-with-icons-tabs-2" aria-selected="false" onclick="showTable(this)"><i class="fas fa-chart-line fa-fw me-2"></i><%= t('users.contract') %></button>
+  </li>
+</ul>
+<!-- Tabs navs -->
+
+<!-- Tabs content -->
+<div class="tab-content" id="ex-with-icons-content">
+  <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+    <%= render "form", user: @user %>
+  </div>
+  <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+    <div class="table-responsive">
+      <table class="table table-hover mt-4" cellspacing="0">
+          <thead class="text-center">
+              <tr>
+                  <th><%= t('contracts.table.name') %></th>
+                  <th><%= t('contracts.table.type') %></th>
+                  <th><%= t('contracts.table.status') %></th>
+                  <th><%= t('contracts.table.date') %></th>
+                  <th><%= t('contracts.table.salary') %></th>
+                  <th><%= t('contracts.table.description') %></th>
+                  <th><%= t('contracts.table.action') %></th>
+              </tr>
+          </thead>
+          <tbody class="text-center" id="allHolidays">
+            <%= render @contracts %>
+            <%= render 'partials/blank_table', object: @contracts %>
+          </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+<script>
+  if (!"<%= params[:tab_pane] %>" == ""){
+    showTable(document.getElementById("<%= params[:tab_pane] %>"))
+  }
+  function showTable(e){
+    let navLinks = document.getElementsByClassName("nav-link-setting");
+    let tabPanes = document.getElementsByClassName("tab-pane");
+    for(var i = 0; i < navLinks.length; i++){
+      navLinks[i].classList.remove("show", "active");
+      navLinks[i].setAttribute('aria-selected', 'false');
+    }
+
+    for(var i=0; i < tabPanes.length; i++){
+      tabPanes[i].classList.remove("show", "active");
+    }
+
+    e.parentElement.classList.add("show", "active");
+    document.getElementById(e.getAttribute('aria-controls')).classList.add("show", "active");
+  }
+</script>

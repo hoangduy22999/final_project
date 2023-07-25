@@ -24,7 +24,7 @@ class Admin::RoomsController < Admin::BaseController
 
   def update
     if @room.update(room_params)
-      redirect_to admin_room_path(@room), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('rooms.dashboard_name').downcase)
+      redirect_to admin_room_path(id: @room.id), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('rooms.dashboard_name').downcase)
     else
       redirect_to admin_rooms_path, alert: @room.errors.full_messages.first
     end

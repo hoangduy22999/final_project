@@ -1,2 +1,311 @@
+<div class="p-4">
+  <%= form_with(url: "/admin/departments/#{department.id}",model: [:admin, department], html: { class: "form-horizontal" }) do |form| %>
+    <div class="row d-flex align-items-center mb-4">
+      <%= form.label "#{t('departments.table.member_table.name')}:", class: "control-label col-sm-1" %>
+      <div class="col-sm-3">
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+    <i><b><%= t('departments.table.member_table.members') %></b></i><a class="ml-2 btn btn-success" id="addUsers" data-toggle="modal" data-target="#addMultiModal"  title="<%= t('form_buttons.add') %>"><i class="fa-solid fa-plus"></i></a>
+    <br>
+    <table class="table table-hover mt-4">
+      <thead>
+        <tr class="text-center">
+          <th class="thTable"><%= t('departments.table.member_table.id') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.name') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.status') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.position') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.department') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.age') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.address') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.start_date') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.end_date') %></th>
+          <th class="thTable"><%= t('departments.table.member_table.action') %></th>
+        </tr>
+      </thead>
+      <tbody id="#userList">
+        <% users.each do |user| %>
+          <tr class="text-center">
+            <td><%= (user.id > 9 ? "0000" : "00000") + user.id.to_s %></td>
+            <td><%= full_name(user) %></td>
+            <td><div class="w-75 text-center text-light rounded bg-<%= user.status.eql?("active") ? "success" : "danger" %>"><%= user.status %></div></td>
+            <td><%= user.user_department&.role %></td>
+            <td><%= user.department&.name %></td>
+            <td><%= user.age %></td>
+            <td><%= full_address(user) %></td>
+            <td><%= user.user_department&.start_date&.strftime("%F") %></td>
+            <td><%= user.user_department&.end_date&.strftime("%F") %></td>
+            <td>
+              <div class="text-center">
+                <a class="editModal" id="editModal<%= user.id %>" value="<%= user.id %>" data-user-role="<%= user.user_department&.role %>"  data-toggle="modal" data-target="#editMultiModal" class="actionLink" title="Edit Role"><i class="fa-regular mr-2 fa-pen-to-square text-success"></i></a>
+                <a class="moveModal" id="moveModel<%= user.id %>" value="<%= user.id %>" data-toggle="modal" data-target="#moveMultiModal" class="actionLink" title="Move User"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i></a>
+                <a href="/admin/user_departments/<%= user_departments.find{|ud| ud[:department_id].eql?(department.id) && ud[:user_id].eql?(user.id)}[:id] %>" class="actionLink" title="Remove" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("departments.dashboard_name").downcase) %>" data-method="delete">
+                  <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+        <%= render 'partials/blank_table', object: users %>
+    </table>
+    <div class="row">
+      <%= link_to I18n.t('form_buttons.cancel'), admin_departments_path, class: 'btn btn-secondary' %>
+      <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
+    </div>
+  <% end %>
+</div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="moveMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moveMultiModalLabel"><%= t('departments.table.member_table.move_department') %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: admin_update_multi_user_department_path, method: 'patch', html: { class: "ml-4 d-inline" }) do |form| %>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: department.id %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "moveDepartment" %>
+          <div class="row">
+            <div class="col-sm-4">
+              <%= form.label I18n.t('departments.table.member_table.members') %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :move_user_id, user_options(department), {}, { class: "form-control" } %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-4">
+              <%= form.label I18n.t('departments.table.member_table.target_department') %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :target_department, department_options_without(department), {}, { class: "form-control" } %>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('form_buttons.cancel') %></button>
+        <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMultiModalLabel"><%= t('form_buttons.edit') %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: "/admin/update_multi_user_department", method: 'patch', html: { class: "ml-4 d-inline text-center" }) do |form| %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "editUserDepartment" %>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: department.id %>
+          <div class="row">
+            <div class="col-sm-2">
+              <%= form.label "User:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :user_id, user_options(department), {}, { class: "form-control", disabled: true} %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-2">
+              <%= form.label "Role:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-2">
+              <%= form.label "s:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-sm-2">
+              <%= form.label "Role:" %>
+            </div>
+            <div class="col-sm-12">
+              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= form.submit 'Save', class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addMultiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMultiModalLabel"><%= t('form_texts.add') %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: "/admin/update_multi_user_department", method: 'patch', html: { class: "ml-4 d-inline text-center", onsubmit: "addUserIds()" }) do |form| %>
+          <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "addMulti" %>
+          <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: department.id %>
+          <%= form.hidden_field :users, name: "users" %>
+          <table class="table table-hover mt-4">
+            <thead class='text-center'>
+                <tr>
+                    <th scope="col"><input class="addAllUser" type="checkbox" id="addAllUser" onchange="selectAllUser(this)"></th>
+                    <th><%= t('departments.table.member_table.id') %></th>
+                    <th><%= t('departments.table.member_table.name') %></th>
+                    <th><%= t('departments.table.member_table.age') %></th>
+                    <th><%= t('departments.table.member_table.start_date') %></th>
+                    <th><%= t('departments.table.member_table.duration') %></th>
+                </tr>
+            </thead>
+            <tbody id="addUserTable" class='text-center'>
+            </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <%= link_to I18n.t('form_buttons.cancel'), admin_departments_path, class: 'btn btn-secondary' %>
+        <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  var editModals = document.getElementsByClassName("editModal")
+  var moveModals = document.getElementsByClassName("moveModal")
+  var userIdElement = document.getElementById('user_id')
+  var userElement = document.getElementById('move_user_id')
+  var userRoleElement = document.getElementById('role')
+  var addUsers = document.getElementById('addUsers')
+  var token = localStorage.getItem('token')
+  var addUserTable = document.getElementById('addUserTable')
+
+  addUsers.onclick = function() {
+    $.ajax({
+								url: '<%=ENV.fetch("BE_HOST") %>/api/v1/admin/user_departments/not_have_department',
+								dataType: 'json',
+								headers: {
+									token: token
+								},
+								success: function(doc) {
+                  let users = doc.data
+                  addUserTable.innerHTML = ""
+                  if (users.length == 0){
+                    addUserTable.innerHTML = "Not have any users"
+                  }
+                  for (var i = 0; i < users.length; i++) {
+                    var row = addUserTable.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    var checkbox = document.createElement("INPUT");
+                    checkbox.setAttribute("type", "checkbox");
+                    checkbox.setAttribute("value", users[i]["user_id"]);
+                    checkbox.setAttribute("name", 'addUserCheckbox');
+                    checkbox.classList.add("addUserCheckbox");
+                    cell1.appendChild(checkbox);
+                    cell2.innerHTML = users[i]["user_id"];
+                    cell3.innerHTML = users[i]["user_name"];
+                    cell4.innerHTML = users[i]["user_age"];
+
+                    var startDate = document.createElement("INPUT");
+                    startDate.setAttribute("type", "date");
+                    startDate.classList.add("form-select");
+                    startDate.valueAsDate = new Date();
+                    startDate.setAttribute("id", `startDate_${users[i]["user_id"]}`);
+                    cell5.appendChild(startDate);
+
+                    let arrayOptions = [
+                                        ["<%= t('departments.table.member_table.duration_options.one_month') %>", 1],
+                                        ["<%= t('departments.table.member_table.duration_options.three_month') %>", 2],
+                                        ["<%= t('departments.table.member_table.duration_options.six_month') %>", 6],
+                                        ["<%= t('departments.table.member_table.duration_options.one_year') %>", 12],
+                                        ["<%= t('departments.table.member_table.duration_options.two_year') %>", 24],
+                                        ["<%= t('departments.table.member_table.duration_options.more_than_two_year') %>", 36]
+                                        ]
+                    var selectList = document.createElement("select");
+                    selectList.setAttribute("id", `duration_${users[i]["user_id"]}`);
+                    selectList.classList.add("form-select");
+                    //Create and append the options
+                    for (var j = 0; j < arrayOptions.length; j++) {
+                        var option = document.createElement("option");
+                        option.value = arrayOptions[j][1];
+                        option.text = arrayOptions[j][0];
+                        selectList.appendChild(option);
+                    }
+                    cell6.appendChild(selectList);
+                  }
+								}
+						});
+  }
+
+  for (var i = 0; i < moveModals.length; i++){
+    let element = moveModals[i]
+    element.onclick = function() {
+      let userId = element.getAttribute('value');
+      userElement.value = userId;
+    }
+  }
+
+  function addUserIds(){
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    let users = []
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked) {
+        users.push(`${elements[i].value}|${document.getElementById(`duration_${elements[i].value}`).value}|${document.getElementById(`startDate_${elements[i].value}`).value}`)
+      }
+    }
+    document.getElementById("users").value = users
+  }
+
+  function selectAllUser(element){
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    if(elements.length == 0){
+      return;
+    }
+    for(let i = 0; i < elements.length; i++) {
+      elements[i].checked = element.checked
+    }
+  }
+
+  function checkedInput() {
+    let elements = document.getElementsByClassName("addUserCheckbox");
+    if(elements.length == 0){
+      return;
+    }
+    for(let i = 0; i < elements.length; i++) {
+      if(elements[i].checked == true) {
+        return true;
+      }
+    }
+    return false;
+  }
+</script>

@@ -8,7 +8,7 @@
   <td><%= full_address(user) %></td>
   <td><%= user.user_department&.start_date&.strftime("%F") %></td>
   <td><%= user.user_leave_times.leave_type_paid&.first&.leave_remain || 0 %></td>
-  <td><%= link_to user.contracts.order(created_at: :desc).first&.end_date, admin_contracts_path(params: {where: {user_id_eq: user.id}}) %></td>
+  <td><%= user.contracts.order(created_at: :desc).first&.end_date %></td>
   <td>
     <div class="text-center">
       <a href="users/<%= user.id %>" class="actionLink mr-3" title="<%= t('form_texts.edit') %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>

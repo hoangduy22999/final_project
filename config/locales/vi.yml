@@ -33,6 +33,8 @@ vi:
   users:
     dashboard_name: Nhân viên
     profile_name: Thông tin cá nhân
+    information: Thông tin
+    contract: Hợp đồng
     table:
       id: Mã
       name: Tên
@@ -165,6 +167,8 @@ vi:
       status: Trạng thái
       date: Ngày
       description: Mô tả
+      start_at: Bắt đầu
+      end_at: Kết thúc
   rooms:
     dashboard_name: Phòng họp
     add_title: Thêm phòng họp
@@ -189,8 +193,24 @@ vi:
       action: Thao tác
   questions:
     dashboard_name: Trợ giúp
+    table:
+      id: Mã
+      user: Nhân viên
+      created_at: Tạo lúc
+      content: Nội dung
+      answers: Trả lời
+      action: Thao tác
+    form_inputs:
+      content: Nội dung
   answers:
     dashboard_name: Trợ giúp
+    table:
+      id: Mã
+      user: Nhân viên
+      created_at: Tạo lúc
+      content: Nội dung
+      answers: Trả lời
+      action: Thao tác
   leave_requests:
     dashboard_name: Xin phép
     selects:
@@ -330,11 +350,14 @@ vi:
     log_out_question: Đăng xuất?
     no_object: Không có bản ghi nào
     detail: Chi tiết
+    content: Nội dung
   form_selects:
     status: Trạng thái
     contract_type: Loại hợp đồng
     choose_time: Khoảng thời gian
     choose_type: Kiểu
+  form_titles:
+    create: Tạo %{object_name}
   activerecord:
     errors:
       messages:

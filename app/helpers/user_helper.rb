@@ -54,7 +54,7 @@ module UserHelper
 
   def role_department(user)
     user_department = user.user_department
-    user_department.department.name + ' ' + user_department.role
+    user_department ? user_department.department.name + ' ' + user_department.role : ""
   end
 
   def multi_day_present(start_date, end_date)

@@ -5,22 +5,22 @@
     <div class="modal-content p-4">
       <%= form_with(model: question, html: { class: "form-horizontal" }) do |form| %>
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Holiday</h5>
+          <h5 class="modal-title" id="exampleModalLabel"><%= t('form_titles.create', object_name: t('questions.dashboard_name')) %></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="row d-flex align-items-center">
-            <%= form.label "question:", class: "control-label" %>
+            <%= form.label t('questions.form_inputs.content'), class: "control-label" %>
           </div>
           <div class="row d-flex align-items-center mb-3">
             <%= form.text_field :content, class: "form-control" %>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <%= form.submit "Save", class: "btn btn-primary waves-effect waves-light ml-4" %>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal"><%= I18n.t('form_buttons.cancel') %></button>
+          <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
         </div>
       <% end %>
     </div>

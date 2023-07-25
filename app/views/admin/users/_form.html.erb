@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-2"></div>
   <div class="col-sm-8">
-    <%= form_with(model: [:admin, user], html: { class: "form-horizontal" }) do |form| %>
+    <%= form_with(url:  "/admin/users/#{user.id}",model: [:admin, user], html: { class: "form-horizontal" }) do |form| %>
       <i><b><%= t('users.form_inputs.information.title') %></b></i>
       <hr class="hr" />
       <div class="row d-flex align-items-center mb-4">
@@ -166,5 +166,5 @@
       </div>
     <% end %>
   </div>
-
+</div>
 <script src="/javascripts/district_select.js" rel="preload"></script>
