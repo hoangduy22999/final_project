@@ -21,14 +21,19 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :holidays
-      resources :time_sheets
+      # resources :time_sheets
+      get 'time_sheets', to: 'time_sheets#summary'
       get 'time_sheet/users', to: 'time_sheets#users'
-      resources :answers
+      get 'answers', to: 'answers#summary'
+      resources :questions do
+        resources :answers
+      end
       resources :departments
       resources :user_departments
       patch :update_multi_user_department, to: 'user_departments#update_multi'
       resources :users do
         resources :contracts
+        resources :time_sheets
       end
       resources :rooms
     end

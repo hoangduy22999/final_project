@@ -33,6 +33,11 @@ class Api::V1::LeaveRequestsController < Api::V1::ApplicationApi
     render_success(data, LeaveRequests::IndexSerializer)
   end
 
+  def user_leave_time
+    data = current_user.user_leave_times.ransacker(params[:where]).result&.first
+    render_success(data,  UserLeaveTimes::ShowSerializer)
+  end
+
   private
 
     def set_leave_request

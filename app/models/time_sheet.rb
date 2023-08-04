@@ -29,7 +29,7 @@ class TimeSheet < ApplicationRecord
 
   # validates
   validates :user, presence: true
-  validate :only_check_same_day
+  validate :only_check_same_day, :duplicate_time_sheet
 
 
   enum change_by: {
@@ -46,15 +46,15 @@ class TimeSheet < ApplicationRecord
     TimeSheet.late_time(start_at.strftime('%H:%M:%S'), end_at.strftime('%H:%M:%S'))
   end
 
-  def time_present
+  def time_present(options = {})
     return 0 if start_at.nil? || end_at.nil?
     
-    TimeSheet.present_time(start_at.strftime('%H:%M:%S'), end_at.strftime('%H:%M:%S'))
+    TimeSheet.present_time(start_at.strftime('%H:%M:%S'), end_at.strftime('%H:%M:%S'), options)
   end
 
   class << self
-    def present_time(check_in, check_out)
-      check_in_morning, check_out_morning, check_in_afternoon, check_out_afternoon = CompanySetting.current_time_settings
+    def present_time(check_in, check_out, options = {})
+      check_in_morning, check_out_morning, check_in_afternoon, check_out_afternoon = options[:check_in_morning], options[:check_out_morning], options[:check_in_afternoon], options[:check_out_afternoon]
 
       return [0, 0] if check_in.nil? || check_out.nil?
 
@@ -123,6 +123,12 @@ class TimeSheet < ApplicationRecord
 
   def only_check_same_day
     return if start_at.nil? || end_at.nil? || start_at.all_day.cover?(end_at)
+
+    errors.add(:base, I18n.t("activerecord.errors.models.time_sheet.attributes.date.only_one_day"))
+  end
+
+  def duplicate_time_sheet
+    return unless TimeSheet.ransack({id_not_eq: id, start_at_gteq: start_at.beginning_of_day, end_at_lteq: end_at.end_of_day, user_id_eq: user_id}).result.present?
 
     errors.add(:base, I18n.t("activerecord.errors.models.time_sheet.attributes.date.only_one_day"))
   end

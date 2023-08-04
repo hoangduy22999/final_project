@@ -4,20 +4,21 @@
 #
 # Table name: leave_requests
 #
-#  id            :bigint           not null, primary key
-#  approve_by    :bigint
-#  created_by    :integer
-#  end_date      :datetime
-#  envidence     :string
-#  leave_type    :integer
-#  message       :text
-#  reason        :integer          default("injury_or_illness")
-#  reference_ids :bigint           is an Array
-#  start_date    :datetime
-#  status        :integer          default("pending")
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  user_id       :bigint
+#  id               :bigint           not null, primary key
+#  approve_by       :bigint
+#  created_by       :integer
+#  end_date         :datetime
+#  envidence        :string
+#  leave_taken_type :integer          default("paid"), not null
+#  leave_type       :integer
+#  message          :text
+#  reason           :integer          default("injury_or_illness")
+#  reference_ids    :bigint           is an Array
+#  start_date       :datetime
+#  status           :integer          default("pending")
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :bigint
 #
 # Foreign Keys
 #
@@ -40,7 +41,7 @@ class LeaveRequest < ApplicationRecord
   # validates
   validates :end_date, :leave_type, presence: true
   validates :start_date, presence: true, date: { before_or_equal_to: :end_date }
-  validate :approve_by_leader, :request_one_date
+  validate :approve_by_leader, :request_one_date, :time_dulicate
   validate :denie_request_not_pending, on: :update
 
   # relationshipuser
@@ -59,12 +60,11 @@ class LeaveRequest < ApplicationRecord
 
   enum leave_type: {
     late: 0,
-    paid_leave: 1,
-    unpaid_leave: 2,
-    over_time: 3,
-    compensatory_leave: 4,
-    forgot_keeping: 5,
-    other: 6
+    leave: 1,
+    over_time: 2,
+    compensatory_leave: 3,
+    forgot_keeping: 4,
+    other: 5
   }, _prefix: true
 
   enum reason: {
@@ -74,6 +74,11 @@ class LeaveRequest < ApplicationRecord
     home_emergencies: 3,
     religious_reasons: 4,
     other_work_commitments: 5
+  }, _prefix: true
+
+  enum leave_taken_type: {
+    paid: 0,
+    unpaid: 1
   }, _prefix: true
 
   # ransacker
@@ -126,10 +131,11 @@ class LeaveRequest < ApplicationRecord
   end
 
   def denie_request_not_pending
-    # return if status_pending?
+    return if status_pending?
 
-    # errors.add(:base, "Can't update approve or reject leave request")
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.only_update_pending"))
   end
+
 
   def send_mail_for_leader
     LeaveRequestMailer.with({ 

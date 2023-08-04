@@ -8,6 +8,10 @@
     <button class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
       aria-controls="ex-with-icons-tabs-2" aria-selected="false" onclick="showTable(this)"><i class="fas fa-chart-line fa-fw me-2"></i><%= t('users.contract') %></button>
   </li>
+  <li class="nav-item nav-link-setting" role="presentation">
+    <button class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
+      aria-controls="ex-with-icons-tabs-3" aria-selected="false" onclick="showTable(this)"><i class="fas fa-chart-line fa-fw me-2"></i><%= t('users.leave') %></button>
+  </li>
 </ul>
 <!-- Tabs navs -->
 
@@ -18,6 +22,8 @@
   </div>
   <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
     <div class="table-responsive">
+      <i><b><%= t('contracts.dashboard_name') %></b></i>
+      <%= link_to '<i class="fa-solid fa-plus"></i>'.html_safe , root_path, class: "ml-2 btn btn-success" %>
       <table class="table table-hover mt-4" cellspacing="0">
           <thead class="text-center">
               <tr>
@@ -31,7 +37,9 @@
               </tr>
           </thead>
           <tbody class="text-center" id="allHolidays">
-            <%= render @contracts %>
+            <% if @contracts.present? %>
+              <%= render @contracts %>
+            <% end %>
             <%= render 'partials/blank_table', object: @contracts %>
           </tbody>
       </table>

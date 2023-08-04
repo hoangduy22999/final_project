@@ -37,8 +37,12 @@
             <td><%= user.user_department&.end_date&.strftime("%F") %></td>
             <td>
               <div class="text-center">
-                <a class="editModal" id="editModal<%= user.id %>" value="<%= user.id %>" data-user-role="<%= user.user_department&.role %>"  data-toggle="modal" data-target="#editMultiModal" class="actionLink" title="Edit Role"><i class="fa-regular mr-2 fa-pen-to-square text-success"></i></a>
-                <a class="moveModal" id="moveModel<%= user.id %>" value="<%= user.id %>" data-toggle="modal" data-target="#moveMultiModal" class="actionLink" title="Move User"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i></a>
+                <a class="editModal actionLink" id="editModal<%= user.id %>" value="<%= user.id %>" data-user-role="<%= user.user_department&.role %>"  data-toggle="modal" data-target="#editMultiModal" title="Edit Role">
+                  <i class="fa-regular mr-2 fa-pen-to-square text-success"></i>
+                </a>
+                <a class="moveModal actionLink" id="moveModel<%= user.id %>" value="<%= user.id %>" data-toggle="modal" data-target="#moveMultiModal" title="<%= t('user_departments.form_inputs.move_user') %>">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                </a>
                 <a href="/admin/user_departments/<%= user_departments.find{|ud| ud[:department_id].eql?(department.id) && ud[:user_id].eql?(user.id)}[:id] %>" class="actionLink" title="Remove" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("departments.dashboard_name").downcase) %>" data-method="delete">
                   <i class="fa-solid fa-trash text-danger"></i>
                 </a>
@@ -103,7 +107,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editMultiModalLabel"><%= t('form_buttons.edit') %></h5>
+        <h5 class="modal-title" id="editMultiModalLabel"><%= t('form_texts.edit') %></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -113,8 +117,8 @@
           <%= form.hidden_field :update_type, name: "update_type", id: "update_type", value: "editUserDepartment" %>
           <%= form.hidden_field :department_id, name: "department_id", id: "department_id", value: department.id %>
           <div class="row">
-            <div class="col-sm-2">
-              <%= form.label "User:" %>
+            <div class="col-sm-12">
+              <%= form.label I18n.t('user_departments.form_inputs.user') %>
             </div>
             <div class="col-sm-12">
               <%= form.select :user_id, user_options(department), {}, { class: "form-control", disabled: true} %>
@@ -122,8 +126,8 @@
           </div>
 
           <div class="row mt-4">
-            <div class="col-sm-2">
-              <%= form.label "Role:" %>
+            <div class="col-sm-12">
+              <%= form.label I18n.t('user_departments.form_inputs.role') %>
             </div>
             <div class="col-sm-12">
               <%= form.select :role, role_options, {}, { class: "form-control"} %>
@@ -131,26 +135,26 @@
           </div>
 
           <div class="row mt-4">
-            <div class="col-sm-2">
-              <%= form.label "s:" %>
+            <div class="col-sm-12">
+              <%= form.label I18n.t('user_departments.form_inputs.start_date') %>
             </div>
             <div class="col-sm-12">
-              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+              <%= form.date_field :start_date, { class: "form-control"} %>
             </div>
           </div>
 
           <div class="row mt-4">
-            <div class="col-sm-2">
-              <%= form.label "Role:" %>
+            <div class="col-sm-12">
+              <%= form.label I18n.t('user_departments.form_inputs.end_date') %>
             </div>
             <div class="col-sm-12">
-              <%= form.select :role, role_options, {}, { class: "form-control"} %>
+              <%= form.date_field :end_date, { class: "form-control"} %>
             </div>
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <%= form.submit 'Save', class: 'btn btn-primary' %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('form_buttons.cancel') %></button>
+        <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
       </div>
       <% end %>
     </div>

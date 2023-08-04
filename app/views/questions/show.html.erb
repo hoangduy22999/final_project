@@ -1,1 +1,50 @@
-<%= render "form", question: @question %>
+<section style="">
+  <div class="container my-5 py-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-start align-items-center">
+              <%= image_tag( @question.user.avatar_url || "default_avatar.png", class: "rounded-circle shadow-1-strong mr-3", alt: "avatar", width: 60, height: 60) %>
+              <div>
+                <h6 class="fw-bold text-primary mb-1"><%= @question.user.full_name %></h6>
+                <p class="text-muted small mb-0">
+                  <%= @question.created_at.strftime('%F at %I:%M%p') %>
+                </p>
+              </div>
+            </div>
+
+            <p class="mt-3 mb-4 pb-2">
+              <b><%= @question.content %></b>
+            </p>
+          </div>
+          <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+            <div class="mb-4">
+              <% unless @question.answers.present? %>
+                <div class="d-flex flex-start align-items-center">
+                  <div>
+                    <p class="text-muted small mb-0">
+                      <%= t('answers.no_answers') %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+              <% @question.answers.each do |answer| %>
+                <div class="d-flex flex-start align-items-center">
+                  <%= image_tag( answer.user.avatar_url || "default_avatar.png", class: "rounded-circle shadow-1-strong mr-3", alt: "avatar", width: 40, height: 40) %>
+                  <div>
+                    <h6 class="fw-bold text-primary mb-1"><%= answer.user.full_name %></h6>
+                    <p class="text-muted small mb-0">
+                      <b><%= answer.content %><br></b>
+                      <%= answer.created_at.strftime('%F at %I:%M%p') %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

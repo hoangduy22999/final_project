@@ -37,4 +37,8 @@ module TimeSheetHelper
     return "#{hour}h:#{minutes}m" if note
     "#{hour}:#{minutes}"
   end
+
+  def current_select_month(time_sheet)
+    time_sheet.start_at.strftime('%Y-%m')
+  end
 end

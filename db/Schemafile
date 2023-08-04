@@ -144,6 +144,7 @@ create_table :leave_requests do |t|
   t.bigint 'reference_ids', array: true
   t.string 'envidence', null: true
   t.text 'message', null: true
+  t.integer 'leave_taken_type', default: 0, null: false
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
@@ -251,7 +252,7 @@ create_table :action_histories do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
-create_table "user_leave_times" do |t|
+create_table :user_leave_times do |t|
   t.bigint "user_id", null: false
   t.integer "leave_type", null: false, default: 0
   t.float "leave_max", null: false, default: 0.0
@@ -262,7 +263,7 @@ create_table "user_leave_times" do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
-create_table "company_settings" do |t|
+create_table :company_settings do |t|
   t.string "check_in_morning"
   t.string "check_out_afternoon"
   t.string "check_in_afternoon"
@@ -272,12 +273,14 @@ create_table "company_settings" do |t|
   t.datetime "apply_from"
   t.datetime "apply_to"
   t.float "allow_late_time", default: 0.0
+  t.float "paid_default", default: 36.0
+  t.float "unpaid_default", default: 360.0
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false
 end
 
-create_table "languages" do |t|
+create_table :languages do |t|
   t.string "code", null: false
   t.string "name", null: false
   t.string "native_name", null: false
@@ -286,7 +289,7 @@ create_table "languages" do |t|
   t.datetime "updated_at", precision: 6, null: false
 end
 
-create_table "notifications" do |t|
+create_table :notifications do |t|
   t.integer "sender_id", null: false
   t.integer "recipient_id", null: false
   t.string "message", null: false

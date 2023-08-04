@@ -19,23 +19,16 @@
       <th><%= t('answers.table.answers') %></th>
       <th><%= t('answers.table.user') %></th>
       <th><%= t('answers.table.created_at') %></th>
-      <th><%= t('answers.table.action') %></th>
     </tr>
   </thead>
   <tbody class="text-center">
     <% @questions.each.with_index(1) do |question, index| %>
       <tr>
         <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
-        <td class="col-md-4"><%= link_to question.content, new_admin_answer_path(question.id) %></td>
+        <td class="col-md-4"><%= link_to question.content, new_admin_question_answer_path(question_id: question.id) %></td>
         <td><%= question.answers.count %></div></td>
         <td><%= question.user.full_name %></td>
         <td><%= question.created_at&.strftime("%F") %></td>
-        <td>
-          <a href="questions/<%= question.id %>" class="actionLink mr-3" title="<%= t('form_texts.edit') %>"><i class="fa-regular fa-pen-to-square text-success"></i></a>
-          <a href="questions/<%= question.id %>" class="actionLink" title="<%= t('form_texts.remove') %>" data-confirm="<%= t('form_texts.confirm_remove', object_name: t("questions.dashboard_name").downcase) %>" data-method="delete">
-            <i class="fa-solid fa-trash text-danger"></i>
-          </a>
-        </td>
       </tr>
     <% end %>
     <%= render 'partials/blank_table', object: @questions %>

@@ -35,13 +35,14 @@ class Admin::UserDepartmentsController < Admin::BaseController
         return_hash = { alert: I18n.t('active_controller.errors.department.select_user')}
       else
         users.each.with_index do |user, index|
-          user_id, duration, start_date = user.split('|').map(&:to_i)
+          user_id, duration, start_date = user.split('|')
+          duration = duration.to_i
           year, month, day = start_date.split('-').map(&:to_i)
           start_date = Date.new(year, month, day)
           ud = UserDepartment.find_or_initialize_by(user_id: user_id)
           if ud.user.status_inactive?
             return redirect_to admin_department_path(id: params[:department_id]), { alert: I18n.t('active_controller.errors.user_inactive')}
-          elsif !ud.update({role: "member", department_id: params[:department_id], start_date: start_date}.merge(duration <= 24 ? {end_date: start_date + duration.months} : {}))
+          elsif !ud.update({role: "member", department_id: params[:department_id], start_date: start_date}.merge(duration.to_i <= 24 ? {end_date: start_date + duration.months} : {}))
             return redirect_to admin_department_path(id: params[:department_id]), { alert: ud.errors.full_messages.first}
           end
         end

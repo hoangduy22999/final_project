@@ -33,9 +33,9 @@ class LeaveRequestsController < ApplicationController
 
   def update
     if @leave_request.update(leave_request_params)
-      redirect_to leave_request_path(@leave_request), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('leave_requests.dashboard_name').downcase)
+      redirect_to leave_request_path(id: @leave_request.id), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('leave_requests.dashboard_name').downcase)
     else
-      redirect_to leave_request_path(@leave_request), alert: @leave_request.errors.full_messages.first
+      redirect_to leave_request_path(id: @leave_request.id), alert: @leave_request.errors.full_messages.first
     end
   end
 

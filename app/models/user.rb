@@ -60,6 +60,7 @@ class User < ApplicationRecord
   # validates
   validates :phone, length: { in: 10..13 }
   # validates :password, format: { with: PASSWORD_FORMAT }, unless: -> { password.blank? }
+  validates :birthday, date: {before_or_equal_to: Date.today}
   validates :address, :birthday, :status, :gender, :role, presence: true
   validate :raise_change_email, :validate_preferred_locale
 
@@ -159,6 +160,10 @@ class User < ApplicationRecord
     false
   end
 
+  def available_leave_taken_time
+    user_leave_times.order(:leave_type).map(&:leave_remain)
+  end
+
   # ransacker
   ransacker :status, formatter: proc { |key| statuses[key] }
   ransacker :gender, formatter: proc { |key| genders[key] }
@@ -212,7 +217,7 @@ class User < ApplicationRecord
 
     def login_id(header_token)
       decode_token = JWT.decode(header_token, ENV.fetch('HMAC_SECRET'), true, { algorithm: 'HS256' }).first
-      return nil unless decode_token['expiry'] && decode_token['expiry'].to_datetime >= DateTime.now
+      # return nil unless decode_token['expiry'] && decode_token['expiry'].to_datetime >= DateTime.now
       decode_token['user_id']
     rescue JWT::DecodeError
       nil
@@ -232,5 +237,10 @@ class User < ApplicationRecord
     return if CompanySetting.current_setting.allow_languages.include?(preferred_locale)
 
     erros.add(:preferred_locale, I18n.t("activerecord.errors.models.user.attributes.preferred_locale.invalid"))
+  end
+
+  def create_user_leave_taken
+    current_setting = CompanySetting.current_setting
+    UserLeaveTime.leave_types.map { |type| {user_id: id, leave_max: current_setting.send("#{type}_default"), leave_type: type} }
   end
 end

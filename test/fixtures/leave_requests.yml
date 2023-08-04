@@ -2,20 +2,21 @@
 #
 # Table name: leave_requests
 #
-#  id            :bigint           not null, primary key
-#  approve_by    :bigint
-#  created_by    :integer
-#  end_date      :datetime
-#  envidence     :string
-#  leave_type    :integer
-#  message       :text
-#  reason        :integer          default("injury_or_illness")
-#  reference_ids :bigint           is an Array
-#  start_date    :datetime
-#  status        :integer          default("pending")
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  user_id       :bigint
+#  id               :bigint           not null, primary key
+#  approve_by       :bigint
+#  created_by       :integer
+#  end_date         :datetime
+#  envidence        :string
+#  leave_taken_type :integer          default("paid"), not null
+#  leave_type       :integer
+#  message          :text
+#  reason           :integer          default("injury_or_illness")
+#  reference_ids    :bigint           is an Array
+#  start_date       :datetime
+#  status           :integer          default("pending")
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :bigint
 #
 # Foreign Keys
 #

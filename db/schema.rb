@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "check_in_afternoon"
     t.string "check_out_morning"
     t.float "allow_late_time", default: 0.0
+    t.float "paid_default", default: 36.0
+    t.float "unpaid_default", default: 360.0
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -145,6 +147,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "envidence"
     t.text "message"
+    t.integer "leave_taken_type", default: 0, null: false
   end
 
   create_table "meetings", force: :cascade do |t|

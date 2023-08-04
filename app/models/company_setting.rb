@@ -11,7 +11,9 @@
 #  check_in_morning    :string
 #  check_out_afternoon :string
 #  check_out_morning   :string
+#  paid_default        :float            default(36.0)
 #  status              :integer          default("active")
+#  unpaid_default      :float            default(360.0)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
@@ -31,7 +33,7 @@ class CompanySetting < ApplicationRecord
 
   class << self
     def current_setting
-      status_active.first ||order(apply_to: :desc).first
+      status_active.first || order(apply_to: :desc).first
     end
 
     def current_time_settings

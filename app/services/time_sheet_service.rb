@@ -16,11 +16,18 @@ class TimeSheetService
   private
 
   def calculte
+    check_in_morning, check_out_morning, check_in_afternoon, check_out_afternoon = CompanySetting.current_time_settings
+    options = {
+                check_in_morning: check_in_morning,
+                check_out_morning: check_out_morning,
+                check_in_afternoon: check_in_afternoon,
+                check_out_afternoon: check_out_afternoon
+              }
     time_sheets.group_by {|ts| ts.user_id}.map do |user_id, user_time_sheets|
       {
         user_id: user_id,
-        present_times: TimeSheet.strftime_format(user_time_sheets.sum { |elm| elm.time_present.first }),
-        late_times: TimeSheet.strftime_format(user_time_sheets.sum { |elm| elm.time_present.last }),
+        present_times: TimeSheet.strftime_format(user_time_sheets.sum { |elm| elm.time_present(options).first }),
+        late_times: TimeSheet.strftime_format(user_time_sheets.sum { |elm| elm.time_present(options).last }),
         forgot_keepings: user_time_sheets.count{|elm| elm.start_at.nil? || elm.end_at.nil? }
       }
     end

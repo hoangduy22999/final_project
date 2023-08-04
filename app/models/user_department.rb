@@ -34,7 +34,7 @@ class UserDepartment < ApplicationRecord
 
   # relationships
   belongs_to :user
-  belongs_to :department
+  belongs_to :department, optional: true
   has_many :contracts
 
   # enums
@@ -54,7 +54,7 @@ class UserDepartment < ApplicationRecord
   end
 
   def less_than_one_leader
-    return if !role_leader? || department.user_departments.role_leader.count <= 1
+    return if department.nil? || !role_leader? || department.user_departments.role_leader.count <= 1
 
     errors.add(:base, I18n.t('activerecord.errors.models.user_department.attributes.role.leader_taken'))
   end

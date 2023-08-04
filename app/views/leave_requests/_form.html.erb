@@ -1,6 +1,6 @@
-<%= form_with(model: leave_request, html: { class: "form-horizontal" }) do |form| %>
+<%= form_with(url: "/leave_requests/#{leave_request.id}", method: "PATCH", model: leave_request, html: { class: "form-horizontal"}) do |form| %>
   <div class="row justify-content-center">
-    <div class="col-sm-8">
+    <div class="col-sm-10">
       <i><b><%= t('leave_requests.dashboard_name') %></b></i>
       <hr class="hr" />
       <div class="row d-flex align-items-center mb-4">
@@ -17,7 +17,12 @@
       <div class="row d-flex align-items-center mb-4">
         <%= form.label I18n.t('leave_requests.form_inputs.leave_type'), class: "control-label col-sm-1" %>
         <div class="col-sm-5">
-          <%= form.select :leave_type, leave_type_options, {}, { class: "form-control" } %>
+          <%= form.select :leave_type, leave_type_options, {}, { class: "form-control", onchange: "toggleLeaveTaken(this)" } %>
+        </div>
+      
+        <%= form.label I18n.t('leave_requests.form_inputs.leave_taken_type'), class: "control-label col-sm-1 leaveTakenType d-none" %>
+        <div class="col-sm-5 leaveTakenType d-none">
+          <%= form.select :leave_taken_type, leave_taken_type_options(current_user), {}, { class: "form-control" } %>
         </div>
       </div>
 
@@ -31,12 +36,12 @@
       <div class="row d-flex align-items-center mb-4">
         <%= form.label I18n.t('leave_requests.form_inputs.start_time'), class: "control-label col-sm-1" %>
         <div class="col-sm-5">
-          <%= form.datetime_field :start_date, class: "form-control", onchange: "setTotalHour()"%>
+          <%= form.datetime_field :start_date, class: "form-control", onchange: ""%>
         </div>
 
         <%= form.label I18n.t('leave_requests.form_inputs.end_time'), class: "control-label col-sm-1" %>
         <div class="col-sm-5">
-          <%= form.datetime_field :end_date, class: "form-control", onchange: "setTotalHour()" %>
+          <%= form.datetime_field :end_date, class: "form-control", onchange: "" %>
         </div>
       </div>
 
@@ -86,3 +91,17 @@
 
 <script src="/javascripts/image_select.js" rel="preload"></script>
 <script src="/javascripts/total_time_select.js" rel="preload"></script>
+<script>
+  function toggleLeaveTaken(element){
+    var selectedValue = element.value;
+    leaveTakenElements = document.getElementsByClassName("leaveTakenType");
+    showLeaveTaken = (selectedValue == 'late' || selectedValue == 'leave');
+    for(var i = 0; i < leaveTakenElements.length; i++){
+      if(showLeaveTaken) {
+        leaveTakenElements[i].classList.remove('d-none');
+      } else {
+        leaveTakenElements[i].classList.add('d-none');
+      }
+    }
+  }
+</script>

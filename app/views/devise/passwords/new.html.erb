@@ -13,20 +13,20 @@
             <div class="col-lg-6">
               <div class="p-5">
                 <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Forgot Password!</h1>
+                    <h1 class="h4 text-gray-900 mb-4"><%= t('sessions.forgot_password').titleize %>!</h1>
                 </div>
                 <form class="user" action="/users/password" id="new_user" accept-charset="UTF-8" method="post">
                     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                     <div class="form-group">
                         <input name="user[email]" type="email" class="form-control form-control-user"
                             id="exampleInputEmail" aria-describedby="emailHelp"
-                            placeholder="Enter Email Address...">
+                            placeholder="<%= t('sessions.email_placeholder') %>">
                     </div>
-                    <input name="commit" type="submit" class="btn btn-primary btn-user btn-block" value="Send me reset password instructions" data-disable-with="Log in">
+                    <input name="commit" type="submit" class="btn btn-primary btn-user btn-block" value="<%= t('sessions.send_instructions') %>" data-disable-with="Log in">
                 </form>
                 <hr>
                 <div class="text-center">
-                    <a class="small" href="/users/sign_in">Log in</a>
+                    <a class="small" href="/users/sign_in"><%= t('sessions.login') %></a>
                 </div>
               </div>
             </div>
