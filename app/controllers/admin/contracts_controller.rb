@@ -1,5 +1,5 @@
 class Admin::ContractsController < Admin::BaseController
-  before_action :set_contract, only: %i(show update destroy)
+  before_action :set_contract, only: %i(show update destroy inactive_status)
   before_action :set_user
 
   def index
@@ -15,24 +15,31 @@ class Admin::ContractsController < Admin::BaseController
   def create
     @contract = @user.contracts.build(contract_params)
     if @contract.save
-      redirect_to admin_users_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), notice: I18n.t('active_controller.messages.created',
+      redirect_to admin_user_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), notice: I18n.t('active_controller.messages.created',
                                                                                    object_name: I18n.t('contracts.dashboard_name').downcase)
     else
-      flash.now[:error] = @department.errors.full_messages.first
+      flash.now[:error] = @contract.errors.full_messages.first
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
+    if @contract.user.eql?(@user) && @contract.update(contract_params)
+      return_hash =  {notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('contracts.dashboard_name').downcase)}
+      redirect_to admin_user_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), return_hash
+    else
+      redirect_to admin_user_contract_path(id: @contract.id, user_id: @user.id), alert: @contract.errors.full_messages.first
+    end
   end
 
-  def destroy
-    if @contract.destroy
-      return_hash =  notice: I18n.t('active_controller.messages.removed', object_name: I18n.t('departments.dashboard_name').downcase)
+  def inactive_status
+    if @contract.status_active?
+      @contract.status_inactive!
+      return_hash = {notice: I18n.t('active_controller.messages.contract.inactived')}
     else
-      return_hash = {alert: @contract.errors.full_messages.first}
+      return_hash = {alert: I18n.t('active_controller.messages.contract.inactive_already')}
     end
-    redirect_to admin_users_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), return_hash
+    redirect_to admin_user_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), return_hash
   end
 
   private
@@ -48,6 +55,10 @@ class Admin::ContractsController < Admin::BaseController
   end
 
   def contract_params
-    params.require(:contract).permit(:user_department_id, :base_salary, :contract_type, :description, :end_date, :payment_form, :start_date)
+    params.require(:contract).permit(:base_salary, :contract_type, :description, :end_date, :start_date, :status)
+  end
+
+  def set_one_active
+    Contract.set_one_active(@contract)
   end
 end

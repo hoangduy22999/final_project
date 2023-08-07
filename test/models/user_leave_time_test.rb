@@ -2,13 +2,14 @@
 #
 # Table name: user_leave_times
 #
-#  id          :bigint           not null, primary key
-#  leave_max   :float            default(0.0), not null
-#  leave_taken :float            default(0.0), not null
-#  leave_type  :integer          default("paid"), not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  user_id     :bigint           not null
+#  id                 :bigint           not null, primary key
+#  paid_leave_max     :float            default(0.0), not null
+#  paid_leave_taken   :float            default(0.0), not null
+#  unpaid_leave_max   :float            default(0.0), not null
+#  unpaid_leave_taken :float            default(0.0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  user_id            :bigint           not null
 #
 require "test_helper"
 

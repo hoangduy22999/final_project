@@ -8,14 +8,51 @@
       </div>
       <div class="modal-body">
         <div class="row d-flex align-items-center mb-4">
-          <%= form.label "#{I18n.t 'rooms.form_inputs.name'}", class: "control-label col-sm-1" %>
-          <div class="col-sm-5">
-            <%= form.text_field :name, class: "form-control" %>
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.user'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.text_field :user_name, value: user.full_name, class: "form-control", disabled: true %>
+          </div>
+        </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.start_date'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.date_field :start_date, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.end_date'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.date_field :end_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.contract_type'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.select :contract_type, contract_type_options, {}, { class: "form-control" } %>
+          </div>
+
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.base_salary'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.number_field :base_salary, step: 10000, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.status'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.select :status, contract_status_options, {}, { class: "form-control" } %>
+          </div>
+
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.description'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.text_area :description, class: "form-control" %>
           </div>
         </div>
       </div>
+
       <div class="modal-footer">
-          <%= link_to I18n.t('form_buttons.cancel'), admin_user_contracts_path(user_id: user.id, id: contract.id), class: 'btn btn-secondary' %>
+          <%= link_to I18n.t('form_buttons.cancel'), admin_user_path(id: @user.id, tab_pane: "ex-with-icons-tab-2"), class: 'btn btn-secondary' %>
           <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
       </div>
     <% end %>

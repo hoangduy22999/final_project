@@ -14,10 +14,10 @@
     </form>
   </div>
   <div class="col-sm-1">
-    <button class="btn btn-primary ml-md-3 my-2 my-md-0" href="#" data-toggle="modal" data-target="#newTimeSheetForm" style="">
+    <a class="btn btn-primary ml-md-3 my-2 my-md-0" href="<%= "/admin/users/#{@user.id}/time_sheets/new?year_month=#{params[:where][:year_month]}" %>">
       <i class="fa-solid fa-plus mr-2 text-gray-400"></i>
       <%= t('form_texts.add') %>
-    </button>
+    </a>
   </div>
 </div>
 <table class="table table-hover mt-4">

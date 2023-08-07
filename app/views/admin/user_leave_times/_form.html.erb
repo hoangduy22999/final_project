@@ -1,0 +1,46 @@
+<!-- Logout Modal-->
+<div class="row">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <%= form_with(url: "/admin/users/#{user.id}/user_leave_times/#{user_leave_time&.id}", model: [:admin, user_leave_time], html: { class: "form-horizontal" }) do |form| %>
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><%= I18n.t('user_leave_times.add_title')  %></h5>
+      </div>
+      <div class="modal-body">
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.contract.user'}:", class: "control-label col-sm-2" %>
+          <div class="col-sm-4">
+            <%= form.text_field :user_name, value: user.full_name, class: "form-control", disabled: true %>
+          </div>
+        </div>
+        
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.user_leave_time.paid_leave_max'}", class: "control-label col-sm-3" %>
+          <div class="col-sm-3">
+            <%= form.number_field :paid_leave_max, step: 0.25, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'activerecord.attributes.user_leave_time.paid_leave_taken'}", class: "control-label col-sm-3" %>
+          <div class="col-sm-3">
+            <%= form.number_field :paid_leave_takeb, step: 0.25, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row d-flex align-items-center mb-4">
+          <%= form.label "#{I18n.t 'activerecord.attributes.user_leave_time.unpaid_leave_max'}", class: "control-label col-sm-3" %>
+          <div class="col-sm-3">
+            <%= form.number_field :unpaid_leave_max, step: 0.25, class: "form-control" %>
+          </div>
+
+          <%= form.label "#{I18n.t 'activerecord.attributes.user_leave_time.unpaid_leave_taken'}", class: "control-label col-sm-3" %>
+          <div class="col-sm-3">
+            <%= form.number_field :unpaid_leave_taken, step: 0.25, class: "form-control" %>
+          </div>
+        </div>
+
+      <div class="modal-footer">
+          <%= form.submit I18n.t('form_buttons.save'), class: "btn btn-primary waves-effect waves-light ml-4" %>
+      </div>
+    <% end %>
+  </div>
+</div>

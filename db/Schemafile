@@ -254,10 +254,10 @@ end
 
 create_table :user_leave_times do |t|
   t.bigint "user_id", null: false
-  t.integer "leave_type", null: false, default: 0
-  t.float "leave_max", null: false, default: 0.0
-  t.float "leave_taken", null: false, default: 0.0
-
+  t.float "paid_leave_max", null: false, default: 0.0
+  t.float "paid_leave_taken", null: false, default: 0.0
+  t.float "unpaid_leave_max", null: false, default: 0.0
+  t.float "unpaid_leave_taken", null: false, default: 0.0
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

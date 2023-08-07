@@ -80,7 +80,7 @@ class User < ApplicationRecord
   has_many :sended_messages, class_name: 'Message', foreign_key: 'sender_id', dependent: :nullify
   has_many :room_pickers, dependent: :destroy
   has_many :contracts
-  has_many :user_leave_times
+  has_one :user_leave_time
   has_many :recipient_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :nullify
 
   # nested attributes

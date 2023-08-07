@@ -33,7 +33,9 @@ Rails.application.routes.draw do
       patch :update_multi_user_department, to: 'user_departments#update_multi'
       resources :users do
         resources :contracts
+        patch "/contracts/:id/inactive_status", to: 'contracts#inactive_status'
         resources :time_sheets
+        resources :user_leave_times
       end
       resources :rooms
     end

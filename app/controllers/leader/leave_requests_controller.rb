@@ -17,7 +17,7 @@ class Leader::LeaveRequestsController < Leader::BaseController
   def update
     respond_to do |format|
       if @leave_request.update(leave_request_param)
-        format.html { redirect_to leader_leave_requests_path, notice: I18n.t('active_controller.messages.special_action',
+        format.html { redirect_to leader_leave_requests_path(id: @leave_request.id), notice: I18n.t('active_controller.messages.special_action',
                                                                               object_name: I18n.t('leave_requests.dashboard_name').downcase,
                                                                               action_name: I18n.t('actions.create').downcase)
           "Leave request was successfully #{@leave_request.status}." }

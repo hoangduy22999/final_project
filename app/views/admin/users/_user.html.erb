@@ -7,7 +7,7 @@
   <td><%= user.age %></td>
   <td><%= full_address(user) %></td>
   <td><%= user.created_at.strftime("%F") %></td>
-  <td><%= user.user_leave_times.leave_type_paid&.first&.leave_remain || 0 %></td>
+  <td><%= user.user_leave_time.paid_leave_remain || 0 %></td>
   <td><%= user.contracts.order(created_at: :desc).first&.end_date %></td>
   <td>
     <div class="text-center">

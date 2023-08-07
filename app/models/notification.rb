@@ -78,6 +78,12 @@ class Notification < ApplicationRecord
         notification_in_list = I18n.t(message, leave_type: resource.human_enum_name(:leave_type), action: resource.human_enum_name(:status), leader_name: sender.full_name)
         incoming_notification = I18n.t(message, leave_type: resource.human_enum_name(:leave_type), action: resource.human_enum_name(:status), leader_name: sender.full_name)
       end
+    when "Question"
+      if action_type_created?
+        href = "/admin/questions/#{resource_id}?notification=#{id}"
+      else
+      end
+    when "Answer"
     end
     [href, notification_in_header, notification_in_list]
   end

@@ -20,8 +20,18 @@
 #  user  (user_id => users.id)
 #
 class Contract < ApplicationRecord
+  # constants
+  STEP_SALARY = 100000
+
+  # validates
+  validates :start_date, :end_date, :contract_type, :base_salary, presence: true
+  validates :start_date, date: { before_or_equal_to: :end_date }
+  validate :equal_share_salary, :only_one_active
+  validate :has_active, on: :create
+  validate :denied_update_inactive, on: :update
+
   # callbacks
-  before_save :experied_date
+  before_save :change_status
 
   # relationships
   belongs_to :user
@@ -51,10 +61,48 @@ class Contract < ApplicationRecord
   ransacker :payment_form, formatter: proc { |key| payment_forms[key] }
   ransacker :contract_type, formatter: proc { |key| contract_types[key] }
 
+  class << self
+    def set_one_active(contract)
+      all_contracts = contract.user.contracts
+      return if all_contracts.status_active.size <= 1
+  
+      all_contracts.update_all({status: 'inactive'})
+      last_contract = all_contracts.order(end_date: :desc).first
+      last_contract.status_active!
+      all_contracts.select {|contract| contract.id != last_contract.id && contract.end_date >= last_contract.start_date}
+                   .update_all({end_date: last_contract.start_date - 1.days})                              
+    end
+  end
+
   private
 
-  def experied_date
-    return if end_date >= Date.today || status_inactive?
-    status = Contract.statuses["active"]
+  def equal_share_salary
+    return if base_salary && base_salary % Contract::STEP_SALARY == 0
+
+    errors.add(:base_salary, I18n.t("activerecord.errors.models.contract.attributes.base_salary.equal_share_salary", step_salary: Contract::STEP_SALARY))
+  end 
+
+  def only_one_active
+    return if status_inactive? || Contract.ransack({id_not_eq: id, user_id_eq: user_id}).result.status_active.blank? || !status_changed?
+
+    errors.add(:status,  I18n.t("activerecord.errors.models.contract.attributes.status.only_one_active"))
+  end
+
+  def has_active
+    return if user.contracts.status_active.blank?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.contract.base.attributes.has_active"))
+  end
+
+  def change_status
+    return if status_changed? && status_inactive? && end_date  < Time.now
+
+    end_date = Time.now
+  end
+
+  def denied_update_inactive
+    return if status_active? || status_changed?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.contract.attributes.base.denied_update_inactive"))
   end
 end

@@ -22,11 +22,11 @@ class Admin::HolidaysController < Admin::BaseController
     @holiday = Holiday.new(holiday_params)
     respond_to do |format|
       if cannot? :create, @holiday
-        format.html { redirect_to admin_holidays_path(@holiday), alert: I18n.t('active_controller.errors.role.admin.permission_denied') }
+        format.html { redirect_to admin_holidays_path(id: @holiday.id), alert: I18n.t('active_controller.errors.role.admin.permission_denied') }
       elsif @holiday.save
-        format.html { redirect_to admin_holidays_path(@holiday), notice: I18n.t('active_controller.messages.created', object_name: I18n.t('holidays.dashboard_name').downcase) }
+        format.html { redirect_to admin_holidays_path(id: @holiday.id), notice: I18n.t('active_controller.messages.created', object_name: I18n.t('holidays.dashboard_name').downcase) }
       else
-        format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
+        format.html { redirect_to admin_holidays_path(id: @holiday.id), alert: @holiday.errors.full_messages.first }
       end
     end
   end
@@ -34,9 +34,9 @@ class Admin::HolidaysController < Admin::BaseController
   def update
     respond_to do |format|
       if @holiday.update(holiday_params)
-        format.html { redirect_to admin_holidays_path(@holiday), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('holidays.dashboard_name').downcase) }
+        format.html { redirect_to admin_holidays_path(id: @holiday.id), notice: I18n.t('active_controller.messages.updated', object_name: I18n.t('holidays.dashboard_name').downcase) }
       else
-        format.html { redirect_to admin_holidays_path(@holiday), alert: @holiday.errors.full_messages.first }
+        format.html { redirect_to admin_holidays_path(id: @holiday.id), alert: @holiday.errors.full_messages.first }
       end
     end
   end

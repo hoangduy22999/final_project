@@ -159,7 +159,7 @@ vi:
       user_name: Tên nhân viên
       date: Ngày
     update_title: Sửa chấm công
-    create_title: Tạo chấm công
+    add_title: Tạo chấm công
   holidays:
     dashboard_name: Ngày nghỉ
     add_title: Thêm ngày nghỉ
@@ -307,6 +307,9 @@ vi:
       apprenticeship: Học nghề
       freelancer: Tự do
       other: Khác
+    statuses:
+      active: Hoạt động
+      inactive: Vô hiệu
     table:
       name: Tên
       description: Mô tả
@@ -315,6 +318,8 @@ vi:
       date: Thời gian
       salary: Lương cơ bản
       action: Thao tác
+    add_title: Thêm hợp đồng
+    update_title: Sửa hợp đồng
   user_departments:
     dashboard_name: Nhân viên
     form_inputs:
@@ -323,6 +328,9 @@ vi:
       end_date: Ngày kết thúc
       user: Nhân viên
       move_user: Chuyển phòng ban
+  user_leave_times:
+    dashboard_name: Giờ phép
+    add_title: Giờ phép
   roles:
     dashboard_name: Quyền
   histories:
@@ -344,6 +352,14 @@ vi:
       update_list_title: Xin phép %{leave_type} vào lúc %{time} %{action_type} bởi %{leader_name} 
       create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
       update_in_header: Xin phép vào lúc %{time} %{action_type}
+    questions:
+      created: Bạn có câu hỏi mới
+      create_list_title: Đã tạo 1 xin phép %{leave_type} với lý do là %{reason_name}
+      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
+    answers:
+      created: Câu hỏi của bạn đã được trả lời
+      create_list_title: Đã tạo 1 xin phép %{leave_type} với lý do là %{reason_name}
+      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
   sessions:
     login_title: Chào mừng trở lại!
     remember_me: Nhớ đăng nhập
@@ -376,6 +392,8 @@ vi:
     edit: Sửa
     remove: Xóa
     add: Thêm
+    inactive_status: Vô hiệu hóa
+    confirm_inactive_status: Bạn có chắc muốn vô hiệu hóa %{object_name} này?
     confirm_remove: Bạn có chắc muốn xóa %{object_name} này?
     confirm_log_out: Chọn '%{button_name}' nếu bạn sẵn sang kết thúc phiên đăng nhập
     log_out_question: Đăng xuất?
@@ -433,6 +451,32 @@ vi:
         district: Huyện
         city: Tỉnh
         birthday: Sinh nhật
+      contract:
+        user_id: Nhân viên
+        user: Nhân viên
+        base_salary: Lương cơ bản
+        start_date: Ngày bắt đầu
+        end_date: Ngày kết thúc
+        contract_type: Loại hợp đồng
+        status: Trạng thái
+        description: Mô tả
+      user_leave_time:
+        paid_leave_max: Giờ nghỉ có lương
+        paid_leave_taken: Giờ đã nghỉ có lương
+        unpaid_leave_max: Giờ nghỉ không lương
+        unpaid_leave_taken: Giờ đã nghỉ không lương
+        paid_leave_remain: Giờ nghỉ có lương còn lại
+        unpaid_leave_remain: Giờ nghỉ không lương còn lại
+        user_id: Nhân viên
+        user: Nhân viên
+      room:
+        color: Màu
+        capacity: Sức chứa
+        name: Tên
+        description: Mô tả
+        status: Trạng thái
+        start_at: Bắt đầu
+        end_at: Kết thúc
     errors:
       messages:
         record_invalid: Bản ghi không hợp lệ
@@ -494,6 +538,24 @@ vi:
           attributes:
             color:
               cannot_be_white: Không được chọn màu trắng
+              taken: Màu đã được chọn
+        contract:
+          attributes:
+            base:
+              has_active: Nhân viên đã có hợp đồng đang hoạt động
+              denied_update_inactive: Không được sửa hợp đồng đã vô hiệu
+            start_date:
+              blank: không được để trống
+              date_before_or_equal_to: phải trước ngày kết thúc
+            end_date:
+              blank: không được để trống
+            base_salary:
+              equal_share_salary: chia hết cho %{step_salary}
+              blank: không được để trống
+            contract_type:
+              blank: không được để trống
+            status:
+              only_one_active: chỉ được 1 trạng thái hoạt động
   active_controller:
     errors:
       user_inactive: Hãy chọn user đang hoạt động
@@ -515,6 +577,9 @@ vi:
       special_action: Đã %{action_name} %{object_name} thành công
       not_special_action: Chưa %{action_name} %{object_name} thành công
       added_member: Thêm nhân viên thành công
+      contract:
+        inactive_already: Hợp đồng đã bị vô hiệu hóa trước đó
+        inactived: Hợp đồng đã bị vô hiệu hóa
   actions:
     create: Tạo
     update: Sửa

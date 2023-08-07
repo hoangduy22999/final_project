@@ -15,13 +15,17 @@
 #  user  (user_id => users.id)
 #
 class Question < ApplicationRecord
+  # callback
   after_commit :create_notifications, on: :create
 
+  # const
   MAX_CODE_LENGTH = 5
+  I18N_MESSAGES = {created: "notifications.questions.created", updated: "notifications.questions.updated"}
 
-  # Relationship
+  # relationship
   belongs_to :user
   has_many :answers, dependent: :destroy
+  has_many :notifications, as: :resource, dependent: :destroy
 
   # functions
   def generate_code
@@ -32,6 +36,11 @@ class Question < ApplicationRecord
   private
 
   def create_notifications
-    Notification.create({})
+    notifications.create!({
+      message: LeaveRequest::I18N_MESSAGES[:created],
+      recipient_id: user_id,
+      sender_id: approve_by,
+      action_type: Notification.action_types[:created]
+    })
   end
 end

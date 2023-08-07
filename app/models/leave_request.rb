@@ -51,6 +51,9 @@ class LeaveRequest < ApplicationRecord
   has_many :action_histories, as: :resource, dependent: :destroy
   has_many :notifications, as: :resource, dependent: :destroy
 
+  # scope
+  scope :status_not_pending, -> { where.not(status: 'pending') }
+
   # enum
   enum status: {
     pending: 0,
@@ -123,15 +126,13 @@ class LeaveRequest < ApplicationRecord
   def time_dulicate
     return if start_date.nil? || end_date.nil?
     range_time = (start_date..end_date)
-    return if LeaveRequest.where(start_date: range_time).or(LeaveRequest.where(end_date: range_time))
-                          .where.not(id: id)
-                          .blank?
-
+    return if user.leave_requests.status_not_pending.ransack(id_not_eq: id, user_id_eq: user_id, start_date_gteq: start_date, start_date_lteq: end_date).result.blank? &&
+              user.leave_requests.status_not_pending.ransack(id_not_eq: id, user_id_eq: user_id, end_date_gteq: start_date, end_date_lteq: end_date).result.blank?
     errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.time_dulicate"))
   end
 
   def denie_request_not_pending
-    return if status_pending?
+    return if status_pending? || status_changed?
 
     errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.only_update_pending"))
   end

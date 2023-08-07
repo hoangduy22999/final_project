@@ -238,11 +238,12 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "user_leave_times", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "leave_type", default: 0, null: false
-    t.float "leave_max", default: 0.0, null: false
-    t.float "leave_taken", default: 0.0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "paid_leave_max", default: 0.0, null: false
+    t.float "paid_leave_taken", default: 0.0, null: false
+    t.float "unpaid_leave_max", default: 0.0, null: false
+    t.float "unpaid_leave_taken", default: 0.0, null: false
   end
 
   create_table "users", force: :cascade do |t|
