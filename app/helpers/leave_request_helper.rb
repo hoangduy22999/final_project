@@ -74,9 +74,10 @@ module LeaveRequestHelper
 
 
   def leave_taken_type_options(user)
-    available_paid, available_unpaid = user.available_leave_taken_time 
+    available_leave_taken_time = user.available_leave_taken_time
     LeaveRequest.leave_taken_types.keys.each_with_object([["-- #{I18n.t("form_selects.choose_leave_taken_type")} --", '']]) do |type, object|
-      object << ["#{LeaveRequest.human_enum_name(:leave_taken_type, type)} #{I18n.t('leave_requests.leave_taken_type.available')}", type]
+      available_taken_time = available_leave_taken_time["#{type}_leave_remain".to_sym]
+      object << ["#{LeaveRequest.human_enum_name(:leave_taken_type, type)} (#{I18n.t('leave_requests.leave_taken_types.available')}: #{available_taken_time})", type]
     end
   end
 end

@@ -29,7 +29,7 @@ class TimeSheet < ApplicationRecord
 
   # validates
   validates :user, presence: true
-  validate :only_check_same_day, :duplicate_time_sheet
+  validate :only_check_same_day
 
 
   enum change_by: {
@@ -128,7 +128,9 @@ class TimeSheet < ApplicationRecord
   end
 
   def duplicate_time_sheet
-    return unless TimeSheet.ransack({id_not_eq: id, start_at_gteq: start_at.beginning_of_day, end_at_lteq: end_at.end_of_day, user_id_eq: user_id}).result.present?
+    return if start_at.nil? || end_at.nil?
+
+    return unless TimeSheet.ransack({id_not_eq: id, start_at_gteq: start_at.beginning_of_day, end_at_lteq: start_at.end_of_day, user_id_eq: user_id}).result.present?
 
     errors.add(:base, I18n.t("activerecord.errors.models.time_sheet.attributes.date.only_one_day"))
   end

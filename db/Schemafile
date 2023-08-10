@@ -275,6 +275,7 @@ create_table :company_settings do |t|
   t.float "allow_late_time", default: 0.0
   t.float "paid_default", default: 36.0
   t.float "unpaid_default", default: 360.0
+  t.integer "fix_time_sheet_day", default: 1
 
   t.datetime "created_at", precision: 6, null: false
   t.datetime "updated_at", precision: 6, null: false

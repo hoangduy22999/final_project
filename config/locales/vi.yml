@@ -147,6 +147,8 @@ vi:
       start_at: Giờ ra
       end_at: Giờ vào
       date: Ngày
+      leave_paid: Nghỉ có lương
+      leave_unpaid: Nghỉ không lương
     import_data:
       choose_file: Chọn file
       confirm_data: Xác nhận dữ liệu
@@ -235,8 +237,9 @@ vi:
       forgot_keeping: Quên chấm công
       other: Khác
     leave_taken_types:
-      paid: Nghỉ phép
-      unpaid: Nghỉ không phép
+      paid: Nghỉ phép có lương
+      unpaid: Nghỉ không phép không lương
+      available: Khả dụng
     table:
       id: Mã
       name: Tên
@@ -287,6 +290,9 @@ vi:
      rejecte: Từ chối
   room_pickers:
     dashboard_name: Đặt phòng họp
+    form_texts:
+      add_picker: Thêm lịch họp
+      update_picker: Sửa lịch họp
   passwords:
     dashboard_name: Cài đặt mật khẩu
   settings:
@@ -354,12 +360,22 @@ vi:
       update_in_header: Xin phép vào lúc %{time} %{action_type}
     questions:
       created: Bạn có câu hỏi mới
-      create_list_title: Đã tạo 1 xin phép %{leave_type} với lý do là %{reason_name}
-      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
+      show_detail: Trả lời
+      create_list_title: vừa tạo 1 %{object_name} cần bạn giải đáp
+      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn giải đáp
     answers:
       created: Câu hỏi của bạn đã được trả lời
-      create_list_title: Đã tạo 1 xin phép %{leave_type} với lý do là %{reason_name}
-      create_in_header: Nhân viên %{user_name} vừa tạo 1 %{object_name} cần bạn phê duyệt
+      show_detail: Xem
+      create_list_title: vừa trả lời câu hỏi của bạn
+      create_in_header: Quản trị viên %{user_name} vừa trả lời câu hỏi của bạn
+  toatr:
+    messages:
+      room_picker:
+        delete_fail: Xóa phòng họp thất bại
+        delete_success: Xóa phòng họp thành công
+      errors:
+        unauthorized: Bạn không có quyền với đối tượng này
+        not_found: Đối tượng lỗi
   sessions:
     login_title: Chào mừng trở lại!
     remember_me: Nhớ đăng nhập
@@ -387,6 +403,10 @@ vi:
     log_out: Đăng xuất
     previous: Trước
     nexts: Tiếp theo
+    check_in: Chấm công vào
+    check_out: Chấm công ra
+    close: Đóng
+    remove: Xóa
   form_texts:
     name: Tên
     edit: Sửa
@@ -477,6 +497,14 @@ vi:
         status: Trạng thái
         start_at: Bắt đầu
         end_at: Kết thúc
+      room_picker:
+        name: Tên
+        description: Mô tả
+        room: Phòng
+        repeat_type: Lặp lại
+        from_this_time: Từ lúc đó
+        start_at: Kết thúc
+        end_at: Bắt đầu
     errors:
       messages:
         record_invalid: Bản ghi không hợp lệ
@@ -519,6 +547,8 @@ vi:
               request_one_date: Phải xin phép trong 1 ngày
               time_dulicate: Đã có xin phép khác trong khoảng thời gian này
               only_update_pending: Xin phép đã được duyệt hoặc bị từ chối
+              unavailable_leave_time: Bạn không đủ thời lượng phép
+              denie_out_expired: Đã quá thời hạn cho phép
             start_date:
               blank: không được để trống
               date_before_or_equal_to: không thể lớn hơn thời gian kết thúc
@@ -556,6 +586,11 @@ vi:
               blank: không được để trống
             status:
               only_one_active: chỉ được 1 trạng thái hoạt động
+        room_picker:
+          attributes:
+            base:
+              denied_past_time: Không được chọn thời gian trong quá khứ
+              validate_duplicate_time: Lịch họp bị trùng với phòng khác
   active_controller:
     errors:
       user_inactive: Hãy chọn user đang hoạt động

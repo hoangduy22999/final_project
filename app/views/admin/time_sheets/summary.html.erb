@@ -27,6 +27,8 @@
           <th><%= t('time_sheets.table.present_time') %></th>
           <th><%= t('time_sheets.table.late_time') %></th>
           <th><%= t('time_sheets.table.forgot_keeping') %></th>
+          <th><%= t('time_sheets.table.leave_paid') %></th>
+          <th><%= t('time_sheets.table.leave_unpaid') %></th>
           <th><%= t('time_sheets.table.action') %></th>
       </tr>
   </thead>
@@ -41,6 +43,8 @@
         <td ><%= user[:present_times] %></td>
         <td ><%= user[:late_times] %></td>
         <td ><%= user[:forgot_keepings] %></td>
+        <td ><%= user[:leave_paid] %></td>
+        <td ><%= user[:leave_unpaid] %></td>
         <% this_month = user[:month].to_datetime %>
         <td>
           <div >

@@ -13,6 +13,6 @@ class V1::Api::RoomPickers::CreateService < V1::ApplicationService
     end
 
     def object_params
-      params.require(:room_picker).permit(:description, :room_id, :start_at, :end_at, :repeat_type)
+      params.require(:room_picker).permit(:description, :room_id, :start_at, :end_at, :repeat_type, :repeat)
     end
 end

@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.float "allow_late_time", default: 0.0
     t.float "paid_default", default: 36.0
     t.float "unpaid_default", default: 360.0
+    t.integer "fix_time_sheet_day", default: 1
   end
 
   create_table "contracts", force: :cascade do |t|

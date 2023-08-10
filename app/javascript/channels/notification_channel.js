@@ -12,6 +12,7 @@ consumer.subscriptions.create("NotificationChannel", {
 
   received(data) {
     addNewNotificationInList(data)
+    console.log(`${data["incoming_notification"] + data["user_name"]}`)
     toastr.success(data["incoming_notification"], data["user_name"])
 
     Notification.requestPermission().then(permission => {

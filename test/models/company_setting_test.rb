@@ -11,6 +11,7 @@
 #  check_in_morning    :string
 #  check_out_afternoon :string
 #  check_out_morning   :string
+#  fix_time_sheet_day  :integer          default(1)
 #  paid_default        :float            default(36.0)
 #  status              :integer          default("active")
 #  unpaid_default      :float            default(360.0)

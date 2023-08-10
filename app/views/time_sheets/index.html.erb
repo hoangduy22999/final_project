@@ -1,6 +1,36 @@
+<div class="row">
+	<div class="col-sm-2">
+	</div>
+	<div class="col-sm-1 mr-4">
+		<% current_status = @time_sheet.end_at ? "done" : (@time_sheet.start_at ? "check_out" : "check_in") %>
+		<% case current_status %>
+		<% when "done" %>
+			<% start_progess = percent_time_by_day(@time_sheet.start_at.beginning_of_day, @time_sheet.start_at) %>
+			<% present_progess = percent_time_by_day(@time_sheet.start_at, @time_sheet.end_at) %>
+			<% end_progess = 100 - start_progess - present_progess %>
+		<% when "check_out" %>
+			<% start_progess = percent_time_by_day(@time_sheet.start_at.beginning_of_day, @time_sheet.start_at) %>
+			<% present_progess = percent_time_by_day(@time_sheet.start_at, Time.now) %>
+			<% end_progess = 0 %>
+		<% when "check_in" %>
+			<% start_progess = percent_time_by_day(Time.now.beginning_of_day, Time.now) %>
+			<% present_progess = 0 %>
+			<% end_progess = 0 %>
+		<% end %>
+		<%= render "form", time_sheet: @time_sheet %>
+	</div>
+	<div class="col-sm-6 p-2 ml-4">
+		<div class="progress">
+			<div id="startProgress" class="progress-bar" role="progressbar" style="width: <%= start_progess %>%" aria-valuenow="<%= start_progess %>" aria-valuemin="0" aria-valuemax="100"></div>
+			<div id="presentProgress" class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= present_progess %>%" aria-valuenow="<%= present_progess %>" aria-valuemin="0" aria-valuemax="100"></div>
+			<div id="endProgress" class="progress-bar bg-danger" role="progressbar" style="width: <%= end_progess %>%" aria-valuenow="<%= end_progess %>" aria-valuemin="0" aria-valuemax="100"></div>
+		</div>
+	</div>
+</div>
 <div id='calendar' style=""></div>
 <script>
-	$( document ).ready(function() {
+	$(document).ready(function() {
+		var statusProgress = "<%= current_status %>"
 		var token = localStorage.getItem('token');
 		var calendarEl = document.getElementById('calendar');
 
@@ -22,7 +52,7 @@
 								data: {
 									where: {
 										start_at_gteq: fetchInfo.startStr,
-										end_at_lteq: fetchInfo.endStr
+										start_at_lteq: fetchInfo.endStr
 									},
 									user_id: <%= current_user.id %>
 								},

@@ -41,4 +41,8 @@ module TimeSheetHelper
   def current_select_month(time_sheet)
     time_sheet.start_at.strftime('%Y-%m')
   end
+
+  def percent_time_by_day(start_at, end_at)
+    (((end_at - start_at) / (24 * 60 * 60)) * 100).to_i
+  end
 end

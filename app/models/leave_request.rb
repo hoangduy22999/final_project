@@ -41,8 +41,9 @@ class LeaveRequest < ApplicationRecord
   # validates
   validates :end_date, :leave_type, presence: true
   validates :start_date, presence: true, date: { before_or_equal_to: :end_date }
-  validate :approve_by_leader, :request_one_date, :time_dulicate
+  validate :approve_by_leader, :request_one_date, :time_dulicate, :denie_out_expired
   validate :denie_request_not_pending, on: :update
+  validate :available_leave_time
 
   # relationshipuser
   belongs_to :user
@@ -107,6 +108,10 @@ class LeaveRequest < ApplicationRecord
     "#{start_date.strftime('%H:%M')} - #{end_date.strftime('%H:%M')} #{start_date.strftime('%m/%d/%Y')}"
   end
 
+  def total_time_in_minutes
+    TimeSheet.diff_in_minutes(start_date, end_date)
+  end
+
   # private methods
   private
 
@@ -137,6 +142,24 @@ class LeaveRequest < ApplicationRecord
     errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.only_update_pending"))
   end
 
+  def denie_out_expired
+    current_setting = CompanySetting.current_setting.fix_time_sheet_day
+    return if (start_date.beginning_of_day..(start_date + 1.month).change(day: current_setting)).cover?(Time.now)
+
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.denie_out_expired"))
+  end
+
+  def available_leave_time
+    return if ['leave', 'late'].exclude?(leave_type)
+
+    return if !start_date_changed? && !end_date_changed?
+
+    pending_time = user.leave_requests.status_pending.where(leave_type: ['late', 'leave'], leave_taken_type: leave_taken_type)
+                       .sum {|leave_request| TimeSheet.diff_in_minutes(leave_request.start_date, leave_request.end_date)}
+
+    return if (user.available_leave_taken_time["#{leave_taken_type}_leave_remain".to_sym] * 60).to_i >= pending_time
+    errors.add(:base, I18n.t("activerecord.errors.models.leave_request.attributes.base.unavailable_leave_time"))
+  end
 
   def send_mail_for_leader
     LeaveRequestMailer.with({ 

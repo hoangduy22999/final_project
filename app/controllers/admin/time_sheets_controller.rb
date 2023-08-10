@@ -14,6 +14,7 @@ class Admin::TimeSheetsController < Admin::BaseController
                  .per_page(params[:per_page] || 15)
     time_sheets = TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
     department_info = DepartmentService.new({user_ids: @users.pluck(:id)}).perform
+    leave_times = LeaveTimeService.new({user_ids: @users.pluck(:id), year_month:time}).perform
     @map_time_sheets = @users.map do |user|
       {
         user_id: user.id,
@@ -22,6 +23,7 @@ class Admin::TimeSheetsController < Admin::BaseController
         month: time.strftime("%m/%Y")
       }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {present_times: 0, late_times: 0,  forgot_keepings: 0})
        .merge(department_info.find{|department| department[:user_id].eql?(user.id)} || {})
+       .merge(leave_times.find{|leave_time| leave_time[:user_id].eql?(user.id)} || {leave_paid: 0, leave_unpaid: 0})
     end
     
     @time_sheet = TimeSheet.new

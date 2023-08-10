@@ -2,9 +2,11 @@
 
 class QuestionsController < ApplicationController
   before_action :set_question, only: %i[show update destroy]
+  before_action :read_notification, only: %i[show]
 
   def index
     @questions = current_user.questions.ransack(params[:where]).result.paginate(page: params[:page]).per_page(10)
+    @answers_count = Question.where(id: @questions.pluck(:id)).select("questions.id, count(answers.id) as answer_count").joins(:answers).group("questions.id")
   end
 
   def create
@@ -38,9 +40,15 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question = Question.find(params[:id])
+
+    redirect_to questions_path, alert: I18n.t('toatr.messages.errors.unauthorized') unless @question.user_id.eql?(current_user.id)
   end
 
   def question_params
     params.require(:question).permit(:content)
+  end
+  
+  def read_notification
+    Notification.find_by(id: params[:notification_id])&.read_notification
   end
 end

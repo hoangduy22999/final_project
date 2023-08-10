@@ -27,7 +27,10 @@ class RoomPicker < ApplicationRecord
   validates :start_at, presence: true, date: { before_or_equal_to: :end_at}
   validates :end_at, presence: true
   validate :validate_duplicate_time
-  validate :validate_past_time, on: :create
+  validate :denied_past_time, on: :create
+
+  # scopes
+  scope :repeat_pickers, ->{where.not(repeat_type: "one_time")}
 
   # enums
   enum repeat_type: {
@@ -39,23 +42,40 @@ class RoomPicker < ApplicationRecord
   }, _prefix: true
 
   # ransacker for enums
-  ransacker :repeat_type, formatter: proc { |key| reapeat_types[key] }
+  ransacker :repeat_type, formatter: proc { |key| repeat_types[key] }
 
   private
 
   def validate_duplicate_time
-    return unless RoomPicker.where(room_id: room_id)
-                            .where("(start_at >= ? AND end_at <= ?) OR (start_at >= ? AND end_at <= ?)", start_at, end_at, start_at, end_at)
-                            .where.not(id: id)
-                            .exists?
+    time_range = (start_at..end_at)
+    duplicate_repeat_room = RoomPicker.all.any? do |picker|
+      start_at_in_this_day = picker.start_at.change(year: start_at.year, month: start_at.month, day: start_at.day)
+      end_at_in_this_day = picker.end_at.change(year: start_at.year, month: start_at.month, day: start_at.day)
+      next false unless time_range.cover?(start_at_in_this_day) || time_range.cover?(end_at_in_this_day)
+      next false if picker.repeat && picker.end_at < start_at
+      case picker.repeat_type
+      when 'weekly'
+        picker.start_at.wday.eql? start_at.wday
+      when 'monthly'
+        picker.start_at.day.eql? start_at.day
+      when 'yearly'
+        picker.start_at.day.eql?(start_at.day) && picker.start_at.month.eql?(start_at.month)
+      when 'one_time'
+        picker.start_at.all_day.cover?(start_at)
+      else
+        true
+      end
+    end
 
-    errors.add(:base, "Duplicate time in same room")
+    return unless duplicate_repeat_room
+
+    errors.add(:base,  I18n.t("activerecord.errors.models.room_picker.attributes.base.validate_duplicate_time"))
   end
 
 
-  def validate_past_time
+  def denied_past_time
     return if start_at >= Time.zone.now
     
-    errors.add(:base, "Can't select time in the past")
+    errors.add(:base, I18n.t("activerecord.errors.models.room_picker.attributes.base.denied_past_time"))
   end
 end

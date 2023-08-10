@@ -44,7 +44,7 @@ class Api::V1::RoomPickersController < Api::V1::ApplicationApi
   private
 
   def set_room_picker
-    @room_picker = RoomPicker.find_by(params[:id])
+    @room_picker = RoomPicker.find_by(id: params[:id])
 
     raise NotFound unless @room_picker
 

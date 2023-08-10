@@ -7,20 +7,20 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Pick a Room</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><%= t("room_pickers.form_texts.add_picker") %></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="room_picker_name">Name:</label>
+					<label class="control-label col-sm-2" for="room_picker_name"><%= t('activerecord.attributes.room_picker.name') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control" type="text" name="room_picker[name]" id="room_picker_name">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="room_picker_room_id">Room:</label>
+					<label class="control-label col-sm-2" for="room_picker_room_id"><%= t('activerecord.attributes.room_picker.room') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<select class="form-control" type="text" name="room_picker[name]" id="room_picker_room_id">
 							<% room_available.each do |room| %>
@@ -30,7 +30,7 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="room_picker_repeat_type">Repeat:</label>
+					<label class="control-label col-sm-2" for="room_picker_repeat_type"><%= t('activerecord.attributes.room_picker.repeat_type') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<select class="form-control" type="text" name="room_picker[repeat_type]" id="room_picker_repeat_type">
 							<% RoomPicker.repeat_types.each do |type, value| %>
@@ -40,27 +40,27 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-4" for="room_picker_repeat">From This Time:</label>
+					<label class="control-label col-sm-4" for="room_picker_repeat"><%= t('activerecord.attributes.room_picker.from_this_time') %>:</label>
 					<div class="col-sm-4 align-items-center">
 						<input class="" type="checkbox" name="room_picker[repeat]" id="room_picker_repeat">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="room_picker_start_at">Start:</label>
+					<label class="control-label col-sm-2" for="room_picker_start_at"><%= t('activerecord.attributes.room_picker.start_at') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control" type="datetime-local" name="room_picker[start_at]" id="room_picker_start_at">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="room_picker_end_at">End:</label>
+					<label class="control-label col-sm-2" for="room_picker_end_at"><%= t('activerecord.attributes.room_picker.end_at') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control" type="datetime-local" name="room_picker[end_at]" id="room_picker_end_at">
 					</div>
       	</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="createRoomPicker" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t("form_buttons.close") %></button>
+        <button id="createRoomPicker" type="button" class="btn btn-primary" data-dismiss="modal"><%= t("form_buttons.save") %></button>
       </div>
     </div>
   </div>
@@ -76,20 +76,20 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Pick a Room</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><%= t("room_pickers.form_texts.update_picker") %></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="update_room_picker_name">Name:</label>
+					<label class="control-label col-sm-2" for="update_room_picker_name"><%= t('activerecord.attributes.room_picker.name') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control updatePickerInput" type="text" name="room_picker[name]" id="update_room_picker_name">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="update_room_picker_room_id">Room:</label>
+					<label class="control-label col-sm-2" for="update_room_picker_room_id"><%= t('activerecord.attributes.room_picker.room') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<select class="form-control updatePickerInput" type="text" name="room_picker[name]" id="update_room_picker_room_id">
 							<% room_available.each do |room| %>
@@ -99,7 +99,7 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="update_room_picker_repeat_type">Repeat:</label>
+					<label class="control-label col-sm-2" for="update_room_picker_repeat_type"><%= t('activerecord.attributes.room_picker.repeat_type') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<select class="form-control updatePickerInput" type="text" name="room_picker[repeat_type]" id="update_room_picker_repeat_type">
 							<% RoomPicker.repeat_types.each do |type, value| %>
@@ -109,28 +109,28 @@
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-4" for="update_room_picker_repeat">From This Time:</label>
+					<label class="control-label col-sm-4" for="update_room_picker_repeat"><%= t('activerecord.attributes.room_picker.from_this_time') %>:</label>
 					<div class="col-sm-4">
 						<input class="updatePickerInput" type="checkbox" name="room_picker[repeat]" id="update_room_picker_repeat">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="update_room_picker_start_at">Start:</label>
+					<label class="control-label col-sm-2" for="update_room_picker_start_at"><%= t('activerecord.attributes.room_picker.start_at') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control updatePickerInput" type="datetime-local" name="room_picker[start_at]" id="update_room_picker_start_at">
 					</div>
       	</div>
 				<div class="row d-flex align-items-center mb-4">
-					<label class="control-label col-sm-2" for="update_room_picker_end_at">End:</label>
+					<label class="control-label col-sm-2" for="update_room_picker_end_at"><%= t('activerecord.attributes.room_picker.end_at') %>:</label>
 					<div class="col-sm-10 align-items-center">
 						<input class="form-control updatePickerInput" type="datetime-local" name="room_picker[end_at]" id="update_room_picker_end_at">
 					</div>
       	</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button id="removePicker" type="button" class="btn btn-danger updatePickerInput" data-dismiss="modal">Remove</button>
-        <button id="sumitUpdateRoomPicker" type="button" class="btn btn-primary updatePickerInput" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t("form_buttons.close") %></button>
+				<button id="removePicker" type="button" class="btn btn-danger updatePickerInput" data-dismiss="modal"><%= t("form_buttons.remove") %></button>
+        <button id="sumitUpdateRoomPicker" type="button" class="btn btn-primary updatePickerInput" data-dismiss="modal"><%= t("form_buttons.save") %></button>
       </div>
     </div>
   </div>
@@ -213,26 +213,6 @@
 				{ 
 					events: function(fetchInfo, successCallback, failureCallback) {
 					$.ajax({
-							url: '<%=ENV.fetch("BE_HOST") %>/api/v1/room_pickers',
-							dataType: 'json',
-							headers: {
-								token: token
-							},
-							data: {
-								where: {
-									start_at_gteq: fetchInfo.startStr,
-									end_at_lteq: fetchInfo.endStr
-								}
-							},
-							success: function(doc) {
-								successCallback(doc.data);
-							}
-					});
-				}
-				},
-				{ 
-					events: function(fetchInfo, successCallback, failureCallback) {
-					$.ajax({
 							url: '<%=ENV.fetch("BE_HOST") %>/api/v1/repeat_room_pickers',
 							dataType: 'json',
 							headers: {
@@ -255,8 +235,6 @@
 				let deletePickerButton = removeListener("removePicker")
 				let eventId = info.event._def.publicId
 
-				disableForm(info.event._def.extendedProps.editable)
-
 				console.log(info)
 				setFormUpdateData(info.event._def.extendedProps, info.event);
 				
@@ -273,10 +251,10 @@
             },
             success: function(data) {
 							calendar.refetchEvents();
-							toastr.success('Delete Event Success', '', { closeButton: true, progressBar: true })
+							toastr.success("<%= I18n.t('toatr.messages.room_picker.delete_success') %>", '', { closeButton: true, progressBar: true })
             },
 						error: function (xhr, ajaxOptions, thrownError) {
-							toastr.error(xhr.responseJSON.errors, '', { closeButton: true, progressBar: true })
+							toastr.error("<%= I18n.t('toatr.messages.room_picker.delete_fail') %>", '', { closeButton: true, progressBar: true })
 						}
         	});
 				});

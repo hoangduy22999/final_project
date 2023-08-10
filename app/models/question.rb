@@ -36,11 +36,13 @@ class Question < ApplicationRecord
   private
 
   def create_notifications
-    notifications.create!({
-      message: LeaveRequest::I18N_MESSAGES[:created],
-      recipient_id: user_id,
-      sender_id: approve_by,
-      action_type: Notification.action_types[:created]
-    })
+    User.role_admin.each do |admin|
+      notifications.create!({
+        message: Question::I18N_MESSAGES[:created],
+        recipient_id: admin.id,
+        sender_id: user_id,
+        action_type: Notification.action_types[:created]
+      })
+    end
   end
 end

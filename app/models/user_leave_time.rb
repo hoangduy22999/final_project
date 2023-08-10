@@ -18,9 +18,6 @@ class UserLeaveTime < ApplicationRecord
   # relationships
   belongs_to :user
   has_many :leave_requests, through: :user
-  
-  # ransacker for enums
-  ransacker :leave_type, formatter: proc { |key| leave_types[key] }
 
   # function
   def paid_leave_remain
@@ -28,6 +25,6 @@ class UserLeaveTime < ApplicationRecord
   end
 
   def unpaid_leave_remain
-    unpaid_leave_max - unique_leave_taken
+    unpaid_leave_max - unpaid_leave_taken
   end
 end

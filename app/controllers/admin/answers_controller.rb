@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::AnswersController < Admin::BaseController
-  before_action :set_answer, only: [:new, :create, :destroy]
+  before_action :set_answer, only: %i[new create destroy]
+  before_action :read_notification, only: %i[new]
 
   def summary
     @questions = Question.includes(:user, :answers)
@@ -9,6 +10,7 @@ class Admin::AnswersController < Admin::BaseController
                          .result
                          .order(created_at: :desc)
                          .paginate(page: params[:page]).per_page(params[:per_page] || 15)
+    @answers_count = Question.where(id: @questions.pluck(:id)).select("questions.id, count(answers.id) as answer_count").joins(:answers).group("questions.id")
   end
 
   def show; end
@@ -42,5 +44,9 @@ class Admin::AnswersController < Admin::BaseController
 
   def answer_params
     params.require(:answer).permit(:content).merge(question: @question)
+  end
+
+  def read_notification
+    Notification.find_by(id: params[:notification_id])&.read_notification
   end
 end

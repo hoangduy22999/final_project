@@ -1,5 +1,5 @@
 class RoomPickers::IndexSerializer < ActiveModel::Serializer
-  attributes :id, :description, :repeat, :repeat_type, :room_id, :user_id
+  attributes :id, :repeat, :repeat_type, :room_id, :user_id
 
   attribute(:title) { object.description }
   attribute(:user) { object.user.full_name }
@@ -7,5 +7,4 @@ class RoomPickers::IndexSerializer < ActiveModel::Serializer
   attribute(:end) { object.end_at.strftime("%FT%T") }
   attribute(:color) { object.room.color }
   attribute(:textColor) { object.room.text_color }
-  attribute(:editable) { object[:editable] }
 end

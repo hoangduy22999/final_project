@@ -9,6 +9,7 @@ class V1::Api::RoomPickers::IndexService < V1::ApplicationService
       @data = RoomPicker.includes(:user, :room).ransack(params[:where]).result.map do |room_picker|
         {
           id: room_picker.id,
+          title: room_picker.description,
           room_id: room_picker.room_id,
           repeat: room_picker.repeat,
           start_at: room_picker.start_at,

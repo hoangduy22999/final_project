@@ -54,6 +54,9 @@ class User < ApplicationRecord
   # soft delete
   acts_as_paranoid
 
+  # callbacks
+  after_commit :create_user_leave_taken, on: :create
+
   # uploader
   mount_uploader :avatar, AvatarUploader
 
@@ -70,8 +73,8 @@ class User < ApplicationRecord
   has_one :user_department, dependent: :destroy
   has_one :department, through: :user_department
   has_many :time_sheets, dependent: :destroy
-  has_many :questions, dependent: :nullify
-  has_many :answers, dependent: :nullify
+  has_many :questions, dependent: :destroy
+  has_many :answers, dependent: :destroy
   has_many :leave_requests, dependent: :destroy
   has_many :leave_requests_need_approve, class_name: 'LeaveRequest', foreign_key: 'approve_by', dependent: :nullify
   has_many :employees, through: :department, source: 'users', class_name: 'User'
@@ -85,7 +88,8 @@ class User < ApplicationRecord
 
   # nested attributes
   accepts_nested_attributes_for :user_department, :education, :dependent, allow_destroy: true
-                                                                                
+              
+  # scope
   scope :leader_department, -> { joins(:user_department).where(user_departments: { role: "leader" }) }
 
   # enum
@@ -161,7 +165,16 @@ class User < ApplicationRecord
   end
 
   def available_leave_taken_time
-    user_leave_times.order(:leave_type).map(&:leave_remain)
+    current_time = Time.now
+    current_fix_time_sheet_day = CompanySetting.current_setting.fix_time_sheet_day
+    start_time = current_time.day > current_fix_time_sheet_day ? current_time.beginning_of_month : (current_time - 1.month).beginning_of_month
+    paid_request_time = leave_requests.leave_taken_type_paid.status_pending.where(start_date: start_time..)
+                                        .sum{|leave_request| TimeSheet.diff_in_minutes(leave_request.start_date, leave_request.end_date)}
+    unpaid_request_time = leave_requests.leave_taken_type_unpaid.status_pending.where(start_date: start_time..)
+                                        .sum{|leave_request| TimeSheet.diff_in_minutes(leave_request.start_date, leave_request.end_date)}
+    paid_leave_remain = ((user_leave_time.paid_leave_remain * 60).to_i - paid_request_time) || 0        
+    unpaid_leave_remain = ((user_leave_time.unpaid_leave_remain * 60).to_i - unpaid_request_time) || 0                     
+    {paid_leave_remain: paid_leave_remain, unpaid_leave_remain: unpaid_leave_remain}
   end
 
   # ransacker
@@ -241,6 +254,6 @@ class User < ApplicationRecord
 
   def create_user_leave_taken
     current_setting = CompanySetting.current_setting
-    UserLeaveTime.leave_types.map { |type| {user_id: id, leave_max: current_setting.send("#{type}_default"), leave_type: type} }
+    UserLeaveTime.create({user_id: id, paid_leave_max: current_setting.paid_default, unpaid_leave_max: current_setting.unpaid_default })
   end
 end

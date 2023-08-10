@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get 'settings', to: 'settings#index'
     patch 'settings/reset_password', to: 'settings#reset_password'
     patch 'settings/reset_preferred_locale', to: 'settings#reset_preferred_locale'
-    resources :time_sheets, only: %i[index create]
+    resources :time_sheets, only: %i[index create update]
     resources :questions
     resources :leave_requests
     get 'csvs/export', to: 'csvs#export', defaults: { format: :csv }

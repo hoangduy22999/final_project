@@ -26,8 +26,8 @@ class Notification < ApplicationRecord
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
 
   # scopes
-  scope :unreaded_notifications_with_user, ->(user_id) { where(recipient_id: user_id, is_readed: false) }
-  scope :unreaded_notifications, -> { where(is_readed: false) }
+  scope :unreaded_notifications_with_user, ->(user_id) { where(recipient_id: user_id, is_readed: false).order(created_at: :desc) }
+  scope :unreaded_notifications, -> { where(is_readed: false).order(created_at: :desc) }
   scope :readed_notifications_with_user, ->(user_id) { where(recipient_id: user_id, is_readed: true) }
   scope :readed_notifications, ->{ where(is_readed: true) }
 
@@ -47,7 +47,7 @@ class Notification < ApplicationRecord
     href, notification_in_header, notification_in_list, incoming_notification = noti_for_resource
     ActionCable.server.broadcast "notification_channel_#{recipient_id}", {
                                                                           count: unread_count + rand(1..10),
-                                                                          send_user: sender.full_name,
+                                                                          user_name: sender.full_name,
                                                                           incoming_notification: incoming_notification,
                                                                           notification_in_header: notification_in_header,
                                                                           notification_in_list: notification_in_list,
@@ -59,6 +59,9 @@ class Notification < ApplicationRecord
                                                                           }
   end
 
+  def read_notification
+    self.update(is_readed: true)
+  end
 
   private
 
@@ -70,7 +73,6 @@ class Notification < ApplicationRecord
         notification_in_header = I18n.t("notifications.leave_requests.create_in_header", user_name: sender.full_name, 
                                                                                     object_name: I18n.t("#{resource.model_name.collection}.dashboard_name").downcase)
         notification_in_list = I18n.t("notifications.leave_requests")
-        incoming_notification = I18n.t(message)
       else
         href = "/leave_requests/#{resource_id}?notification_id=#{id}"
         notification_in_header = I18n.t("notifications.leave_requests.update_in_header", action_type: resource.human_enum_name(:status).downcase, 
@@ -80,11 +82,22 @@ class Notification < ApplicationRecord
       end
     when "Question"
       if action_type_created?
-        href = "/admin/questions/#{resource_id}?notification=#{id}"
+        href = "/admin/questions/#{resource_id}/answers/new?notification=#{id}"
+        notification_in_header = I18n.t("notifications.questions.create_in_header", user_name: sender.full_name, 
+                                                          object_name: I18n.t("#{resource.model_name.collection}.dashboard_name").downcase)
+        notification_in_list = I18n.t("notifications.questions.create_in_header", object_name: I18n.t("#{resource.model_name.collection}.dashboard_name").downcase)
       else
       end
     when "Answer"
+      if action_type_created?
+        href = "questions/#{resource.question.id}?notification=#{id}"
+        notification_in_header = I18n.t("notifications.answers.create_in_header", user_name: sender.full_name, 
+                                                          object_name: I18n.t("#{resource.model_name.collection}.dashboard_name").downcase)
+        notification_in_list = I18n.t("notifications.ansesrs.create_in_header", user_name: sender.full_name, 
+                                      object_name: I18n.t("#{resource.model_name.collection}.dashboard_name").downcase)
+      else
+      end
     end
-    [href, notification_in_header, notification_in_list]
+    [href, notification_in_header, notification_in_list, I18n.t(message)]
   end
 end

@@ -8,11 +8,11 @@ class Api::V1::ApplicationApi < ActionController::API
   class BadRequest < StandardError; end
 
   rescue_from Unauthorized do |errors|
-    render json: { errors: errors || I18n.t("common.text.unauthorized") }, status: :unauthorized
+    render json: { errors: I18n.t("toats.messages.errors.unauthorized") }, status: :unauthorized
   end
 
   rescue_from NotFound, ActiveRecord::RecordNotFound do |errors|
-    render json: { errors: I18n.t("common.text.not_found") }, status: :not_found
+    render json: { errors: I18n.t("toats.messages.errors.not_found") }, status: :not_found
   end
 
   rescue_from ActionController::ParameterMissing do |errors|

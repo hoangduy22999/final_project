@@ -26,7 +26,7 @@
       <tr>
         <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
         <td class="col-md-4"><%= link_to question.content, new_admin_question_answer_path(question_id: question.id) %></td>
-        <td><%= question.answers.count %></div></td>
+        <td><%= @answers_count.find{|answer| answer.id = question.id}&.answer_count %></div></td>
         <td><%= question.user.full_name %></td>
         <td><%= question.created_at&.strftime("%F") %></td>
       </tr>

@@ -9,23 +9,28 @@ class V1::Api::RoomPickers::RepeatService < V1::ApplicationService
       start_date = params[:where][:start_at_gteq].to_date
       end_date = params[:where][:end_at_lteq].to_date
       time_range = (start_date..end_date)
-      @data = RoomPicker.includes(:user, :room).where.not(repeat_type: "one_time").map do |room_picker|
-        time_range = room_picker.repeat ? time_range : time_range.select { |date| room_picker.start_at < date }
+      one_time_pickers = RoomPicker.repeat_type_one_time.where(start_at: time_range)
+      @data = (RoomPicker.includes(:user, :room).repeat_pickers + one_time_pickers).map do |room_picker|
+        time_range = room_picker.repeat ? time_range : time_range.select { |date| room_picker.start_at.beginning_of_day <= date }
+
         selected_date = case room_picker.repeat_type
+        when 'one_time'
+          time_range.select {|date| room_picker.start_at.all_day.cover?(date)}
         when 'daily'
           time_range
         when 'weekly'
-          time_range.select { |date| room_picker.start_at.wday == date.wday }
+          time_range.select {|date| room_picker.start_at.wday == date.wday}
         when 'monthly'
-          time_range.select { |date| room_picker.start_at.day == date.day }
+          time_range.select {|date| room_picker.start_at.day == date.day}
         when 'yearly'
-          time_range.select { |date| room_picker.start_at.day == date.day && room_picker.start_at.month == date.month}
+          time_range.select {|date| room_picker.start_at.day == date.day && room_picker.start_at.month == date.month}
         else
           {}
         end
 
-        next unless selected_date
-        
+        time_range = (start_date..end_date)
+        next if selected_date.blank?
+
         selected_date.map do |date|
           {
             id: room_picker.id,

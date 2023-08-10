@@ -11,6 +11,10 @@
               <% case notification.resource_type %>
               <% when LeaveRequest.model_name %>
                 <%= render 'leave_notification', {notification: notification} %>
+              <% when Question.model_name %>
+                <%= render 'question_notification', {notification: notification} %>
+              <% when Answer.model_name %>
+                <%= render 'answer_notification', {notification: notification} %>
               <% end %>
             <% end %>
           </div>

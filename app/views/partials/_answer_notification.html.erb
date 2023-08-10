@@ -1,0 +1,14 @@
+<a class="dropdown-item d-flex align-items-center" href="<%= question_path(id: notification.resource.question.id, notification_id: notification.id) %>">
+	<div class="mr-3">
+		<div class="icon-circle bg-success">
+			<i class="fas fa-code-pull-request"></i>
+		</div>
+	</div>
+	<div>
+		<div class="small text-gray-500"><%= notification.created_at.strftime("%T %B %e, %Y") %></div>
+		<span class="<%= notification.is_readed ? "" : "font-weight-bold" %>">
+			<%= t("notifications.answers.create_in_header", user_name: notification.sender.full_name, 
+																											object_name: t("#{notification.resource.model_name.collection}.dashboard_name").downcase) %>
+		</span>
+	</div>
+</a>

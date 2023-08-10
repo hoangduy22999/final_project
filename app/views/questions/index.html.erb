@@ -35,7 +35,7 @@
         <td><%= (question.id > 9 ? "0000" : "00000") + question.id.to_s %></td>
         <td><%= link_to question.content, question_path(id: question.id) %></td>
         <td class="">
-          <%= question.answers.count %>
+          <%= @answers_count.find {|answer| answer.id = question.id}&.answer_count %>
         </td>
         <td>
           <div class="text-center">
