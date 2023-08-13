@@ -17,6 +17,8 @@ class Admin::DepartmentsController < Admin::BaseController
 
   def new
     @department = Department.new
+    @users = []
+    @user_departments = []
   end
 
   def show

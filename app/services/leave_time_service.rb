@@ -18,8 +18,8 @@ class LeaveTimeService
       {
         user_id: user_id,
         leave_paid: user_leave_request.select{|leave_request| leave_request.leave_taken_type.eql?("paid") && !leave_request.leave_type.eql?("forgot_keeping") }
-                                      .sum {|leave_request| leave_request.total_time_in_minutes} ,
-        leave_unpaid: user_leave_request.select{|leave_request| leave_request.leave_taken_type.eql?("unpaid")}.sum {|leave_request| leave_request.total_time_in_minutes} 
+                                      .sum {|leave_request| leave_request.total_time_in_minutes},
+        leave_unpaid: user_leave_request.select{|leave_request| leave_request.leave_taken_type.eql?("unpaid")}.sum {|leave_request| leave_request.total_time_in_minutes}
       }
     end
   end

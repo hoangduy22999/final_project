@@ -156,8 +156,8 @@ vi:
       include_header: Chứa phần đầu
     form_inputs:
       user: Nhân viên
-      start_at: Giờ ra
-      end_at: Giờ vào
+      start_at: Giờ vào
+      end_at: Giờ ra
       user_name: Tên nhân viên
       date: Ngày
     update_title: Sửa chấm công
@@ -376,6 +376,10 @@ vi:
       errors:
         unauthorized: Bạn không có quyền với đối tượng này
         not_found: Đối tượng lỗi
+  side_bar:
+    admin: Quản trị viên
+    user: Nhân viên
+    leader: Trưởng phòng ban
   sessions:
     login_title: Chào mừng trở lại!
     remember_me: Nhớ đăng nhập
@@ -420,6 +424,9 @@ vi:
     no_object: Không có bản ghi nào
     detail: Chi tiết
     content: Nội dung
+    send_mail_time_sheet: Gửi mail chấm công
+    confirm_send_time_sheet_mail: Bạn có chắc muốn gửi mail chấm công cho tất cả nhân viên
+    confirm_send_time_sheet_mail_single: Bạn có chắc muốn gửi mail chấm công cho nhân viên
   form_selects:
     status: Trạng thái
     contract_type: Loại hợp đồng
@@ -428,6 +435,16 @@ vi:
     choose_leave_taken_type: Hình thức xin phép
   form_titles:
     create: Tạo %{object_name}
+  mail_texts:
+    time_sheet:
+      hello: Xin chào
+      title: Công ty gửi bạn thông tin chấm công tháng 
+      total_time: Tổng
+      present_time: Có mặt
+      late_time: Đi muộn
+      forgot_keeping: Quên chấm công
+      leave_paid: Nghỉ có lương
+      leave_unpaid: nghỉ không lương
   activerecord:
     attributes:
       leave_request:
@@ -564,6 +581,8 @@ vi:
           attributes:
             date:
               only_one_day: Chỉ được xin phép trong 1 ngày
+            start_at:
+              start_at_before: Phải nhỏ hơn thời gian vào
         room:
           attributes:
             color:
@@ -612,6 +631,7 @@ vi:
       special_action: Đã %{action_name} %{object_name} thành công
       not_special_action: Chưa %{action_name} %{object_name} thành công
       added_member: Thêm nhân viên thành công
+      sended_time_sheets: Đã gửi mail chấm công
       contract:
         inactive_already: Hợp đồng đã bị vô hiệu hóa trước đó
         inactived: Hợp đồng đã bị vô hiệu hóa

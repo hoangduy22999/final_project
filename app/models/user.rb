@@ -209,6 +209,10 @@ class User < ApplicationRecord
     "FN" + "0" * (5 - id.to_s.length) + id.to_s 
   end
 
+  def active_contract
+    contracts.status_active&.first || contracts&.order(end_date: :desc)&.first
+  end
+
   # class method
   class << self
     def random_password

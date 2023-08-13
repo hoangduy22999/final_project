@@ -8,24 +8,13 @@ class Admin::TimeSheetsController < Admin::BaseController
     where = params[:where] || {}
     param_date = where.present? ? where["year_month"]&.split("-") : ""
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
-    @users = User.ransack(where).result
+    @users = User.status_active
+                 .ransack(where).result
                  .order(id: :asc)
                  .paginate(page: params[:page] || 1)
                  .per_page(params[:per_page] || 15)
-    time_sheets = TimeSheetService.new({user_ids: @users.pluck(:id), year_month: time}).perform
-    department_info = DepartmentService.new({user_ids: @users.pluck(:id)}).perform
-    leave_times = LeaveTimeService.new({user_ids: @users.pluck(:id), year_month:time}).perform
-    @map_time_sheets = @users.map do |user|
-      {
-        user_id: user.id,
-        user_code: user.user_code,
-        user_name: user.full_name,
-        month: time.strftime("%m/%Y")
-      }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {present_times: 0, late_times: 0,  forgot_keepings: 0})
-       .merge(department_info.find{|department| department[:user_id].eql?(user.id)} || {})
-       .merge(leave_times.find{|leave_time| leave_time[:user_id].eql?(user.id)} || {leave_paid: 0, leave_unpaid: 0})
-    end
-    
+
+    @map_time_sheets = map_time_sheets(@users, time)
     @time_sheet = TimeSheet.new
   end
 
@@ -40,8 +29,9 @@ class Admin::TimeSheetsController < Admin::BaseController
     where = params[:where] || {}
     param_date = where.present? ? where["year_month"]&.split("-") : ""
     time = param_date.blank? ? current_time : DateTime.new(param_date.first.to_i, param_date.last.to_i)
-    @time_sheets = @user.time_sheets.ransack(where.merge(start_at_gteq: time.beginning_of_month, end_at_lteq: time.end_of_month))
-                                   .result
+    @time_sheets = @user.time_sheets.ransack(where.merge(start_at_gteq: time.beginning_of_month, start_at_lteq: time.end_of_month))
+                                    .result
+                                    .order(start_at: :desc)
   end
 
   def create
@@ -92,6 +82,21 @@ class Admin::TimeSheetsController < Admin::BaseController
     @user = @time_sheets&.first&.user
   end
 
+  def send_time_sheet_mail
+    time = current_time - 1.months
+    users = if params[:user_id]
+      User.where(id: params[:user_id])
+    else
+      User.status_active
+    end
+
+    map_time_sheets(users, time).map do |user|
+      TimeSheetMailer.with(user).created.deliver_later
+    end
+
+    redirect_to admin_time_sheets_path, notice:  I18n.t('active_controller.messages.sended_time_sheets')
+  end
+
   private
 
   def set_time_sheet
@@ -104,11 +109,28 @@ class Admin::TimeSheetsController < Admin::BaseController
     end_at = Time.parse(attributes[:end_at])
     {
       start_at: time_sheet.start_at.change(hour: start_at.hour, min: start_at.min),
-      end_at: time_sheet.end_at.change(hour: end_at.hour, min: end_at.min)
+      end_at: time_sheet.start_at.change(hour: end_at.hour, min: end_at.min)
     }
   end
 
   def set_user
     @user = User.find_by(id: params[:user_id])
+  end
+
+  def map_time_sheets(users, time)
+    time_sheets = TimeSheetService.new({user_ids: users.pluck(:id), year_month: time}).perform
+    department_info = DepartmentService.new({user_ids: users.pluck(:id)}).perform
+    leave_times = LeaveTimeService.new({user_ids: users.pluck(:id), year_month:time}).perform
+    @map_time_sheets = users.map do |user|
+      {
+        user_id: user.id,
+        user_code: user.user_code,
+        user_name: user.full_name,
+        email: user.email,
+        month: time.strftime("%m/%Y")
+      }.merge(time_sheets.find{|time_sheet| time_sheet[:user_id].eql?(user.id)} || {present_times: 0, late_times: 0,  forgot_keepings: 0})
+       .merge(department_info.find{|department| department[:user_id].eql?(user.id)} || {})
+       .merge(leave_times.find{|leave_time| leave_time[:user_id].eql?(user.id)} || {leave_paid: 0, leave_unpaid: 0})
+    end
   end
 end

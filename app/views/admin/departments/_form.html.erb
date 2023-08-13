@@ -37,9 +37,6 @@
             <td><%= user.user_department&.end_date&.strftime("%F") %></td>
             <td>
               <div class="text-center">
-                <a class="editModal actionLink" id="editModal<%= user.id %>" value="<%= user.id %>" data-user-role="<%= user.user_department&.role %>"  data-toggle="modal" data-target="#editMultiModal" title="Edit Role">
-                  <i class="fa-regular mr-2 fa-pen-to-square text-success"></i>
-                </a>
                 <a class="moveModal actionLink" id="moveModel<%= user.id %>" value="<%= user.id %>" data-toggle="modal" data-target="#moveMultiModal" title="<%= t('user_departments.form_inputs.move_user') %>">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 </a>

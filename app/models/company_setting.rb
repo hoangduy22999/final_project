@@ -39,7 +39,13 @@ class CompanySetting < ApplicationRecord
 
     def current_time_settings
       setting = current_setting
-      [setting.check_in_morning, setting.check_out_morning, setting.check_in_afternoon, setting.check_out_afternoon].map {|setting| TimeSheet.timefstr(setting)}
+      [setting.check_in_morning, setting.check_out_morning, setting.check_in_afternoon, setting.check_out_afternoon].map {|setting| timefstr(setting)}
+    end
+
+    def current_time_one_day
+      setting = current_setting
+      check_in_morning, check_out_morning, check_in_afternoon, check_out_afternoon = [setting.check_in_morning, setting.check_out_morning, setting.check_in_afternoon, setting.check_out_afternoon].map {|setting| timefstr(setting)}
+      (((check_out_morning - check_in_morning) + (check_out_afternoon - check_in_afternoon))/60/60).to_i
     end
   end
 

@@ -39,8 +39,8 @@
         <td><%= @user.user_code %></td>
         <td><%= @user.full_name  %></td>
         <td><%= time_sheet.start_at.strftime('%m/%d/%Y')  %></td>
-        <td><%= time_sheet.start_at.strftime('%I:%M %p')  %></td>
-        <td><%= time_sheet.end_at.strftime('%I:%M %p')  %></td>
+        <td><%= time_sheet.start_at&.strftime('%I:%M %p')  %></td>
+        <td><%= time_sheet.end_at&.strftime('%I:%M %p')  %></td>
         <td><%= TimeSheet.strftime_format(time_sheet.time_present(@options).first)  %></td>
         <td><%= TimeSheet.strftime_format(time_sheet.time_present(@options).last)  %></td>
         <td>

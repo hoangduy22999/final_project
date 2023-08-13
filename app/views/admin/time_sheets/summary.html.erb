@@ -10,6 +10,11 @@
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
           </button>
+          <%= link_to "#{I18n.t("form_texts.send_mail_time_sheet")} <i class='fa-regular fa-paper-plane'></i>".html_safe,
+                      admin_send_time_sheet_mail_path,
+                      method: "POST",
+                      class: "btn btn-primary ml-2",
+                      data: {confirm: I18n.t("form_texts.confirm_send_time_sheet_mail")} %>
         </div>
       </div>
     </form>
@@ -40,15 +45,24 @@
         <td ><%= user[:department]  %></td>
         <td ><%= user[:role] %></td>
         <td ><%= user[:month] %></td>
-        <td ><%= user[:present_times] %></td>
-        <td ><%= user[:late_times] %></td>
+        <td ><%= TimeSheet.strftime_format(user[:present_times]) %></td>
+        <td ><%= TimeSheet.strftime_format(user[:late_times]) %></td>
         <td ><%= user[:forgot_keepings] %></td>
-        <td ><%= user[:leave_paid] %></td>
-        <td ><%= user[:leave_unpaid] %></td>
+        <td ><%= TimeSheet.strftime_format(user[:leave_paid]) %></td>
+        <td ><%= TimeSheet.strftime_format(user[:leave_unpaid]) %></td>
         <% this_month = user[:month].to_datetime %>
         <td>
-          <div >
-            <%= link_to '<i class="fa-regular fa-pen-to-square text-success"></i>'.html_safe, admin_user_time_sheets_path(user_id: user[:user_id], where: {year_month: current_select_month_ransack}), class: "actionLink mr-3" %>
+          <div >            
+            <%= link_to '<i class="fa-regular fa-paper-plane"></i>'.html_safe,
+                        admin_send_time_sheet_mail_path(user_id: user[:user_id]),
+                        class: "actionLink mr-2",
+                        method: "POST",
+                        data: {confirm: I18n.t("form_texts.confirm_send_time_sheet_mail_single")}
+            %>
+            <%= link_to '<i class="fa-regular fa-pen-to-square text-success"></i>'.html_safe,
+                        admin_user_time_sheets_path(user_id: user[:user_id], where: {year_month: current_select_month_ransack}),
+                        class: "actionLink" 
+            %>
           </div>
         </td>
       </tr>

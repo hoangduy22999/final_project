@@ -30,6 +30,7 @@ class TimeSheet < ApplicationRecord
   # validates
   validates :user, presence: true
   validate :only_check_same_day
+  validate :start_at_before
 
 
   enum change_by: {
@@ -47,7 +48,7 @@ class TimeSheet < ApplicationRecord
   end
 
   def time_present(options = {})
-    return 0 if start_at.nil? || end_at.nil?
+    return [0, 0] if start_at.nil? || end_at.nil?
     
     TimeSheet.present_time(start_at.strftime('%H:%M:%S'), end_at.strftime('%H:%M:%S'), options)
   end
@@ -106,6 +107,7 @@ class TimeSheet < ApplicationRecord
     end
 
     def strftime_format(all_minutes)
+      return "00:00" unless all_minutes
       hours = all_minutes / 60 || 0
       minutes = all_minutes - hours * 60 || 0
       "#{hours < 10 ? ('0' + hours.to_s) : hours}:#{minutes < 10 ? ('0' + minutes.to_s) : minutes}"
@@ -113,7 +115,7 @@ class TimeSheet < ApplicationRecord
     
     def timefstr(str)
       time = str.split(':')
-      Time.zone.now.change(hour: time[0], minute: time[1], seconds: time[2] || 0)
+      Time.zone.now.change(hour: time[0], min: time[1], seconds: time[2] || 0)
     end
   end
 
@@ -133,5 +135,11 @@ class TimeSheet < ApplicationRecord
     return unless TimeSheet.ransack({id_not_eq: id, start_at_gteq: start_at.beginning_of_day, end_at_lteq: start_at.end_of_day, user_id_eq: user_id}).result.present?
 
     errors.add(:base, I18n.t("activerecord.errors.models.time_sheet.attributes.date.only_one_day"))
+  end
+
+  def start_at_before
+    return if start_at.nil? || end_at.nil? || start_at <= end_at
+
+    errors.add(:start_at, I18n.t("activerecord.errors.models.time_sheet.attributes.date.start_at_before"))
   end
 end

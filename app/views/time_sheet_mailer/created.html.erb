@@ -1,0 +1,10 @@
+<p><%= "#{t('mail_texts.time_sheet.hello')} #{@result[:user_name]}" %>,</p>
+
+<p><%= "#{t('mail_texts.time_sheet.title')} #{@result[:month]}" %></p>
+<br>
+<p><%= "#{t('mail_texts.time_sheet.total_time')}: #{TimeSheet.strftime_format(@result[:total_time])}" %></p>
+<p><%= "#{t('mail_texts.time_sheet.present_time')}: #{TimeSheet.strftime_format(@result[:present_times])}" %></p>
+<p><%= "#{t('mail_texts.time_sheet.late_time')}: #{TimeSheet.strftime_format(@result[:late_times])}" %></p>
+<p><%= "#{t('mail_texts.time_sheet.forgot_keeping')}: #{TimeSheet.strftime_format(@result[:forgot_keepings])}" %></p>
+<p><%= "#{t('mail_texts.time_sheet.leave_paid')}: #{TimeSheet.strftime_format(@result[:leave_paid])}" %></p>
+<p><%= "#{t('mail_texts.time_sheet.leave_unpaid')}: #{TimeSheet.strftime_format(@result[:leave_unpaid])}" %></p>

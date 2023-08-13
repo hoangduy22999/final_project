@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         resources :time_sheets
         resources :user_leave_times
       end
+      post 'send_time_sheet_mail', to: 'time_sheets#send_time_sheet_mail'
       resources :rooms
     end
 

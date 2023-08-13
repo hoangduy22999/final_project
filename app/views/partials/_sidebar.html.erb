@@ -13,7 +13,7 @@
     <hr class="sidebar-divider">
     <!-- Heading -->
     <div class="sidebar-heading">
-        ADMIN
+      <%= t('side_bar.admin').upcase %>
     </div>
 
     <!-- Nav Item - User -->
@@ -66,7 +66,7 @@
   <% if current_user.leader_department?  %>
     <!-- Heading -->
     <div class="sidebar-heading">
-        LEADER
+      <%= t('side_bar.leader').upcase %>
     </div>
     <!-- Nav Item - Leave Request -->
     <li class="nav-item">
@@ -83,7 +83,7 @@
 
   <!-- Heading User -->
   <div class="sidebar-heading">
-      USER
+      <%= t('side_bar.user').upcase %>
   </div>
 
   <!-- Nav Item - Timekeeping -->
