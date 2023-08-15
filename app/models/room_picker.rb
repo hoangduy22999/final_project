@@ -48,7 +48,7 @@ class RoomPicker < ApplicationRecord
 
   def validate_duplicate_time
     time_range = (start_at..end_at)
-    duplicate_repeat_room = RoomPicker.all.any? do |picker|
+    duplicate_repeat_room = RoomPicker.where.not(id: id).any? do |picker|
       start_at_in_this_day = picker.start_at.change(year: start_at.year, month: start_at.month, day: start_at.day)
       end_at_in_this_day = picker.end_at.change(year: start_at.year, month: start_at.month, day: start_at.day)
       next false unless time_range.cover?(start_at_in_this_day) || time_range.cover?(end_at_in_this_day)
